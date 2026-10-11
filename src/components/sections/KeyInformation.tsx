@@ -1,4 +1,4 @@
-import { keyFacts, keyFactsSource } from '../../content/project';
+import { keyFacts, keyFactsSources } from '../../content/project';
 import { Section } from '../layout/Section';
 
 export function KeyInformation() {
@@ -27,11 +27,16 @@ export function KeyInformation() {
         ))}
       </dl>
       <p className="note">
-        Source:{' '}
-        <a href={keyFactsSource.url} target="_blank" rel="noreferrer">
-          {keyFactsSource.label}
-        </a>
-        .{anyUnverified && ' * Not on that page; awaiting verification against a primary source.'}
+        Sources:{' '}
+        {keyFactsSources.map((src, i) => (
+          <span key={src.url}>
+            {i > 0 && ' · '}
+            <a href={src.url} target="_blank" rel="noreferrer">
+              {src.label}
+            </a>
+          </span>
+        ))}
+        .{anyUnverified && ' * Awaiting verification against a primary source.'}
       </p>
     </Section>
   );

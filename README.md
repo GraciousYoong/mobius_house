@@ -177,15 +177,20 @@ Keys are only captured while the viewer has focus, so they never hijack page scr
 
 ## Content accuracy
 
-`src/content/project.ts` holds all facts. Those from the key information panel on
-[UNStudio's project page](https://www.unstudio.com/projects/mobius-house/) (client, location,
-status, sectors, services, programme, 520 m² building surface) are `verified: true`. Dates and
-materials are `verified: false` and marked with an asterisk until checked. Don't add values
-without a source.
+`src/content/project.ts` holds all text and facts. Each fact is `verified: true` only when
+confirmed by [UNStudio's project page](https://www.unstudio.com/projects/mobius-house/) or
+ArchDaily's [AD Classics article](https://www.archdaily.com/1012111/ad-classics-mobius-house-unstudio).
+Anything unconfirmed is flagged with an asterisk. The Concept text summarises those sources in our
+own words, with one short, attributed quotation (Terence Riley). The "Facts and figures" strip
+(2 · 4 · 3) is from UNStudio's project page.
 
-Images in `public/images/` (exterior, living area, floor plan, Möbius diagram) were supplied
-from UNStudio / ArchDaily. Copyright remains with them; confirm photographer credits and usage
-rights before publishing the site publicly.
+Images in `public/images/`:
+
+- **Floor plan and Möbius diagram:** credited by ArchDaily as courtesy of UNStudio.
+- **Exterior and living-area photographs:** photographer still to be confirmed. ArchDaily credits
+  its interior photography to Eva Bloem.
+
+Copyright remains with the owners. Obtain permission and the exact credit line before publishing.
 
 ## Next milestones
 
