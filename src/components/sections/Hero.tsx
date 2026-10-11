@@ -2,7 +2,7 @@ import { forwardRef, useCallback } from 'react';
 import { Viewer } from '../../scene/Viewer';
 import { useWebGLSupport } from '../../hooks/useWebGLSupport';
 import { project } from '../../content/project';
-import { setHelpOpen, setMode, toggleMode, viewerStore } from '../../state/viewerStore';
+import { resetView, setHelpOpen, setMode, toggleMode, viewerStore } from '../../state/viewerStore';
 import { KeyboardHelp } from '../ui/KeyboardHelp';
 import { ModeToggle } from '../ui/ModeToggle';
 import { Minimap } from '../ui/Minimap';
@@ -24,13 +24,18 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
         describedBy="viewer-instructions"
         onToggleMode={toggleMode}
         onToggleHelp={toggleHelp}
+        onResetView={resetView}
       />
 
-      <div className="hero__overlay">
+      <div className={`hero__overlay hero__overlay--${mode}`}>
         <div
           className={`hero__title-block ${mode === 'explore' ? 'hero__title-block--compact' : ''}`}
         >
-          <p className="hero__eyebrow">{project.architect}</p>
+          <p className="hero__eyebrow">
+            {project.architect}
+            <span aria-hidden="true"> · </span>
+            {project.location}
+          </p>
           <h1 id="hero-title" className="hero__title">
             {project.name}
           </h1>
@@ -39,11 +44,21 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
         </div>
 
         {webgl && (
-          <div className="hero__controls">
+          <div className="hero__toolbar" role="toolbar" aria-label="3D view">
             <ModeToggle mode={mode} onChange={setMode} />
+            <span className="hero__toolbar-rule" aria-hidden="true" />
+            {mode === 'orbit' ? (
+              <button type="button" className="tool-button" onClick={resetView}>
+                Reset view
+              </button>
+            ) : (
+              <button type="button" className="tool-button" onClick={() => setMode('orbit')}>
+                Exit
+              </button>
+            )}
             <button
               type="button"
-              className="button button--ghost"
+              className="tool-button"
               aria-expanded={helpOpen}
               aria-controls="viewer-help"
               onClick={toggleHelp}
@@ -71,10 +86,11 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
       </div>
 
       <p id="viewer-instructions" className="visually-hidden">
-        Focus the viewer with Tab. In orbit mode, arrow keys rotate and plus or minus zoom. In
-        explore mode, W A S D or the arrow keys walk and turn, Shift moves faster, and walls and
-        stairs behave as in the building. The minimap announces which floor you are on. Press M to
-        switch modes, question mark for the full list of controls, and Escape to leave the viewer.
+        Focus the viewer with Tab. In orbit mode, arrow keys rotate, plus or minus zoom, and R
+        resets the view. In explore mode, W A S D or the arrow keys walk and turn, Shift moves
+        faster, and walls and stairs behave as in the building. The minimap announces which floor
+        you are on. Press M to switch modes, question mark for the full list of controls, and Escape
+        to leave the viewer.
       </p>
     </section>
   );

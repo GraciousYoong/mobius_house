@@ -33,6 +33,7 @@ export interface Fact {
 export const project = {
   name: 'Möbius House',
   architect: 'UNStudio',
+  location: 'Hilversum, Netherlands',
   tagline:
     'A single-family house in Hilversum organised around a continuous loop of living and working.',
 };

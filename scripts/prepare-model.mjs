@@ -1,7 +1,7 @@
 /**
  * Converts the SketchUp COLLADA export into the assets the site loads:
  *
- *   models-src/mobius-house.dae  →  public/models/mobius-house.glb
+ *   models-src/mobius-house.dae  →  public/models/mobius-house.glb (with surface groups)
  *                                   public/plans/<level>.svg  (minimap plan per floor)
  *                                   src/content/generated/modelInfo.json
  *
@@ -17,6 +17,8 @@ import { createRequire } from 'node:module';
 import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { dedup, prune, weld } from '@gltf-transform/functions';
+import { BufferAttribute, BufferGeometry, DoubleSide, Ray, Vector3 } from 'three';
+import { MeshBVH } from 'three-mesh-bvh';
 
 const require = createRequire(import.meta.url);
 const assimpjs = require('assimpjs');
@@ -130,11 +132,139 @@ const bounds = {
   max: max.map((v, k) => +(v + offset[k]).toFixed(3)),
 };
 
+// ---------- 3b. Sort surfaces into material groups ----------
+// The SketchUp file has one white material. To let the viewer tell exterior
+// concrete, interior walls, floors, ceilings, roofs and ground apart, every
+// opaque triangle is classified by ray tests against the model itself and
+// moved into a primitive with a named material for its group. Only surface
+// roles are inferred; no geometry is added or changed.
+const allTriangles = [];
+for (const prim of keptMesh.listPrimitives()) {
+  if (prim.getMode() !== 4) continue;
+  const pos = prim.getAttribute('POSITION');
+  const idx = prim.getIndices();
+  const n = idx ? idx.getCount() : pos.getCount();
+  for (let i = 0; i < n; i++) allTriangles.push(...pos.getElement(idx ? idx.getScalar(i) : i, []));
+}
+const bvhGeometry = new BufferGeometry();
+bvhGeometry.setAttribute('position', new BufferAttribute(new Float32Array(allTriangles), 3));
+const bvh = new MeshBVH(bvhGeometry);
+const ray = new Ray();
+const hitWithin = (origin, dir, far) => {
+  ray.origin.copy(origin);
+  ray.direction.copy(dir).normalize();
+  const hit = bvh.raycastFirst(ray, DoubleSide);
+  return hit !== null && hit.distance < far;
+};
+
+const AROUND = [
+  new Vector3(1, 0, 0),
+  new Vector3(-1, 0, 0),
+  new Vector3(0, 0, 1),
+  new Vector3(0, 0, -1),
+];
+/** At least three of four horizontal rays at waist height hit a wall or glass. */
+const enclosed = (point) => {
+  const origin = point.clone().setY(point.y + 1);
+  return AROUND.filter((dir) => hitWithin(origin, dir, 25)).length >= 3;
+};
+const ROOF_MIN_Y = 1.5; // uncovered upward faces above this are roofs, below it ground
+const UP = new Vector3(0, 1, 0);
+function classify(a, b, c) {
+  const u = new Vector3().subVectors(b, a);
+  const v = new Vector3().subVectors(c, a);
+  const normal = new Vector3().crossVectors(u, v);
+  if (normal.lengthSq() === 0) return null;
+  normal.normalize();
+  const centre = new Vector3().add(a).add(b).add(c).divideScalar(3);
+  const start = centre.clone().addScaledVector(normal, 0.03);
+  if (normal.y > 0.7) {
+    // A floor is covered and enclosed; covered paving under an overhang is not enclosed.
+    if (hitWithin(start, UP, 30) && enclosed(centre)) return 'floor';
+    return centre.y > ROOF_MIN_Y ? 'roof' : 'ground';
+  }
+  // Downward faces: ceilings, except the underside of the site slab.
+  if (normal.y < -0.7) return centre.y < -1.5 ? 'ground' : 'ceiling';
+  // Walls: look outward, tilted slightly up so the sloping site is not mistaken
+  // for an enclosing wall. Anything hit means the face is inside the building.
+  const look = normal.clone().setY(normal.y + 0.08);
+  if (hitWithin(start, look, 60)) return 'wall';
+  return centre.y < -0.4 ? 'ground' : 'concrete';
+}
+
+const groupMaterials = new Map();
+const materialFor = (group, back) => {
+  const name = back ? `${group}:back` : group;
+  if (!groupMaterials.has(name)) {
+    groupMaterials.set(name, doc.createMaterial(name).setBaseColorFactor([1, 1, 1, 1]));
+  }
+  return groupMaterials.get(name);
+};
+const groupArea = {};
+for (const prim of [...keptMesh.listPrimitives()]) {
+  const material = prim.getMaterial();
+  if (prim.getMode() !== 4 || material?.getAlphaMode() === 'BLEND') continue;
+  // SketchUp exports each face twice; the second copy carries the back material.
+  const back = (material?.getName() ?? '').includes('_0');
+  const pos = prim.getAttribute('POSITION');
+  const idx = prim.getIndices();
+  const n = idx ? idx.getCount() : pos.getCount();
+  const index = (i) => (idx ? idx.getScalar(i) : i);
+  const byGroup = new Map();
+  for (let i = 0; i < n; i += 3) {
+    const [ia, ib, ic] = [index(i), index(i + 1), index(i + 2)];
+    const [a, b, c] = [ia, ib, ic].map((j) => new Vector3(...pos.getElement(j, [])));
+    const group = classify(a, b, c) ?? 'wall';
+    groupArea[group] =
+      (groupArea[group] ?? 0) +
+      new Vector3().crossVectors(b.clone().sub(a), c.clone().sub(a)).length() / 2;
+    if (!byGroup.has(group)) byGroup.set(group, []);
+    byGroup.get(group).push(ia, ib, ic);
+  }
+  for (const [group, indices] of byGroup) {
+    const part = prim.clone();
+    part.setIndices(doc.createAccessor().setType('SCALAR').setArray(new Uint32Array(indices)));
+    part.setMaterial(materialFor(group, back));
+    keptMesh.addPrimitive(part);
+  }
+  keptMesh.removePrimitive(prim);
+  prim.dispose();
+}
+for (const prim of keptMesh.listPrimitives()) {
+  if (prim.getMaterial()?.getAlphaMode() === 'BLEND') prim.getMaterial().setName('glass');
+}
+
+// Extent of the building itself, for camera framing: every non-ground surface
+// that rises above 1 m (the site slab stays below that).
+const buildingMin = [Infinity, Infinity, Infinity];
+const buildingMax = [-Infinity, -Infinity, -Infinity];
+for (const prim of keptMesh.listPrimitives()) {
+  const name = prim.getMaterial()?.getName() ?? '';
+  if (name.startsWith('ground')) continue;
+  const pos = prim.getAttribute('POSITION');
+  const idx = prim.getIndices();
+  const n = idx ? idx.getCount() : pos.getCount();
+  for (let i = 0; i < n; i += 3) {
+    const tri = [0, 1, 2].map((k) => pos.getElement(idx ? idx.getScalar(i + k) : i + k, []));
+    if (Math.max(...tri.map((v) => v[1])) < 1) continue;
+    for (const v of tri)
+      for (let k = 0; k < 3; k++) {
+        buildingMin[k] = Math.min(buildingMin[k], v[k]);
+        buildingMax[k] = Math.max(buildingMax[k], v[k]);
+      }
+  }
+}
+const buildingBounds = {
+  min: buildingMin.map((v) => +v.toFixed(3)),
+  max: buildingMax.map((v) => +v.toFixed(3)),
+};
+
 // Drop assimp-specific extensions the web loader does not need.
 for (const ext of root.listExtensionsUsed()) {
   if (ext.extensionName !== 'KHR_materials_transmission') ext.dispose();
 }
-await doc.transform(prune(), dedup(), weld());
+// keepUniqueNames: the surface-group materials are identical apart from their names.
+await doc.transform(prune(), dedup({ keepUniqueNames: true }), weld());
 
 mkdirSync('public/models', { recursive: true });
 writeFileSync(OUT_MODEL, await io.writeBinary(doc));
@@ -229,6 +359,7 @@ writeFileSync(
     {
       source: SOURCE,
       bounds,
+      buildingBounds,
       planViewBox: vb.map((v) => +v.toFixed(2)),
       levels: levels.map(({ id, label, from }) => ({
         id,
@@ -243,6 +374,11 @@ writeFileSync(
 );
 
 console.log(`Wrote ${OUT_MODEL}`, bounds);
+console.log('Building bounds', buildingBounds);
+console.log(
+  'Surface groups (m², front and back faces):',
+  Object.fromEntries(Object.entries(groupArea).map(([k, v]) => [k, Math.round(v)])),
+);
 for (const l of levels) {
   console.log(
     `Wrote ${OUT_PLANS}/${l.id}.svg: ${l.walls.length} wall and ${l.glass.length} glass lines`,

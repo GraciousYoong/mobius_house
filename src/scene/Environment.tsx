@@ -1,21 +1,20 @@
 import { useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
+import { ContactShadows } from '@react-three/drei';
 import { getRoomEnvironment } from './environmentMap';
-import { Backdrop, HORIZON } from './Backdrop';
+import { Backdrop, GROUND_COLOR, HORIZON } from './Backdrop';
 import { GROUND_Y, MODEL_RADIUS } from './config';
+import { viewerStore } from '../state/viewerStore';
 
-const SHADOW_EXTENT = MODEL_RADIUS + 6;
+const SHADOW_EXTENT = MODEL_RADIUS + 4;
 /**
  * Strength of the all-round environment light. Kept low: at full strength it
- * washes every surface to near-white and hides the differences between walls.
- * (Set on the scene; a material's envMapIntensity does not affect scene.environment.)
+ * washes surfaces out. (Set on the scene; a material's envMapIntensity does not
+ * affect scene.environment.)
  */
-const ENVIRONMENT_INTENSITY = 0.4;
+const ENVIRONMENT_INTENSITY = 0.45;
 
-/**
- * Soft light from all directions. Unlike a hemisphere light it varies around
- * the horizon, so walls facing different ways get different brightness.
- */
+/** Soft studio-style light from all directions, varying around the horizon. */
 function RoomLighting() {
   const gl = useThree((s) => s.gl);
   const scene = useThree((s) => s.scene);
@@ -29,42 +28,54 @@ function RoomLighting() {
   return null;
 }
 
-/** Lighting and ground plane shared by both viewing modes. */
+/**
+ * Daylight for an architectural photograph: one soft, slightly warm sun from
+ * the upper left of the opening view (low enough for long shadows towards the
+ * viewer), a cool sky fill, and a weak bounce from the opposite side so
+ * shaded façades stay readable instead of going black.
+ */
 export function Environment() {
+  const modelReady = viewerStore.useStore((s) => s.modelStatus !== 'loading');
   return (
     <>
       <Backdrop />
-      <fog attach="fog" args={[HORIZON, 120, 380]} />
+      <fog attach="fog" args={[HORIZON, 70, 240]} />
       <RoomLighting />
-      <hemisphereLight args={['#ffffff', '#d8d4cc', 0.4]} />
-      {/*
-        Key light, as in a model photograph: from the upper left of the opening
-        view, low enough to throw long shadows towards the viewer. The only light
-        that casts shadows.
-      */}
+      <hemisphereLight args={['#eef0f2', '#d4d2cd', 0.5]} />
       <directionalLight
-        position={[-34, 26, 8]}
-        intensity={3.2}
+        position={[-30, 24, 14]}
+        intensity={2.7}
+        color="#fffaf3"
         castShadow
         shadow-mapSize={[2048, 2048]}
-        shadow-bias={-0.0005}
+        shadow-bias={-0.0004}
+        shadow-normalBias={0.02}
         shadow-camera-left={-SHADOW_EXTENT}
         shadow-camera-right={SHADOW_EXTENT}
         shadow-camera-top={SHADOW_EXTENT}
         shadow-camera-bottom={-SHADOW_EXTENT}
-        shadow-camera-far={150}
+        shadow-camera-far={140}
       />
-      {/*
-        Unshadowed fills from two other directions. They also reach interiors,
-        giving each wall orientation its own tone, like SketchUp's face shading.
-      */}
-      <directionalLight position={[-30, 20, -10]} intensity={1.0} color="#f3f1ec" />
-      <directionalLight position={[8, 12, -30]} intensity={0.4} color="#e8eef2" />
-      {/* The table the model stands on: just below the model's lowest point, a shade darker than the white site. */}
-      <mesh rotation-x={-Math.PI / 2} position-y={GROUND_Y - 0.05} receiveShadow>
-        <planeGeometry args={[600, 600]} />
-        <meshStandardMaterial color="#d2cfc9" roughness={1} />
+      {/* Bounce from the opposite side: unshadowed, so interiors read by orientation. */}
+      <directionalLight position={[26, 14, -18]} intensity={0.7} color="#f1f0ee" />
+      {/* Seamless ground: the backdrop's lower tone, so it fades into the background. */}
+      <mesh rotation-x={-Math.PI / 2} position-y={GROUND_Y - 0.02} receiveShadow>
+        <planeGeometry args={[800, 800]} />
+        <meshStandardMaterial color={GROUND_COLOR} roughness={1} />
       </mesh>
+      {/* Soft contact shadow where the site slab meets the ground; rendered once. */}
+      {modelReady && (
+        <ContactShadows
+          position={[0, GROUND_Y + 0.01, 0]}
+          scale={MODEL_RADIUS * 3}
+          resolution={1024}
+          far={4}
+          blur={2.4}
+          opacity={0.35}
+          color="#5b544b"
+          frames={1}
+        />
+      )}
     </>
   );
 }

@@ -1,12 +1,15 @@
 import { BackSide, Color, ShaderMaterial } from 'three';
 
 /**
- * Studio backdrop, as used to photograph white architectural models: a pale,
- * warm grey that brightens slightly overhead and darkens below the horizon.
+ * Seamless studio backdrop in warm off-white: lighter overhead, settling into
+ * the ground tone at the horizon so there is no visible seam between ground
+ * and background (an "infinity cove", as in architectural photography).
  */
-export const HORIZON = '#dddbd7';
-const ABOVE = '#e9e8e5';
-const BELOW = '#cfccc6';
+// The ground colour is darker than the horizon because the ground is lit by the
+// sun while the backdrop is not; rendered, the two meet without a seam.
+export const GROUND_COLOR = '#d6d4cf';
+export const HORIZON = '#e8e7e3';
+const ABOVE = '#f1f0ed';
 
 const material = new ShaderMaterial({
   side: BackSide,
@@ -15,7 +18,7 @@ const material = new ShaderMaterial({
   uniforms: {
     above: { value: new Color(ABOVE) },
     horizon: { value: new Color(HORIZON) },
-    below: { value: new Color(BELOW) },
+    below: { value: new Color(GROUND_COLOR) },
   },
   vertexShader: /* glsl */ `
     varying vec3 vDir;
@@ -32,8 +35,8 @@ const material = new ShaderMaterial({
     void main() {
       float h = vDir.y;
       vec3 c = h > 0.0
-        ? mix(horizon, above, smoothstep(0.0, 0.7, h))
-        : mix(horizon, below, smoothstep(0.0, 0.25, -h));
+        ? mix(horizon, above, smoothstep(0.0, 0.8, h))
+        : mix(horizon, below, smoothstep(0.0, 0.1, -h));
       gl_FragColor = vec4(c, 1.0);
       #include <colorspace_fragment>
     }

@@ -38,10 +38,33 @@ export function Minimap() {
   const fallback = status === 'fallback';
   const level = levelAt(pose.feetY);
 
+  // A 10 m scale bar in the lower-left corner of the plan.
+  const barX = vx + 2;
+  const barY = vz + vh - 2.2;
+
   return (
-    <figure className="minimap">
-      <svg viewBox={`${vx} ${vz} ${vw} ${vh}`} role="img" aria-labelledby="minimap-caption">
-        <rect x={vx} y={vz} width={vw} height={vh} className="minimap__bg" />
+    <figure className="minimap" aria-labelledby="minimap-caption">
+      <figcaption id="minimap-caption" className="minimap__header">
+        {fallback ? (
+          <span className="minimap__level">Schematic</span>
+        ) : (
+          // Announced when it changes, so screen-reader users hear the floor switch.
+          <span className="minimap__level" aria-live="polite">
+            {level.label}
+          </span>
+        )}
+        <span className="minimap__north" aria-label="North is up">
+          <svg viewBox="0 0 10 14" aria-hidden="true">
+            <path d="M5 1 L8.5 12 L5 9.5 L1.5 12 Z" />
+          </svg>
+          N
+        </span>
+      </figcaption>
+      <svg
+        viewBox={`${vx} ${vz} ${vw} ${vh}`}
+        role="img"
+        aria-label={`Plan of the ${fallback ? 'placeholder' : level.label.toLowerCase()} showing your position and direction`}
+      >
         {fallback ? (
           <circle
             r={PLACEHOLDER_RADIUS}
@@ -49,7 +72,7 @@ export function Minimap() {
             className="minimap__footprint"
           />
         ) : (
-          // Both plans stay loaded so switching floors is instant.
+          // All plans stay loaded so switching floors is instant.
           levels.map((l) => (
             <image
               key={l.id}
@@ -58,31 +81,23 @@ export function Minimap() {
               y={vz}
               width={vw}
               height={vh}
+              className="minimap__plan"
               visibility={l.id === level.id ? 'visible' : 'hidden'}
             />
           ))
         )}
-        <g transform={`translate(${x} ${z}) rotate(${deg}) scale(${MARKER})`}>
-          <path d="M0 0 L-1.4 -2.8 A3.2 3.2 0 0 1 1.4 -2.8 Z" className="minimap__cone" />
-          <circle r="0.55" className="minimap__dot" />
+        <g className="minimap__scale" aria-hidden="true">
+          <path d={`M${barX} ${barY - 0.6}V${barY}H${barX + 10}V${barY - 0.6}`} />
+          <text x={barX + 10.8} y={barY + 0.1}>
+            10 m
+          </text>
         </g>
-        <text x={vx + vw - 1.5} y={vz + 3.5} className="minimap__north" aria-hidden="true">
-          N↑
-        </text>
+        <g transform={`translate(${x} ${z}) rotate(${deg}) scale(${MARKER})`}>
+          <path d="M0 0 L-1.5 -3.2 A3.6 3.6 0 0 1 1.5 -3.2 Z" className="minimap__cone" />
+          <circle r="0.5" className="minimap__dot" />
+        </g>
       </svg>
-      <figcaption id="minimap-caption" className="minimap__caption">
-        {fallback ? (
-          'Schematic of the placeholder'
-        ) : (
-          <>
-            {/* Announced when it changes, so screen-reader users hear the floor switch. */}
-            <strong className="minimap__level" aria-live="polite">
-              {level.label}
-            </strong>
-            <span>Plan drawn from the 3D model; north up</span>
-          </>
-        )}
-      </figcaption>
+      <p className="minimap__note">Plan derived from the 3D model</p>
     </figure>
   );
 }

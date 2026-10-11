@@ -46,6 +46,7 @@ interface Props {
   describedBy?: string;
   onToggleMode: () => void;
   onToggleHelp: () => void;
+  onResetView: () => void;
 }
 
 /**
@@ -54,7 +55,7 @@ interface Props {
  * this and never import three.js directly.
  */
 export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
-  { mode, label, describedBy, onToggleMode, onToggleHelp },
+  { mode, label, describedBy, onToggleMode, onToggleHelp, onResetView },
   ref,
 ) {
   const webgl = useWebGLSupport();
@@ -81,6 +82,11 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
         onToggleHelp();
         return;
       }
+      if (e.code === 'KeyR' && mode === 'orbit') {
+        e.preventDefault();
+        onResetView();
+        return;
+      }
       if (e.code === 'KeyM') {
         e.preventDefault();
         onToggleMode();
@@ -91,7 +97,7 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
         keys.current.add(e.code);
       }
     },
-    [onToggleHelp, onToggleMode],
+    [mode, onToggleHelp, onToggleMode, onResetView],
   );
 
   const onKeyUp = (e: KeyboardEvent<HTMLDivElement>) => keys.current.delete(e.code);

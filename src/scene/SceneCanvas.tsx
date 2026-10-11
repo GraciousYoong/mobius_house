@@ -11,6 +11,8 @@ import { SceneErrorBoundary } from './SceneErrorBoundary';
 import { ModelProgress } from './ModelProgress';
 import { GROUND_Y } from './config';
 import { Effects, type RenderQuality } from './Effects';
+import { DebugHelpers } from './DebugHelpers';
+import { debugFlags } from './debug';
 
 interface Props {
   mode: ViewMode;
@@ -51,8 +53,8 @@ export default function SceneCanvas({
         shadows
         flat // tone mapping happens in <Effects>
         dpr={quality === 'high' ? [1, 2] : [1, 1.5]}
-        // A tight near/far range keeps depth precise enough for the edge lines.
-        camera={{ fov: 50, near: 0.2, far: 600, position: [32, 20, 32] }}
+        // Each view sets its own lens and clipping planes (Orbit: long lens; Explore: natural).
+        camera={{ fov: 30, near: 0.5, far: 600, position: [40, 20, 50] }}
         onCreated={({ gl }) => {
           gl.domElement.addEventListener('webglcontextlost', (e) => {
             e.preventDefault();
@@ -63,6 +65,7 @@ export default function SceneCanvas({
         aria-hidden="true"
       >
         <Environment />
+        {debugFlags.helpers && <DebugHelpers />}
         {/* If the house model cannot load, show the abstract placeholder instead. */}
         <SceneErrorBoundary fallback={<PlaceholderFallback />}>
           <Suspense fallback={null}>

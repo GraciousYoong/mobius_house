@@ -7,6 +7,7 @@ export const orbitBindings: KeyBinding[] = [
   { keys: ['←', '→'], action: 'Rotate around the model' },
   { keys: ['↑', '↓'], action: 'Tilt the view' },
   { keys: ['+', '−'], action: 'Zoom in / out' },
+  { keys: ['R'], action: 'Reset the view' },
   { keys: ['Drag'], action: 'Rotate with the mouse' },
   { keys: ['Scroll'], action: 'Zoom' },
 ];

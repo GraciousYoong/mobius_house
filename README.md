@@ -36,34 +36,59 @@ published). `scripts/prepare-model.mjs` turns it into what the site loads:
 - **`public/plans/basement.svg`, `ground.svg`, `first.svg`**: one minimap plan per floor. Every wall face within a
   floor's height band is projected onto the ground, so the plans line up exactly with the 3D
   scene and include split levels. The other floor is drawn faintly underneath.
-- **`src/content/generated/modelInfo.json`**: bounds and plan extents used by the scene and the
-  minimap.
+- **`src/content/generated/modelInfo.json`**: site and building bounds and plan extents, used by
+  the camera framing, the scene and the minimap.
 
 To use a different model, replace the `.dae` and run `npm run prepare-model`. The constants
 `ASSEMBLED_MAX_Z`, `MAIN_FLOOR_Y` and `LEVELS` at the top of the script are specific to this
 file and may need adjusting.
 
-## Visual style: white architectural model
+## Visual direction
 
-The 3D view is styled like a photographed white presentation model (card or foam board on a
-studio table) rather than a realistic render. The SketchUp file has no real materials, and the
-conversion loses its edge lines, so `HouseModel`, `Environment` and `Effects` build the look:
+Editorial architecture × architectural photography × minimal digital exhibition: a restrained,
+warm-grey presentation where the building is the only subject.
 
-- **White surfaces** with only a slight difference between floors, walls and ceilings. Walls
-  are tinted very gently by compass direction, so they still read apart indoors where no direct
-  light reaches.
-- **Faint warm-grey edge lines** wherever faces meet at more than 20°.
-- **Clear acrylic glazing.** Glass outlines keep only vertical and horizontal edges, so the
-  diagonals from SketchUp's triangulation don't show as lines across panes.
-- **Studio lighting:** one key light from the upper left of the opening view, low enough to throw
-  long shadows towards the viewer, plus soft fill and a low environment light. Keep
-  `ENVIRONMENT_INTENSITY` low: a material's `envMapIntensity` does not affect
-  `scene.environment`, and at full strength it washes every surface out.
-- **Backdrop** (`Backdrop.tsx`): a pale warm-grey studio gradient, with a table surface slightly
-  darker than the white site so the model stands out.
-- **Post-processing** (`Effects.tsx`): N8AO ambient occlusion for soft contact shadows in corners,
-  SMAA anti-aliasing and neutral tone mapping. Multisampling must stay off: combined with N8AO it
-  erases the edge lines. Touch devices get a half-resolution occlusion pass.
+- **Surface groups.** The SketchUp file has a single white material. `prepare-model` ray-tests
+  every triangle against the model and sorts it into exterior concrete, interior wall, floor,
+  ceiling, roof or ground, each with its own material in the `.glb`:
+  - **Upward faces:** a floor if covered and enclosed; otherwise a roof (above 1.5 m) or ground.
+  - **Walls:** interior if a slightly upward ray hits the building; otherwise exterior.
+
+  These are inferred surface roles, not verified finishes. `HouseModel` gives each a restrained
+  material: pale concrete outside, warm-white walls inside, grey floors with a faint sheen, and
+  ground close to the surrounding plane.
+- **Glass:** a light, clear tint with subtle reflections of a soft studio environment. Outlines
+  keep only vertical and horizontal edges (pane borders), not SketchUp's triangulation diagonals.
+- **Edge lines:** nearly invisible in Orbit and faint in Explore, where they help read corners.
+- **Daylight:** one soft, slightly warm sun from the upper left of the opening view, with long
+  shadows towards the viewer; a cool sky fill and a weak opposite bounce. The environment light is
+  kept low (`ENVIRONMENT_INTENSITY`). A material's `envMapIntensity` doesn't affect
+  `scene.environment`, and at full strength it washes everything out.
+- **Environment:** a seamless warm off-white infinity cove (`Backdrop.tsx`). The ground's base
+  colour is set so the lit ground meets the backdrop without a seam, and soft contact shadows sit
+  under the site slab.
+- **Post-processing** (`Effects.tsx`): N8AO ambient occlusion for contact shading, SMAA and neutral
+  tone mapping, nothing else (no bloom). Multisampling must stay off: combined with N8AO it erases
+  the edge lines. Touch devices get a half-resolution occlusion pass.
+
+### Orbit and Explore
+
+| | Orbit | Explore |
+|---|---|---|
+| Purpose | Present the whole building | Walk through it |
+| Lens | 30° vertical field of view (long lens, little distortion) | 64° (natural eye) |
+| Composition | Three-quarter view from the south-east, ~18° up, framed on the building's own bounds (not the site) and offset away from the title | Starts on the approach ~10 m south-west of the house, building at a three-quarter angle |
+| Limits | Distance 1.3–5 × the building radius, 15° above the horizon at least: never inside the model or below ground | Capsule collision keeps the eye 0.3 m from walls and glass; 0.12 m near plane |
+| Controls | Damped orbit, slow drift until first interaction, **Reset view** (or **R**) glides back | Unchanged movement; **Exit** returns to Orbit |
+
+### Development helpers
+
+Only active on the dev server (`npm run dev`). Production builds strip them out:
+
+- `?debug`: ground grid, axes and the building bounds used for framing.
+- `?debug=surfaces`: colour each surface group vividly to check the classification.
+- `?at=x,eyeY,z,yaw`: start Explore at a given position, e.g. `?at=4,1.2,3,1.9` inside the living
+  area.
 
 ## Explore mode physics
 

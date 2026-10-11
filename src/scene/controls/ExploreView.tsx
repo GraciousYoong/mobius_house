@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Euler, Vector3 } from 'three';
+import { Euler, Vector3, type PerspectiveCamera } from 'three';
 import { viewerStore } from '../../state/viewerStore';
 import type { DragDelta, HeldKeys, StickInput } from '../types';
 import { usePoseReporter } from './usePoseReporter';
 import { CharacterPhysics, buildCollider } from './characterPhysics';
 import { GROUND_Y } from '../config';
+import { debugExploreStart } from '../debug';
 
 /**
  * Game-style first-person view. Movement runs through CharacterPhysics:
@@ -14,8 +15,20 @@ import { GROUND_Y } from '../config';
  * Meshes take part in collision when `userData.collidable` is set.
  */
 
-/** Start on the site south of the house, looking north towards it. */
-const START = new Vector3(0, 1.4, 12);
+/**
+ * Start on the approach south-west of the house, about 10 m out, turned so the
+ * building is seen at a three-quarter angle (glazed living wing and the upper
+ * volume) rather than straight at a window wall.
+ */
+const DEFAULT_START = { position: new Vector3(-6, 1.4, 15), yaw: -0.45 };
+const START = debugExploreStart
+  ? new Vector3(debugExploreStart[0], debugExploreStart[1], debugExploreStart[2])
+  : DEFAULT_START.position;
+const START_YAW = debugExploreStart?.[3] ?? DEFAULT_START.yaw;
+/** A natural human field of view, wider than the exterior view's long lens. */
+const FOV = 64;
+/** Close enough that walls never clip, since the body keeps the eye 0.3 m away. */
+const NEAR = 0.12;
 const TURN_SPEED = 1.9; // rad/s at full keyboard turn
 const TURN_EASE = 10; // how quickly keyboard turning ramps up and down (1/s)
 const LOOK_SENSITIVITY = 0.0025; // rad per pixel of mouse or touch drag
@@ -54,8 +67,16 @@ export function ExploreView({ keys, drag, stick }: Props) {
   const turnRate = useRef(0);
   const eyeY = useRef<number | null>(null);
 
+  useLayoutEffect(() => {
+    const lens = camera as PerspectiveCamera;
+    lens.fov = FOV;
+    lens.near = NEAR;
+    lens.far = 400;
+    lens.updateProjectionMatrix();
+  }, [camera]);
+
   useEffect(() => {
-    yaw.current = 0;
+    yaw.current = START_YAW;
     pitch.current = 0;
     eyeY.current = null;
     camera.position.copy(START);

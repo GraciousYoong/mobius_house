@@ -20,6 +20,8 @@ interface ViewerState {
   pose: Pose;
   helpOpen: boolean;
   modelStatus: ModelStatus;
+  /** Incremented to ask the Orbit view to return to its opening composition. */
+  viewResets: number;
 }
 
 export const viewerStore = createStore<ViewerState>({
@@ -27,6 +29,7 @@ export const viewerStore = createStore<ViewerState>({
   pose: { x: 0, z: 12, feetY: 0, heading: 0 },
   helpOpen: false,
   modelStatus: 'loading',
+  viewResets: 0,
 });
 
 export const setMode = (mode: ViewMode) => viewerStore.setState({ mode });
@@ -35,3 +38,5 @@ export const toggleMode = () =>
 export const setHelpOpen = (helpOpen: boolean) => viewerStore.setState({ helpOpen });
 export const setPose = (pose: Pose) => viewerStore.setState({ pose });
 export const setModelStatus = (modelStatus: ModelStatus) => viewerStore.setState({ modelStatus });
+export const resetView = () =>
+  viewerStore.setState({ viewResets: viewerStore.getState().viewResets + 1 });

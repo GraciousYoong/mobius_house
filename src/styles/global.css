@@ -256,16 +256,29 @@ kbd {
 }
 
 /* ---------- Hero / viewer ---------- */
+/*
+  Viewer chrome uses one quiet "panel" language: a warm translucent surface,
+  a hairline border and a soft two-layer shadow. It reads over both the light
+  backdrop and darker interior views.
+*/
 .hero {
+  --panel-bg: rgba(250, 249, 246, 0.82);
+  --panel-border: rgba(32, 30, 27, 0.1);
+  --panel-shadow: 0 1px 2px rgba(32, 30, 27, 0.06), 0 10px 30px rgba(32, 30, 27, 0.08);
+  --panel-blur: blur(14px) saturate(1.1);
+  --ink-soft: #6b6862;
+  --hairline: rgba(32, 30, 27, 0.12);
+
   position: relative;
   height: calc(100svh - var(--nav-h));
-  min-height: 420px;
-  background: #d9dadc;
+  min-height: 460px;
+  background: #e6e3de; /* matches the 3D backdrop while it loads */
   overflow: hidden;
 }
 .viewer {
   position: absolute;
   inset: 0;
+  z-index: 0; /* contains the joystick's stacking below the overlay */
   touch-action: none;
 }
 .viewer:focus-visible {
@@ -283,27 +296,30 @@ kbd {
 .viewer__hint {
   position: absolute;
   left: 50%;
-  bottom: calc(var(--gutter) + 70px);
+  bottom: calc(var(--gutter) + 72px);
   transform: translateX(-50%);
   margin: 0;
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: 999px;
-  background: rgba(27, 29, 33, 0.7);
-  color: #fff;
-  font-size: 0.82rem;
+  background: rgba(28, 27, 25, 0.58);
+  backdrop-filter: blur(8px);
+  color: #f6f4f0;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   pointer-events: none;
 }
 .joystick {
   position: absolute;
   left: var(--gutter);
-  bottom: calc(var(--gutter) + 64px);
-  width: 120px;
-  height: 120px;
+  bottom: calc(var(--gutter) + 70px);
+  width: 112px;
+  height: 112px;
   border-radius: 50%;
-  background: rgba(244, 243, 240, 0.35);
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(4px);
+  background: rgba(250, 249, 246, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 6px 20px rgba(32, 30, 27, 0.12);
+  backdrop-filter: blur(6px);
   touch-action: none;
   z-index: 3;
 }
@@ -311,17 +327,23 @@ kbd {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 52px;
-  height: 52px;
-  margin: -26px 0 0 -26px;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
   border-radius: 50%;
-  background: rgba(27, 29, 33, 0.65);
-  border: 2px solid #fff;
+  background: rgba(250, 249, 246, 0.92);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 2px 8px rgba(32, 30, 27, 0.18);
   pointer-events: none;
 }
+
+/* Overlay layout: title top-left, toolbar bottom-left, drawings column on the right. */
 .hero__overlay {
   position: absolute;
   inset: 0;
+  /* Own stacking context for the scrim, above the viewer (and its touch joystick),
+     so open panels cover the joystick. Only the controls themselves take pointer input. */
+  z-index: 1;
   pointer-events: none;
   padding: var(--gutter);
   display: grid;
@@ -332,56 +354,163 @@ kbd {
 .hero__overlay > * {
   pointer-events: auto;
 }
+/* A soft wash behind the title so it stays legible whatever the 3D view shows. */
+.hero__overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(240, 238, 234, 0.72) 0%,
+    rgba(240, 238, 234, 0.35) 30%,
+    rgba(240, 238, 234, 0) 52%
+  );
+  transition: opacity 0.4s ease;
+}
+.hero__overlay--explore::before {
+  background: linear-gradient(
+    180deg,
+    rgba(240, 238, 234, 0.55) 0%,
+    rgba(240, 238, 234, 0) 22%
+  );
+}
+
 .hero__title-block {
   grid-column: 1;
   grid-row: 1;
-  max-width: 34rem;
+  max-width: 30rem;
   pointer-events: none;
 }
+.hero__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+.hero__title {
+  margin: 0.2em 0 0.3em;
+  font-size: clamp(2.4rem, 5.4vw, 4.6rem);
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+}
+.hero__tagline {
+  margin: 0 0 1.4em;
+  max-width: 24rem;
+  font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+  line-height: 1.55;
+  color: #3f3d39;
+}
 .hero__title-block--compact .hero__title {
-  font-size: clamp(1.4rem, 2.4vw, 1.8rem);
-  text-shadow: 0 0 12px var(--c-overlay);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 400;
+  margin-top: 0;
 }
 .hero__title-block--compact .hero__tagline,
 .hero__title-block--compact .hero__eyebrow {
   display: none;
 }
-.hero__eyebrow {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.8rem;
-  color: var(--c-ink-muted);
-}
-.hero__title {
-  margin: 0.15em 0 0.25em;
-  font-size: clamp(2.2rem, 6vw, 4.5rem);
-  font-weight: 400;
-}
-.hero__tagline {
-  margin: 0 0 1em;
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  max-width: 28rem;
-}
+/* Caption-style note about the model's status: present, but quiet. */
 .model-notice {
-  max-width: 30rem;
-  display: inline-block;
+  max-width: 24rem;
   margin: 0;
-  padding: 6px 10px;
-  border-left: 3px solid var(--c-focus);
-  background: var(--c-overlay);
-  font-size: 0.85rem;
+  padding-left: 12px;
+  border-left: 1px solid rgba(32, 30, 27, 0.35);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
   pointer-events: auto;
 }
-.hero__controls {
+.model-notice strong {
+  font-weight: 600;
+  color: #3f3d39;
+}
+
+/* Toolbar: mode switch plus quiet text actions, in one panel. */
+.hero__toolbar {
   grid-column: 1 / -1;
   grid-row: 3;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
   align-self: end;
   justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--panel-shadow);
+  backdrop-filter: var(--panel-blur);
 }
+.hero__toolbar-rule {
+  width: 1px;
+  height: 18px;
+  margin: 0 6px;
+  background: var(--hairline);
+}
+.tool-button {
+  min-height: 36px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #3f3d39;
+  font: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.tool-button:hover {
+  background: rgba(32, 30, 27, 0.06);
+  color: var(--c-ink);
+}
+.tool-button[aria-expanded='true'] {
+  background: rgba(32, 30, 27, 0.08);
+  color: var(--c-ink);
+}
+
+.mode-toggle {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 999px;
+  background: rgba(32, 30, 27, 0.06);
+  padding: 3px;
+}
+.mode-toggle__thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 999px;
+  background: var(--c-ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.mode-toggle__btn {
+  position: relative; /* above the thumb */
+  min-height: 32px;
+  min-width: 84px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #4a4843;
+  font: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+.mode-toggle__btn[aria-pressed='true'] {
+  color: #f6f4f0;
+}
+
 .hero__side {
   grid-column: 2;
   grid-row: 1 / -1;
@@ -405,38 +534,16 @@ kbd {
   margin-top: auto;
 }
 
-.mode-toggle {
-  display: inline-flex;
-  padding: 3px;
-  border-radius: calc(var(--radius) + 3px);
-  background: var(--c-overlay);
-  border: 1px solid var(--c-line);
-  backdrop-filter: blur(6px);
-}
-.mode-toggle__btn {
-  min-height: 38px;
-  padding: 0 1em;
-  border: none;
-  border-radius: var(--radius);
-  background: transparent;
-  font: inherit;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-.mode-toggle__btn[aria-pressed='true'] {
-  background: var(--c-ink);
-  color: #fff;
-}
-
 .keyboard-help--panel {
   width: min(300px, 80vw);
   overflow: auto;
-  padding: 12px 14px;
-  background: var(--c-overlay);
-  border: 1px solid var(--c-line);
-  border-radius: var(--radius);
-  backdrop-filter: blur(8px);
-  font-size: 0.85rem;
+  padding: 14px 16px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  box-shadow: var(--panel-shadow);
+  backdrop-filter: var(--panel-blur);
+  font-size: 0.8rem;
 }
 .keyboard-help__header {
   display: flex;
@@ -445,13 +552,24 @@ kbd {
 }
 .keyboard-help h3 {
   margin: 0 0 6px;
-  font-size: 0.95rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
 }
 .keyboard-help--full {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
   margin-top: 12px;
+}
+.keyboard-help--full h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--c-ink);
 }
 .bindings {
   margin: 0 0 8px;
@@ -460,8 +578,11 @@ kbd {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  padding: 4px 0;
+  padding: 5px 0;
   border-bottom: 1px solid var(--c-line);
+}
+.keyboard-help--panel .bindings__row {
+  border-bottom-color: var(--hairline);
 }
 .bindings dt {
   white-space: nowrap;
@@ -475,51 +596,80 @@ kbd {
   color: var(--c-ink-muted);
 }
 
+/* Minimap: a small architectural drawing sheet rather than a game HUD. */
 .minimap {
   margin: 0;
-  width: clamp(150px, 22vw, 240px);
-  background: var(--c-overlay);
-  border: 1px solid var(--c-line);
-  border-radius: var(--radius);
-  padding: 6px;
-  backdrop-filter: blur(6px);
+  width: clamp(168px, 17vw, 220px);
+  padding: 10px 12px 9px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  box-shadow: var(--panel-shadow);
+  backdrop-filter: var(--panel-blur);
 }
-.minimap svg {
+.minimap__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--hairline);
+}
+.minimap__level {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #3f3d39;
+}
+.minimap__north {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+.minimap__north svg {
+  width: 7px;
+  height: 10px;
+  fill: currentColor;
+}
+.minimap > svg {
   display: block;
   width: 100%;
   height: auto;
 }
-.minimap__bg {
-  fill: #eceae5;
+.minimap__plan {
+  opacity: 0.78;
 }
 .minimap__footprint {
   fill: none;
   stroke: #cfcdc7;
 }
+.minimap__scale path {
+  fill: none;
+  stroke: #6b6862;
+  stroke-width: 0.18;
+}
+.minimap__scale text {
+  font-size: 1.6px;
+  fill: #6b6862;
+  dominant-baseline: middle;
+}
 .minimap__cone {
-  fill: rgba(212, 114, 28, 0.35);
+  fill: rgba(47, 93, 98, 0.28);
 }
 .minimap__dot {
-  fill: #d4721c;
+  fill: var(--c-accent);
   stroke: #fff;
-  stroke-width: 0.2;
+  stroke-width: 0.25;
 }
-.minimap__north {
-  font-size: 2.2px;
-  text-anchor: end;
-  fill: var(--c-ink-muted);
-}
-.minimap__level {
-  display: block;
-  color: var(--c-ink);
-  font-size: 0.8rem;
-}
-.minimap__caption {
-  margin-top: 4px;
-  font-size: 0.7rem;
-  line-height: 1.3;
-  color: var(--c-ink-muted);
-  text-align: center;
+.minimap__note {
+  margin: 4px 0 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
 }
 
 .scene-loading,
@@ -534,14 +684,16 @@ kbd {
   padding: var(--gutter);
   text-align: center;
   color: var(--c-ink-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
 }
 .scene-loading__spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--c-line);
-  border-top-color: var(--c-accent);
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid rgba(32, 30, 27, 0.12);
+  border-top-color: #3f3d39;
   border-radius: 50%;
-  animation: spin 0.9s linear infinite;
+  animation: spin 1s linear infinite;
 }
 @keyframes spin {
   to {
@@ -576,30 +728,57 @@ kbd {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
   }
+  .hero__overlay::before {
+    background: linear-gradient(
+      180deg,
+      rgba(240, 238, 234, 0.75) 0%,
+      rgba(240, 238, 234, 0.3) 28%,
+      rgba(240, 238, 234, 0) 42%
+    );
+  }
   .hero__side {
     grid-column: 1;
     grid-row: 2;
     justify-content: flex-end;
   }
-  /* The help panel becomes a short sheet above the buttons, leaving the model visible. */
+  /* The help panel becomes a short sheet above the toolbar, leaving the model visible. */
   .hero__help {
     position: absolute;
     left: var(--gutter);
     right: var(--gutter);
-    bottom: calc(var(--gutter) + 60px);
+    bottom: calc(var(--gutter) + 62px);
     max-height: 45%;
     z-index: 4; /* above the touch joystick while open */
   }
   .keyboard-help--panel {
     width: 100%;
   }
+  .minimap {
+    width: 156px;
+    padding: 8px 9px 7px;
+  }
+  .minimap__note {
+    display: none;
+  }
 }
 @media (max-width: 599px) {
   .hero__tagline {
     display: none;
   }
-  .model-notice {
-    font-size: 0.78rem;
+  .hero__title {
+    font-size: 2.3rem;
+  }
+  .tool-button {
+    padding: 0 11px;
+  }
+  .mode-toggle__btn {
+    min-width: 72px;
+    padding: 0 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mode-toggle__thumb {
+    transition: none;
   }
 }
 
