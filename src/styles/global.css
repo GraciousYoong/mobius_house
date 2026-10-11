@@ -464,8 +464,9 @@ kbd {
   padding: 8px 12px;
   border-left: 2px solid var(--p-orange-deep);
   border-radius: 0 4px 4px 0;
-  /* Solid dark backing so the note stays legible over bright interiors. */
-  background: var(--p-black);
+  /* Translucent dark backing: legible over bright interiors, scene still shows through. */
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(8px);
   font-size: 0.76rem;
   line-height: 1.5;
   color: var(--p-cream);
