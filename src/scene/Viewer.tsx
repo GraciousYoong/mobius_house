@@ -77,7 +77,7 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
         e.currentTarget.blur();
         return;
       }
-      if (e.key === '?') {
+      if (e.code === 'KeyX') {
         e.preventDefault();
         onToggleHelp();
         return;

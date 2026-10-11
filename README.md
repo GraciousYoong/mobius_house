@@ -45,8 +45,8 @@ file and may need adjusting.
 
 ## Visual direction
 
-Editorial architecture × architectural photography × minimal digital exhibition: a restrained,
-warm-grey presentation where the building is the only subject.
+Editorial architecture × architectural photography × minimal digital exhibition: a dark
+gallery-like space where the pale building is the only lit subject.
 
 - **Surface groups.** The SketchUp file has a single white material. `prepare-model` ray-tests
   every triangle against the model and sorts it into exterior concrete, interior wall, floor,
@@ -64,9 +64,12 @@ warm-grey presentation where the building is the only subject.
   shadows towards the viewer; a cool sky fill and a weak opposite bounce. The environment light is
   kept low (`ENVIRONMENT_INTENSITY`). A material's `envMapIntensity` doesn't affect
   `scene.environment`, and at full strength it washes everything out.
-- **Environment:** a seamless warm off-white infinity cove (`Backdrop.tsx`). The ground's base
-  colour is set so the lit ground meets the backdrop without a seam, and soft contact shadows sit
-  under the site slab.
+- **Environment:** a seamless dark charcoal infinity cove (`Backdrop.tsx`), glowing faintly at the
+  horizon and near-black overhead. The ground's base colour is set so the lit ground meets the
+  backdrop without a seam, and soft contact shadows sit under the site slab.
+- **Interface on dark:** light type, a soft dark wash behind the title, and dark smoked-glass
+  panels (toolbar, Controls). The minimap stays a light paper drawing sheet, since the plans are
+  drawn in dark lines.
 - **Post-processing** (`Effects.tsx`): N8AO ambient occlusion for contact shading, SMAA and neutral
   tone mapping, nothing else (no bloom). Multisampling must stay off: combined with N8AO it erases
   the edge lines. Touch devices get a half-resolution occlusion pass.
@@ -159,7 +162,7 @@ Click or Tab into the 3D view, then:
 Touch screens: in Explore mode, a joystick at the bottom left walks and dragging anywhere else
 looks around. In Orbit mode, drag rotates and pinch zooms.
 
-Everywhere: **M** switch mode · **?** show/hide controls · **Esc** leave the viewer.
+Everywhere: **M** switch mode · **X** show/hide controls · **Esc** leave the viewer.
 
 Keys are only captured while the viewer has focus, so they never hijack page scrolling.
 

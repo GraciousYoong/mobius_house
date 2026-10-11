@@ -41,7 +41,8 @@ export function Environment() {
       <Backdrop />
       <fog attach="fog" args={[HORIZON, 70, 240]} />
       <RoomLighting />
-      <hemisphereLight args={['#eef0f2', '#d4d2cd', 0.5]} />
+      {/* Sky fill above, a dim bounce from the dark ground below. */}
+      <hemisphereLight args={['#eef0f2', '#4a4843', 0.5]} />
       <directionalLight
         position={[-30, 24, 14]}
         intensity={2.7}
@@ -71,8 +72,8 @@ export function Environment() {
           resolution={1024}
           far={4}
           blur={2.4}
-          opacity={0.35}
-          color="#5b544b"
+          opacity={0.6}
+          color="#000000"
           frames={1}
         />
       )}

@@ -34,6 +34,6 @@ export const exploreTouch: KeyBinding[] = [
 export const commonBindings: KeyBinding[] = [
   { keys: ['Tab'], action: 'Focus the 3D view, then use the keys above' },
   { keys: ['M'], action: 'Switch between Orbit and Explore' },
-  { keys: ['?'], action: 'Show or hide these instructions' },
+  { keys: ['X'], action: 'Show or hide these instructions' },
   { keys: ['Esc'], action: 'Leave the 3D view' },
 ];

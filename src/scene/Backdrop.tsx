@@ -1,15 +1,15 @@
 import { BackSide, Color, ShaderMaterial } from 'three';
 
 /**
- * Seamless studio backdrop in warm off-white: lighter overhead, settling into
- * the ground tone at the horizon so there is no visible seam between ground
- * and background (an "infinity cove", as in architectural photography).
+ * Seamless dark studio backdrop (an "infinity cove"): a faint warm glow at the
+ * horizon fading to near-black overhead, so the pale building reads as the
+ * only lit subject, as in a gallery or product photograph.
  */
 // The ground colour is darker than the horizon because the ground is lit by the
 // sun while the backdrop is not; rendered, the two meet without a seam.
-export const GROUND_COLOR = '#d6d4cf';
-export const HORIZON = '#e8e7e3';
-const ABOVE = '#f1f0ed';
+export const GROUND_COLOR = '#1f1e1c';
+export const HORIZON = '#2b2a27';
+const ABOVE = '#0f0f0e';
 
 const material = new ShaderMaterial({
   side: BackSide,
@@ -35,7 +35,7 @@ const material = new ShaderMaterial({
     void main() {
       float h = vDir.y;
       vec3 c = h > 0.0
-        ? mix(horizon, above, smoothstep(0.0, 0.8, h))
+        ? mix(horizon, above, smoothstep(0.0, 0.55, h))
         : mix(horizon, below, smoothstep(0.0, 0.1, -h));
       gl_FragColor = vec4(c, 1.0);
       #include <colorspace_fragment>

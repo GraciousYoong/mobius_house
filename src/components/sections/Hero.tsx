@@ -89,7 +89,7 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
         Focus the viewer with Tab. In orbit mode, arrow keys rotate, plus or minus zoom, and R
         resets the view. In explore mode, W A S D or the arrow keys walk and turn, Shift moves
         faster, and walls and stairs behave as in the building. The minimap announces which floor
-        you are on. Press M to switch modes, question mark for the full list of controls, and Escape
+        you are on. Press M to switch modes, X to show or hide the list of controls, and Escape
         to leave the viewer.
       </p>
     </section>
