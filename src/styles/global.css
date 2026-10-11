@@ -332,10 +332,12 @@ kbd {
   cursor: none;
 }
 .viewer__hint {
+  /* Above the toolbar on the left: clear of the minimap at any width.
+     (Mouse users only; the touch joystick uses this corner instead.) */
   position: absolute;
-  left: 50%;
-  bottom: calc(var(--gutter) + 72px);
-  transform: translateX(-50%);
+  left: var(--gutter);
+  bottom: calc(var(--gutter) + 60px);
+  max-width: calc(100% - 2 * var(--gutter) - 260px);
   margin: 0;
   padding: 7px 14px;
   border-radius: 999px;
@@ -345,7 +347,6 @@ kbd {
   color: var(--p-white);
   font-size: 0.78rem;
   letter-spacing: 0.02em;
-  white-space: nowrap;
   pointer-events: none;
 }
 .joystick {
