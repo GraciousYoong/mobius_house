@@ -20,9 +20,15 @@
   ],
   "levels": [
     {
+      "id": "basement",
+      "label": "Basement",
+      "from": null,
+      "plan": "/plans/basement.svg"
+    },
+    {
       "id": "ground",
       "label": "Ground floor",
-      "from": null,
+      "from": -1.9,
       "plan": "/plans/ground.svg"
     },
     {

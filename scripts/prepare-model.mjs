@@ -33,10 +33,12 @@ const MAIN_FLOOR_Y = 10.57;
 /**
  * Floors, in metres after recentring. `from` is the lowest feet height that
  * counts as being on that floor; `band` is the height range whose walls are
- * drawn on its plan. The ground floor includes split levels down to −1.2 m.
+ * drawn on its plan. The ground floor includes split levels down to −1.2 m;
+ * the basement floor is at −2.74 m.
  */
 const LEVELS = [
-  { id: 'ground', label: 'Ground floor', from: -Infinity, band: [-0.9, 1.6] },
+  { id: 'basement', label: 'Basement', from: -Infinity, band: [-2.4, -1.4] },
+  { id: 'ground', label: 'Ground floor', from: -1.9, band: [-0.9, 1.6] },
   { id: 'first', label: 'First floor', from: 1.8, band: [3.2, 4.6] },
 ];
 

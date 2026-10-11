@@ -33,7 +33,7 @@ published). `scripts/prepare-model.mjs` turns it into what the site loads:
   assembled house plus exploded floors, wall strips and flat plans around it. Only the assembled
   house is kept. Units are metres and Y is up. The main floor is at y = 0 and the building is
   centred on the origin. −Z points north, which matches the published plan.
-- **`public/plans/ground.svg`, `first.svg`**: one minimap plan per floor. Every wall face within a
+- **`public/plans/basement.svg`, `ground.svg`, `first.svg`**: one minimap plan per floor. Every wall face within a
   floor's height band is projected onto the ground, so the plans line up exactly with the 3D
   scene and include split levels. The other floor is drawn faintly underneath.
 - **`src/content/generated/modelInfo.json`**: bounds and plan extents used by the scene and the
@@ -55,6 +55,12 @@ every surface renders the same grey. `HouseModel` and `Environment` compensate:
 - **Lighting:** a shadow-casting sun, two unshadowed fill lights from other directions, and a low
   all-round environment light. Keep `ENVIRONMENT_INTENSITY` low: at full strength it washes every
   surface out to near-white.
+- **Post-processing** (`Effects.tsx`): N8AO ambient occlusion for contact shading in corners, SMAA
+  anti-aliasing and neutral tone mapping. Multisampling must stay off: combined with N8AO it erases
+  the edge lines. Touch devices get a half-resolution occlusion pass.
+- **Glass** reflects a soft studio environment, and its outlines keep only vertical and horizontal
+  edges, so the diagonals from SketchUp's triangulation don't show as lines across panes.
+- **Sky:** a gradient dome (`SkyDome.tsx`) fading from pale blue to a hazy horizon.
 
 ## Explore mode physics
 

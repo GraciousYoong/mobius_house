@@ -103,10 +103,13 @@ for (let z = -12; z <= 22; z++) {
   console.log(row);
 }
 
-// Fail if the house can no longer be entered or the first floor reached.
+// Fail if the house can no longer be entered or a floor can no longer be reached.
 const firstFloor = pts.filter((v) => v.y - EYE_HEIGHT > 1.8).length;
-if (inside.length < 300 || firstFloor < 50) {
-  console.error(`FAIL: ${inside.length} cells inside, ${firstFloor} on the first floor`);
+const basement = pts.filter((v) => v.y - EYE_HEIGHT < -1.9).length;
+if (inside.length < 300 || firstFloor < 50 || basement < 20) {
+  console.error(
+    `FAIL: ${inside.length} cells inside, ${firstFloor} on the first floor, ${basement} in the basement`,
+  );
   process.exit(1);
 }
-console.log('PASS: house enterable and first floor reachable');
+console.log('PASS: house enterable; first floor and basement reachable');

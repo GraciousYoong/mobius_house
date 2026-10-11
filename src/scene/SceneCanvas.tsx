@@ -10,6 +10,7 @@ import { ExploreView } from './controls/ExploreView';
 import { SceneErrorBoundary } from './SceneErrorBoundary';
 import { ModelProgress } from './ModelProgress';
 import { GROUND_Y } from './config';
+import { Effects, type RenderQuality } from './Effects';
 
 interface Props {
   mode: ViewMode;
@@ -17,6 +18,7 @@ interface Props {
   drag: DragDelta;
   stick: StickInput;
   autoRotate: boolean;
+  quality: RenderQuality;
   onContextLost: () => void;
 }
 
@@ -34,13 +36,23 @@ function PlaceholderFallback() {
 }
 
 /** The WebGL scene. Loaded lazily so page content is never blocked by it. */
-export default function SceneCanvas({ mode, keys, drag, stick, autoRotate, onContextLost }: Props) {
+export default function SceneCanvas({
+  mode,
+  keys,
+  drag,
+  stick,
+  autoRotate,
+  quality,
+  onContextLost,
+}: Props) {
   return (
     <>
       <Canvas
         shadows
-        dpr={[1, 2]}
-        camera={{ fov: 50, near: 0.1, far: 500, position: [32, 20, 32] }}
+        flat // tone mapping happens in <Effects>
+        dpr={quality === 'high' ? [1, 2] : [1, 1.5]}
+        // A tight near/far range keeps depth precise enough for the edge lines.
+        camera={{ fov: 50, near: 0.2, far: 600, position: [32, 20, 32] }}
         onCreated={({ gl }) => {
           gl.domElement.addEventListener('webglcontextlost', (e) => {
             e.preventDefault();
@@ -62,6 +74,7 @@ export default function SceneCanvas({ mode, keys, drag, stick, autoRotate, onCon
         ) : (
           <ExploreView keys={keys} drag={drag} stick={stick} />
         )}
+        <Effects quality={quality} />
       </Canvas>
       <ModelProgress />
     </>

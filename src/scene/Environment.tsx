@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
-import { PMREMGenerator } from 'three';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { getRoomEnvironment } from './environmentMap';
+import { HORIZON, SkyDome } from './SkyDome';
 import { GROUND_Y, MODEL_RADIUS } from './config';
 
 const SHADOW_EXTENT = MODEL_RADIUS + 6;
@@ -13,23 +13,17 @@ const SHADOW_EXTENT = MODEL_RADIUS + 6;
 const ENVIRONMENT_INTENSITY = 0.4;
 
 /**
- * Soft light from all directions, generated locally (no image download).
- * Unlike a hemisphere light it varies around the horizon, so walls facing
- * different ways get different brightness, which is what makes a plain
- * model read in depth.
+ * Soft light from all directions. Unlike a hemisphere light it varies around
+ * the horizon, so walls facing different ways get different brightness.
  */
 function RoomLighting() {
   const gl = useThree((s) => s.gl);
   const scene = useThree((s) => s.scene);
   useEffect(() => {
-    const pmrem = new PMREMGenerator(gl);
-    const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environment = env;
+    scene.environment = getRoomEnvironment(gl);
     scene.environmentIntensity = ENVIRONMENT_INTENSITY;
     return () => {
       scene.environment = null;
-      env.dispose();
-      pmrem.dispose();
     };
   }, [gl, scene]);
   return null;
@@ -39,8 +33,8 @@ function RoomLighting() {
 export function Environment() {
   return (
     <>
-      <color attach="background" args={['#d9dadc']} />
-      <fog attach="fog" args={['#d9dadc', 90, 260]} />
+      <SkyDome />
+      <fog attach="fog" args={[HORIZON, 90, 320]} />
       <RoomLighting />
       <hemisphereLight args={['#ffffff', '#8f8b84', 0.6]} />
       {/* Sun, from the south-east: the only light that casts shadows. */}
@@ -48,7 +42,7 @@ export function Environment() {
         position={[30, 45, 20]}
         intensity={2.2}
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[2048, 2048]}
         shadow-bias={-0.0005}
         shadow-camera-left={-SHADOW_EXTENT}
         shadow-camera-right={SHADOW_EXTENT}
@@ -65,7 +59,7 @@ export function Environment() {
       {/* Sits just below the model's lowest point; the model carries its own site. */}
       <mesh rotation-x={-Math.PI / 2} position-y={GROUND_Y - 0.05} receiveShadow>
         <planeGeometry args={[600, 600]} />
-        <meshStandardMaterial color="#c9cbc6" roughness={1} />
+        <meshStandardMaterial color="#c5c2b6" roughness={1} />
       </mesh>
     </>
   );

@@ -6,6 +6,6 @@ export default defineConfig({
   build: {
     // three.js is split into the lazily loaded SceneCanvas chunk, so its size
     // does not delay the page content. Raise the warning threshold to match.
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 1300,
   },
 });

@@ -149,6 +149,7 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
             keys={keys}
             drag={drag}
             stick={stick}
+            quality={coarse ? 'low' : 'high'}
             autoRotate={!reducedMotion && !focused}
             onContextLost={() => setContextLost(true)}
           />
