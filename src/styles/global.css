@@ -164,10 +164,19 @@ kbd {
 
 /* ---------- Navigation ---------- */
 .navbar {
+  /* A light bar over the dark site: re-scope the colour tokens for everything inside it. */
+  --c-bg: var(--p-white);
+  --c-ink: var(--p-black);
+  --c-ink-muted: var(--p-charcoal);
+  --c-line: #ddd5c7;
+  --c-overlay: rgba(247, 247, 247, 0.94);
+  --nav-hover: rgba(236, 226, 210, 0.6);
+
   position: sticky;
   top: 0;
   z-index: 50;
   height: var(--nav-h);
+  color: var(--c-ink);
   background: var(--c-overlay);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--c-line);
@@ -206,7 +215,7 @@ kbd {
   font-size: 0.95rem;
 }
 .navbar__nav a:hover {
-  background: rgba(236, 226, 210, 0.08);
+  background: var(--nav-hover);
 }
 .navbar__nav a[aria-current] {
   color: var(--c-ink);
