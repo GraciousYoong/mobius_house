@@ -10,7 +10,8 @@ export function Footer() {
         </p>
         <p>
           The 3D model on this site is an abstract placeholder and does not represent the real
-          building. Drawings and photographs will be added only with known sources and permissions.
+          building. Photographs and drawings are reproduced from UNStudio and ArchDaily; copyright
+          remains with their owners.
         </p>
       </div>
     </footer>

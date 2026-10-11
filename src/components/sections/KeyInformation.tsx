@@ -1,4 +1,4 @@
-import { keyFacts } from '../../content/project';
+import { keyFacts, keyFactsSource } from '../../content/project';
 import { Section } from '../layout/Section';
 
 export function KeyInformation() {
@@ -10,22 +10,29 @@ export function KeyInformation() {
           <div key={f.label} className="facts__item">
             <dt>{f.label}</dt>
             <dd className={f.value ? undefined : 'facts__missing'}>
-              {f.value ?? 'To be confirmed'}
-              {f.value && !f.verified && (
-                <sup className="facts__flag" aria-label="awaiting verification">
-                  *
-                </sup>
-              )}
+              {f.value
+                ? f.value.map((line, i) => (
+                    <span key={line} className="facts__line">
+                      {line}
+                      {!f.verified && i === f.value!.length - 1 && (
+                        <sup className="facts__flag" aria-label="awaiting verification">
+                          *
+                        </sup>
+                      )}
+                    </span>
+                  ))
+                : 'To be confirmed'}
             </dd>
           </div>
         ))}
       </dl>
-      {anyUnverified && (
-        <p className="note">
-          * Awaiting verification against primary sources. Values marked “To be confirmed” are
-          intentionally left blank rather than estimated.
-        </p>
-      )}
+      <p className="note">
+        Source:{' '}
+        <a href={keyFactsSource.url} target="_blank" rel="noreferrer">
+          {keyFactsSource.label}
+        </a>
+        .{anyUnverified && ' * Not on that page; awaiting verification against a primary source.'}
+      </p>
     </Section>
   );
 }

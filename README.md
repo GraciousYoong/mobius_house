@@ -3,8 +3,8 @@
 A responsive website about the Möbius House by UNStudio, with an interactive 3D viewer.
 
 > **Status: milestone 1.** The 3D model is an **abstract placeholder** (a mathematical Möbius
-> band). It is *not* a model of the real building, and the site labels it that way. Drawings
-> and photographs are empty slots until sourced material with known rights is available.
+> band). It is *not* a model of the real building, and the site labels it that way. Remaining
+> drawing slots stay empty until the material is sourced.
 
 ## Run locally
 
@@ -86,10 +86,15 @@ Keys are only captured while the viewer has focus, so they never hijack page scr
 
 ## Content accuracy
 
-`src/content/project.ts` contains only high-level, widely published facts, each flagged
-`verified: false` until checked against primary sources (UNStudio's project page, published
-monographs). Unknown values (floor area, client) are `null` and shown as "To be confirmed".
-Please do not fill these in without a source.
+`src/content/project.ts` holds all facts. Those from the key information panel on
+[UNStudio's project page](https://www.unstudio.com/projects/mobius-house/) (client, location,
+status, sectors, services, programme, 520 m² building surface) are `verified: true`. Dates and
+materials are `verified: false` and marked with an asterisk until checked. Don't add values
+without a source.
+
+Images in `public/images/` (exterior, living area, floor plan, Möbius diagram) were supplied
+from UNStudio / ArchDaily. Copyright remains with them; confirm photographer credits and usage
+rights before publishing the site publicly.
 
 ## Next milestones
 
