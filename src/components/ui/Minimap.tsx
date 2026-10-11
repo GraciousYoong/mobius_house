@@ -2,11 +2,12 @@ import modelInfo from '../../content/generated/modelInfo.json';
 import { viewerStore } from '../../state/viewerStore';
 
 /**
- * Minimap: the visitor's position and heading over a plan drawn from the 3D
- * model's walls (see scripts/prepare-model.mjs). The plan and the scene share
- * one coordinate system — x east, z south, in metres — so no alignment step
- * is needed. If the model failed to load, a schematic of the placeholder is
- * shown instead.
+ * Minimap: the visitor's position and heading over a plan of the floor they
+ * are on, drawn from the 3D model's walls (see scripts/prepare-model.mjs).
+ * The plans and the scene share one coordinate system — x east, z south, in
+ * metres — so no alignment step is needed. The plan switches automatically
+ * when the visitor climbs to another floor. If the model failed to load, a
+ * schematic of the placeholder is shown instead.
  */
 
 const [vx, vz, vw, vh] = modelInfo.planViewBox;
@@ -19,6 +20,15 @@ const PLACEHOLDER_HALF_WIDTH = 2.2;
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
+const levels = modelInfo.levels;
+
+/** The highest floor whose starting height is at or below the visitor's feet. */
+function levelAt(feetY: number) {
+  let current = levels[0];
+  for (const level of levels) if (level.from === null || feetY >= level.from) current = level;
+  return current;
+}
+
 export function Minimap() {
   const pose = viewerStore.useStore((s) => s.pose);
   const status = viewerStore.useStore((s) => s.modelStatus);
@@ -26,6 +36,7 @@ export function Minimap() {
   const z = clamp(pose.z, vz, vz + vh);
   const deg = (-pose.heading * 180) / Math.PI;
   const fallback = status === 'fallback';
+  const level = levelAt(pose.feetY);
 
   return (
     <figure className="minimap">
@@ -38,7 +49,18 @@ export function Minimap() {
             className="minimap__footprint"
           />
         ) : (
-          <image href={modelInfo.plan} x={vx} y={vz} width={vw} height={vh} />
+          // Both plans stay loaded so switching floors is instant.
+          levels.map((l) => (
+            <image
+              key={l.id}
+              href={l.plan}
+              x={vx}
+              y={vz}
+              width={vw}
+              height={vh}
+              visibility={l.id === level.id ? 'visible' : 'hidden'}
+            />
+          ))
         )}
         <g transform={`translate(${x} ${z}) rotate(${deg}) scale(${MARKER})`}>
           <path d="M0 0 L-1.4 -2.8 A3.2 3.2 0 0 1 1.4 -2.8 Z" className="minimap__cone" />
@@ -49,7 +71,17 @@ export function Minimap() {
         </text>
       </svg>
       <figcaption id="minimap-caption" className="minimap__caption">
-        {fallback ? 'Schematic of the placeholder' : 'Plan drawn from the 3D model; north up'}
+        {fallback ? (
+          'Schematic of the placeholder'
+        ) : (
+          <>
+            {/* Announced when it changes, so screen-reader users hear the floor switch. */}
+            <strong className="minimap__level" aria-live="polite">
+              {level.label}
+            </strong>
+            <span>Plan drawn from the 3D model; north up</span>
+          </>
+        )}
       </figcaption>
     </figure>
   );

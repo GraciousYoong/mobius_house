@@ -12,11 +12,24 @@
       19.785
     ]
   },
-  "plan": "/plans/plan.svg",
   "planViewBox": [
     -22.73,
     -21.79,
     45.47,
     43.57
+  ],
+  "levels": [
+    {
+      "id": "ground",
+      "label": "Ground floor",
+      "from": null,
+      "plan": "/plans/ground.svg"
+    },
+    {
+      "id": "first",
+      "label": "First floor",
+      "from": 1.8,
+      "plan": "/plans/first.svg"
+    }
   ]
 }

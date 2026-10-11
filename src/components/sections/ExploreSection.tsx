@@ -13,10 +13,11 @@ export function ExploreSection({ onEnter }: Props) {
     <Section id="explore" eyebrow="Interactive" title="Explore">
       <div className="prose">
         <p>
-          Explore mode is an early first-person prototype. You walk at eye height through an
-          unofficial SketchUp reconstruction of the house; your feet follow its floors, ramps and
-          the sloping site, but walls do not block movement yet. The minimap plan is drawn from the
-          same model, so it shares the model’s inaccuracies.
+          Explore mode lets you walk through the house at eye height, as in a game. Walls and
+          glazing block your way, you can climb the stairs and ramps between the ground and first
+          floors, and the minimap switches to the plan of the floor you are on. The model is an
+          unofficial SketchUp reconstruction by Brice C, so details may differ from the real
+          building.
         </p>
       </div>
       <button

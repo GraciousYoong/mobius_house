@@ -53,23 +53,28 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
           </div>
         )}
 
-        {webgl && helpOpen && (
-          <div className="hero__help">
-            <KeyboardHelp id="viewer-help" mode={mode} onClose={() => setHelpOpen(false)} />
-          </div>
-        )}
-
-        {webgl && mode === 'explore' && (
-          <div className="hero__minimap">
-            <Minimap />
+        {/* Right-hand column: the help panel shrinks and scrolls so it never covers the minimap. */}
+        {webgl && (helpOpen || mode === 'explore') && (
+          <div className="hero__side">
+            {helpOpen && (
+              <div className="hero__help">
+                <KeyboardHelp id="viewer-help" mode={mode} onClose={() => setHelpOpen(false)} />
+              </div>
+            )}
+            {mode === 'explore' && (
+              <div className="hero__minimap">
+                <Minimap />
+              </div>
+            )}
           </div>
         )}
       </div>
 
       <p id="viewer-instructions" className="visually-hidden">
         Focus the viewer with Tab. In orbit mode, arrow keys rotate and plus or minus zoom. In
-        explore mode, W A S D or the arrow keys move and turn. Press M to switch modes, question
-        mark for the full list of controls, and Escape to leave the viewer.
+        explore mode, W A S D or the arrow keys walk and turn, Shift moves faster, and walls and
+        stairs behave as in the building. The minimap announces which floor you are on. Press M to
+        switch modes, question mark for the full list of controls, and Escape to leave the viewer.
       </p>
     </section>
   );

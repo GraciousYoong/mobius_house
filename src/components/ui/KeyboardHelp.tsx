@@ -1,9 +1,12 @@
 import {
   commonBindings,
   exploreBindings,
+  exploreTouch,
   orbitBindings,
+  orbitTouch,
   type KeyBinding,
 } from '../../content/controls';
+import { useCoarsePointer } from '../../hooks/useMediaQuery';
 import type { ViewMode } from '../../state/viewerStore';
 
 function BindingList({ bindings }: { bindings: KeyBinding[] }) {
@@ -35,6 +38,8 @@ interface Props {
 }
 
 export function KeyboardHelp({ mode, id, variant = 'panel', onClose }: Props) {
+  const touch = useCoarsePointer();
+
   if (variant === 'full') {
     return (
       <div className="keyboard-help keyboard-help--full" id={id}>
@@ -50,9 +55,22 @@ export function KeyboardHelp({ mode, id, variant = 'panel', onClose }: Props) {
           <h3>Everywhere</h3>
           <BindingList bindings={commonBindings} />
         </div>
+        <div>
+          <h3>Touch screens</h3>
+          <BindingList bindings={[...orbitTouch.slice(0, 1), ...exploreTouch]} />
+        </div>
       </div>
     );
   }
+
+  // On touch devices show only gestures; keyboard shortcuts would just take up space.
+  const bindings = touch
+    ? mode === 'orbit'
+      ? orbitTouch
+      : exploreTouch
+    : mode === 'orbit'
+      ? orbitBindings
+      : exploreBindings;
 
   return (
     <div className="keyboard-help keyboard-help--panel" id={id} role="region" aria-label="Controls">
@@ -69,8 +87,8 @@ export function KeyboardHelp({ mode, id, variant = 'panel', onClose }: Props) {
           </button>
         )}
       </div>
-      <BindingList bindings={mode === 'orbit' ? orbitBindings : exploreBindings} />
-      <BindingList bindings={commonBindings} />
+      <BindingList bindings={bindings} />
+      {!touch && <BindingList bindings={commonBindings} />}
     </div>
   );
 }

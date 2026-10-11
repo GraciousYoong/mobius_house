@@ -7,8 +7,8 @@ export const orbitBindings: KeyBinding[] = [
   { keys: ['←', '→'], action: 'Rotate around the model' },
   { keys: ['↑', '↓'], action: 'Tilt the view' },
   { keys: ['+', '−'], action: 'Zoom in / out' },
-  { keys: ['Drag'], action: 'Rotate (mouse or touch)' },
-  { keys: ['Scroll', 'Pinch'], action: 'Zoom' },
+  { keys: ['Drag'], action: 'Rotate with the mouse' },
+  { keys: ['Scroll'], action: 'Zoom' },
 ];
 
 export const exploreBindings: KeyBinding[] = [
@@ -17,7 +17,17 @@ export const exploreBindings: KeyBinding[] = [
   { keys: ['A', 'D'], action: 'Step left / right' },
   { keys: ['←', '→'], action: 'Turn left / right' },
   { keys: ['Shift'], action: 'Move faster' },
-  { keys: ['Drag'], action: 'Look around (mouse or touch)' },
+  { keys: ['Click'], action: 'Look around with the mouse; Esc releases it' },
+];
+
+export const orbitTouch: KeyBinding[] = [
+  { keys: ['Drag'], action: 'Rotate around the model' },
+  { keys: ['Pinch'], action: 'Zoom' },
+];
+
+export const exploreTouch: KeyBinding[] = [
+  { keys: ['Joystick'], action: 'Walk (bottom left)' },
+  { keys: ['Drag'], action: 'Look around (anywhere else)' },
 ];
 
 export const commonBindings: KeyBinding[] = [

@@ -49,7 +49,7 @@ export function HouseModel() {
         o.material = glazed ? glass : concrete;
         o.castShadow = !glazed;
         o.receiveShadow = !glazed;
-        o.userData.walkable = !glazed;
+        o.userData.collidable = true; // glazing blocks movement too
       }
     });
     return root;

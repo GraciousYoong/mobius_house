@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useEffect,
   lazy,
   Suspense,
   useCallback,
@@ -10,6 +11,8 @@ import {
 } from 'react';
 import { useWebGLSupport } from '../hooks/useWebGLSupport';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
+import { useCoarsePointer } from '../hooks/useMediaQuery';
+import { TouchJoystick } from './TouchJoystick';
 import type { ViewMode } from '../state/viewerStore';
 import { SceneErrorBoundary } from './SceneErrorBoundary';
 import { SceneFallback } from './SceneFallback';
@@ -60,6 +63,10 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
   const [focused, setFocused] = useState(false);
   const keys = useRef(new Set<string>());
   const drag = useRef({ x: 0, y: 0 });
+  const stick = useRef({ x: 0, y: 0 });
+  const coarse = useCoarsePointer();
+  const [locked, setLocked] = useState(false);
+  const wrapper = useRef<HTMLDivElement | null>(null);
   const lastPointer = useRef<{ x: number; y: number } | null>(null);
 
   const onKeyDown = useCallback(
@@ -89,15 +96,39 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
 
   const onKeyUp = (e: KeyboardEvent<HTMLDivElement>) => keys.current.delete(e.code);
 
-  // In Explore mode, drag to look. Orbit mode uses OrbitControls' own handling.
+  // Track mouse pointer lock (game-style mouse look in Explore mode).
+  useEffect(() => {
+    const onChange = () => setLocked(document.pointerLockElement === wrapper.current);
+    document.addEventListener('pointerlockchange', onChange);
+    return () => document.removeEventListener('pointerlockchange', onChange);
+  }, []);
+  useEffect(() => {
+    if (mode !== 'explore' && document.pointerLockElement === wrapper.current) {
+      document.exitPointerLock();
+    }
+  }, [mode]);
+
+  // Explore mode: a mouse click locks the pointer for mouse look; touch and
+  // pen drag to look. Orbit mode uses OrbitControls' own handling.
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     e.currentTarget.focus({ preventScroll: true });
     if (mode !== 'explore') return;
+    if (e.pointerType === 'mouse' && !locked) {
+      // Older browsers return undefined instead of a promise.
+      Promise.resolve(e.currentTarget.requestPointerLock()).catch(() => {});
+      return;
+    }
     e.currentTarget.setPointerCapture(e.pointerId);
     lastPointer.current = { x: e.clientX, y: e.clientY };
   };
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (mode !== 'explore' || !lastPointer.current) return;
+    if (mode !== 'explore') return;
+    if (locked) {
+      drag.current.x += e.movementX;
+      drag.current.y += e.movementY;
+      return;
+    }
+    if (!lastPointer.current) return;
     drag.current.x += e.clientX - lastPointer.current.x;
     drag.current.y += e.clientY - lastPointer.current.y;
     lastPointer.current = { x: e.clientX, y: e.clientY };
@@ -117,6 +148,7 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
             mode={mode}
             keys={keys}
             drag={drag}
+            stick={stick}
             autoRotate={!reducedMotion && !focused}
             onContextLost={() => setContextLost(true)}
           />
@@ -128,8 +160,12 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
 
   return (
     <div
-      ref={ref}
-      className={`viewer viewer--${mode}`}
+      ref={(el) => {
+        wrapper.current = el;
+        if (typeof ref === 'function') ref(el);
+        else if (ref) ref.current = el;
+      }}
+      className={`viewer viewer--${mode} ${locked ? 'viewer--locked' : ''}`}
       tabIndex={interactive ? 0 : undefined}
       role={interactive ? 'application' : undefined}
       aria-roledescription={interactive ? '3D viewer' : undefined}
@@ -148,6 +184,12 @@ export const Viewer = forwardRef<HTMLDivElement, Props>(function Viewer(
       onPointerCancel={onPointerUp}
     >
       {body}
+      {interactive && mode === 'explore' && coarse && <TouchJoystick stick={stick} />}
+      {interactive && mode === 'explore' && !coarse && !locked && (
+        <p className="viewer__hint" aria-hidden="true">
+          Click to look around with the mouse · Esc to release
+        </p>
+      )}
     </div>
   );
 });

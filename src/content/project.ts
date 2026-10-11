@@ -52,10 +52,12 @@ export const keyFacts: Fact[] = [
 
 export const keyFactsSource = sources.unstudio;
 
-/** What the 3D view shows. Update once the model's origin is known. */
+/** What the 3D view shows, and who made it. */
 export const model = {
   label: 'Unofficial 3D reconstruction',
-  caveat: 'A SketchUp model by an unknown author, not verified against UNStudio’s drawings.',
+  caveat: 'SketchUp model by Brice C via 3D Warehouse, not verified against UNStudio’s drawings.',
+  credit: 'Brice C',
+  source: '3D Warehouse (SketchUp)',
 };
 
 export const concept = {

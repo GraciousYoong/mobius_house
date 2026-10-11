@@ -2,7 +2,7 @@
  * Converts the SketchUp COLLADA export into the assets the site loads:
  *
  *   models-src/mobius-house.dae  →  public/models/mobius-house.glb
- *                                   public/plans/plan.svg     (minimap plan)
+ *                                   public/plans/<level>.svg  (minimap plan per floor)
  *                                   src/content/generated/modelInfo.json
  *
  * The source file is a presentation layout: one assembled house on its site,
@@ -24,13 +24,21 @@ const assimpjs = require('assimpjs');
 const SOURCE = 'models-src/mobius-house.dae';
 const OUT_MODEL = 'public/models/mobius-house.glb';
 const OUT_PLANS = 'public/plans';
-const OUT_PLAN = `${OUT_PLANS}/plan.svg`;
 const OUT_INFO = 'src/content/generated/modelInfo.json';
 
 /** The assembled house lies beyond this Z (after the Z-up → Y-up turn). */
 const ASSEMBLED_MAX_Z = -90;
-/** Height of the largest upward-facing floor area: the main living level. */
+/** Height of the largest upward-facing floor area: the ground-floor living level. */
 const MAIN_FLOOR_Y = 10.57;
+/**
+ * Floors, in metres after recentring. `from` is the lowest feet height that
+ * counts as being on that floor; `band` is the height range whose walls are
+ * drawn on its plan. The ground floor includes split levels down to −1.2 m.
+ */
+const LEVELS = [
+  { id: 'ground', label: 'Ground floor', from: -Infinity, band: [-0.9, 1.6] },
+  { id: 'first', label: 'First floor', from: 1.8, band: [3.2, 4.6] },
+];
 
 // ---------- 1. COLLADA → glTF (assimp applies the inch unit and Z-up axis) ----------
 const ajs = await assimpjs();
@@ -129,11 +137,12 @@ await doc.transform(prune(), dedup(), weld());
 mkdirSync('public/models', { recursive: true });
 writeFileSync(OUT_MODEL, await io.writeBinary(doc));
 
-// ---------- 4. Plan for the minimap ----------
-// Every near-vertical triangle (a wall, glazing or balustrade face) projects to
-// a line on the ground plane. Together they draw the walls at every split
-// level, which a single horizontal cut would miss.
-function projectWalls(opaque) {
+// ---------- 4. Plans for the minimap ----------
+// Every near-vertical triangle (a wall, glazing or balustrade face) that
+// reaches into a floor's height band projects to a line on the ground plane.
+// Together they draw that floor's walls, including split levels that a single
+// horizontal cut would miss.
+function projectWalls(opaque, [y0, y1]) {
   const keys = new Set();
   const segs = [];
   for (const prim of keptMesh.listPrimitives()) {
@@ -150,6 +159,9 @@ function projectWalls(opaque) {
       const n = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
       const len = Math.hypot(...n);
       if (!len || Math.abs(n[1] / len) > 0.2) continue; // not a wall
+      const lo = Math.min(a[1], b[1], c[1]);
+      const hi = Math.max(a[1], b[1], c[1]);
+      if (hi < y0 || lo > y1) continue; // not on this floor
       // The two most distant corners give the wall's footprint line.
       const pts = [a, b, c].map((p) => [p[0], p[2]]);
       let best = [pts[0], pts[1]];
@@ -189,24 +201,48 @@ const vb = [
   bounds.max[0] - bounds.min[0] + 2 * pad,
   bounds.max[2] - bounds.min[2] + 2 * pad,
 ];
-const walls = projectWalls(true);
-const glass = projectWalls(false);
-const svg =
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.map((v) => v.toFixed(2)).join(' ')}">` +
-  `<path d="${toPath(glass)}" fill="none" stroke="#5a8a90" stroke-width="0.12" stroke-linecap="round"/>` +
-  `<path d="${toPath(walls)}" fill="none" stroke="#1b1d21" stroke-width="0.15" stroke-linecap="round"/>` +
-  `</svg>\n`;
-writeFileSync(OUT_PLAN, svg);
+const path = (segs, stroke, width) =>
+  `<path d="${toPath(segs)}" fill="none" stroke="${stroke}" stroke-width="${width}" stroke-linecap="round"/>`;
+const levels = LEVELS.map((level) => ({
+  ...level,
+  walls: projectWalls(true, level.band),
+  glass: projectWalls(false, level.band),
+}));
+for (const level of levels) {
+  // Other floors are drawn faintly underneath for context.
+  const others = levels.filter((l) => l !== level).flatMap((l) => l.walls);
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.map((v) => v.toFixed(2)).join(' ')}">` +
+    path(others, '#b9bab7', 0.1) +
+    path(level.glass, '#5a8a90', 0.12) +
+    path(level.walls, '#1b1d21', 0.15) +
+    `</svg>\n`;
+  writeFileSync(`${OUT_PLANS}/${level.id}.svg`, svg);
+}
 
 mkdirSync('src/content/generated', { recursive: true });
 writeFileSync(
   OUT_INFO,
   JSON.stringify(
-    { source: SOURCE, bounds, plan: '/plans/plan.svg', planViewBox: vb.map((v) => +v.toFixed(2)) },
+    {
+      source: SOURCE,
+      bounds,
+      planViewBox: vb.map((v) => +v.toFixed(2)),
+      levels: levels.map(({ id, label, from }) => ({
+        id,
+        label,
+        from: from === -Infinity ? null : from,
+        plan: `/plans/${id}.svg`,
+      })),
+    },
     null,
     2,
   ) + '\n',
 );
 
 console.log(`Wrote ${OUT_MODEL}`, bounds);
-console.log(`Wrote ${OUT_PLAN}: ${walls.length} wall and ${glass.length} glass lines`);
+for (const l of levels) {
+  console.log(
+    `Wrote ${OUT_PLANS}/${l.id}.svg: ${l.walls.length} wall and ${l.glass.length} glass lines`,
+  );
+}

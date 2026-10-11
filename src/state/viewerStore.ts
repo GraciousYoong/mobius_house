@@ -6,9 +6,11 @@ export type ViewMode = 'orbit' | 'explore';
 export type ModelStatus = 'loading' | 'ready' | 'fallback';
 
 export interface Pose {
-  /** Position on the ground plane, in scene units (≈ metres). */
+  /** Position on the ground plane, in metres. */
   x: number;
   z: number;
+  /** Height of the visitor's feet (eye height minus 1.6 m). */
+  feetY: number;
   /** Viewing direction in radians, 0 = looking towards −Z. */
   heading: number;
 }
@@ -22,7 +24,7 @@ interface ViewerState {
 
 export const viewerStore = createStore<ViewerState>({
   mode: 'orbit',
-  pose: { x: 4, z: 18, heading: 0 },
+  pose: { x: 0, z: 12, feetY: 0, heading: 0 },
   helpOpen: false,
   modelStatus: 'loading',
 });

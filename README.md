@@ -2,8 +2,8 @@
 
 A responsive website about the Möbius House by UNStudio, with an interactive 3D viewer.
 
-> **Status: milestone 2.** The 3D view shows an **unofficial SketchUp reconstruction** of the
-> house by an unknown author. It has not been verified against UNStudio's drawings, and the site
+> **Status: milestone 3.** The 3D view shows an **unofficial SketchUp reconstruction** of the
+> house by Brice C, from 3D Warehouse. It has not been verified against UNStudio's drawings, and the site
 > labels it that way. If the model fails to load, an abstract placeholder is shown instead.
 
 ## Run locally
@@ -33,14 +33,30 @@ published). `scripts/prepare-model.mjs` turns it into what the site loads:
   assembled house plus exploded floors, wall strips and flat plans around it. Only the assembled
   house is kept. Units are metres and Y is up. The main floor is at y = 0 and the building is
   centred on the origin. −Z points north, which matches the published plan.
-- **`public/plans/plan.svg`**: the minimap plan. Every wall face of the model is projected onto
-  the ground, so it lines up exactly with the 3D scene and covers all split levels.
+- **`public/plans/ground.svg`, `first.svg`**: one minimap plan per floor. Every wall face within a
+  floor's height band is projected onto the ground, so the plans line up exactly with the 3D
+  scene and include split levels. The other floor is drawn faintly underneath.
 - **`src/content/generated/modelInfo.json`**: bounds and plan extents used by the scene and the
   minimap.
 
 To use a different model, replace the `.dae` and run `npm run prepare-model`. The constants
-`ASSEMBLED_MAX_Z` and `MAIN_FLOOR_Y` at the top of the script are specific to this file and may
-need adjusting.
+`ASSEMBLED_MAX_Z`, `MAIN_FLOOR_Y` and `LEVELS` at the top of the script are specific to this
+file and may need adjusting.
+
+## Explore mode physics
+
+`src/scene/controls/characterPhysics.ts` is a capsule character controller: the visitor is a
+capsule pushed out of the model's triangles, which are indexed with
+[three-mesh-bvh](https://github.com/gkjohnson/three-mesh-bvh) so collision checks stay fast. It
+includes gravity, eased acceleration, stair climbing, and an invisible fence where the site ends.
+Walls and glazing block movement.
+
+`tests/reachability.ts` flood-fills the model from the start point to check that the house can be
+entered and that the first floor can be reached by the stairs:
+
+```bash
+npx tsx tests/reachability.ts
+```
 
 ## Stack
 
@@ -62,15 +78,17 @@ src/
   components/                DOM only — never imports three.js
     layout/                  NavBar, Section, Footer
     sections/                Hero, Overview, KeyInformation, Drawings, Gallery, ExploreSection
-    ui/                      ModeToggle, KeyboardHelp, Minimap, PlaceholderNotice
+    ui/                      ModeToggle, KeyboardHelp, Minimap (per-floor), ModelNotice
   scene/                     everything 3D
     Viewer.tsx               public entry: WebGL check, error boundary, lazy load, input capture
     SceneCanvas.tsx          <Canvas> (lazy-loaded chunk containing three.js)
-    Environment.tsx          lights, ground, grid
+    Environment.tsx          lights and ground
     models/HouseModel        loads the .glb, applies concrete and glass materials
     models/PlaceholderModel  abstract Möbius band, shown only if the model fails to load
     controls/OrbitView       orbit with mouse/touch/keyboard
-    controls/ExploreView     first-person view; follows floors by raycast, no wall collision yet
+    controls/ExploreView     first-person view: mouse look, joystick, physics
+    controls/characterPhysics capsule collision, gravity, stairs (three-mesh-bvh)
+    TouchJoystick            on-screen joystick for touch devices
     controls/usePoseReporter publishes camera position + heading to viewerStore
   styles/global.css          tokens, layout, responsive breakpoints (900px, 600px)
 ```
@@ -89,7 +107,10 @@ Click or Tab into the 3D view, then:
 | ↑ ↓ | tilt | A / D | step left / right |
 | + − | zoom | ← → (or Q / E) | turn |
 | drag, scroll/pinch | rotate, zoom | Shift | faster |
-| | | drag | look around |
+| | | click, then mouse | look around (pointer lock; Esc releases) |
+
+Touch screens: in Explore mode, a joystick at the bottom left walks and dragging anywhere else
+looks around. In Orbit mode, drag rotates and pinch zooms.
 
 Everywhere: **M** switch mode · **?** show/hide controls · **Esc** leave the viewer.
 
@@ -118,6 +139,5 @@ rights before publishing the site publicly.
 
 ## Next milestones
 
-1. Confirm where the SketchUp model came from, and check it against UNStudio's drawings.
-2. Wall collision in Explore mode, and on-screen movement controls for touch devices.
-3. Gallery lightbox.
+1. Check the model against UNStudio's drawings, and confirm the 3D Warehouse licence terms.
+2. Gallery lightbox.

@@ -1,7 +1,7 @@
 import { Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { setModelStatus, type ViewMode } from '../state/viewerStore';
-import type { DragDelta, HeldKeys } from './types';
+import type { DragDelta, HeldKeys, StickInput } from './types';
 import { Environment } from './Environment';
 import { HouseModel } from './models/HouseModel';
 import { PlaceholderModel } from './models/PlaceholderModel';
@@ -15,6 +15,7 @@ interface Props {
   mode: ViewMode;
   keys: HeldKeys;
   drag: DragDelta;
+  stick: StickInput;
   autoRotate: boolean;
   onContextLost: () => void;
 }
@@ -24,12 +25,16 @@ function PlaceholderFallback() {
   return (
     <group position-y={GROUND_Y}>
       <PlaceholderModel />
+      {/* Invisible floor so Explore mode still has something to stand on. */}
+      <mesh rotation-x={-Math.PI / 2} visible={false} userData={{ collidable: true }}>
+        <circleGeometry args={[30, 32]} />
+      </mesh>
     </group>
   );
 }
 
 /** The WebGL scene. Loaded lazily so page content is never blocked by it. */
-export default function SceneCanvas({ mode, keys, drag, autoRotate, onContextLost }: Props) {
+export default function SceneCanvas({ mode, keys, drag, stick, autoRotate, onContextLost }: Props) {
   return (
     <>
       <Canvas
@@ -55,7 +60,7 @@ export default function SceneCanvas({ mode, keys, drag, autoRotate, onContextLos
         {mode === 'orbit' ? (
           <OrbitView keys={keys} autoRotate={autoRotate} />
         ) : (
-          <ExploreView keys={keys} drag={drag} />
+          <ExploreView keys={keys} drag={drag} stick={stick} />
         )}
       </Canvas>
       <ModelProgress />
