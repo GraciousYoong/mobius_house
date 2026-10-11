@@ -61,12 +61,6 @@ every surface renders the same grey. `HouseModel` and `Environment` compensate:
 - **Glass** reflects a soft studio environment, and its outlines keep only vertical and horizontal
   edges, so the diagonals from SketchUp's triangulation don't show as lines across panes.
 - **Sky:** a gradient dome (`SkyDome.tsx`) fading from pale blue to a hazy horizon.
-- **Concrete texture** (`materials/concrete.ts`): a tileable mottle generated in a canvas and
-  projected triplanar (along X, Y and Z), since the model has no texture coordinates.
-- **Trees** (`Surroundings.tsx`): **generic scenery, not survey data**. About 160 instanced
-  broadleaf trees and Scots-pine-like pines, placed deterministically and only outside the site.
-  Whole trees near the camera are hidden so they never block the view. The **Trees** button in the
-  viewer toggles them.
 
 ## Explore mode physics
 

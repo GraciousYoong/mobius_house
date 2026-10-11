@@ -20,8 +20,6 @@ interface ViewerState {
   pose: Pose;
   helpOpen: boolean;
   modelStatus: ModelStatus;
-  /** Generic trees around the site (scenery, not survey data). */
-  showSurroundings: boolean;
 }
 
 export const viewerStore = createStore<ViewerState>({
@@ -29,7 +27,6 @@ export const viewerStore = createStore<ViewerState>({
   pose: { x: 0, z: 12, feetY: 0, heading: 0 },
   helpOpen: false,
   modelStatus: 'loading',
-  showSurroundings: true,
 });
 
 export const setMode = (mode: ViewMode) => viewerStore.setState({ mode });
@@ -38,5 +35,3 @@ export const toggleMode = () =>
 export const setHelpOpen = (helpOpen: boolean) => viewerStore.setState({ helpOpen });
 export const setPose = (pose: Pose) => viewerStore.setState({ pose });
 export const setModelStatus = (modelStatus: ModelStatus) => viewerStore.setState({ modelStatus });
-export const toggleSurroundings = () =>
-  viewerStore.setState({ showSurroundings: !viewerStore.getState().showSurroundings });

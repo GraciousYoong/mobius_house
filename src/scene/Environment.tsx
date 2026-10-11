@@ -59,8 +59,7 @@ export function Environment() {
       {/* Sits just below the model's lowest point; the model carries its own site. */}
       <mesh rotation-x={-Math.PI / 2} position-y={GROUND_Y - 0.05} receiveShadow>
         <planeGeometry args={[600, 600]} />
-        {/* Sandy woodland floor, as around the house; generic, not surveyed. */}
-        <meshStandardMaterial color="#b3ab94" roughness={1} />
+        <meshStandardMaterial color="#c5c2b6" roughness={1} />
       </mesh>
     </>
   );
