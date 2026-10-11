@@ -94,7 +94,7 @@ export function Minimap() {
         </g>
         <g transform={`translate(${x} ${z}) rotate(${deg}) scale(${MARKER})`}>
           <path d="M0 0 L-1.5 -3.2 A3.6 3.6 0 0 1 1.5 -3.2 Z" className="minimap__cone" />
-          <circle r="0.5" className="minimap__dot" />
+          <circle r="0.65" className="minimap__dot" />
         </g>
       </svg>
       <p className="minimap__note">Plan derived from the 3D model</p>

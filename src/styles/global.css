@@ -680,13 +680,14 @@ kbd {
   fill: #6b6862;
   dominant-baseline: middle;
 }
+/* Orange "you are here" marker: stands out against the grey plan lines. */
 .minimap__cone {
-  fill: rgba(47, 93, 98, 0.28);
+  fill: rgba(212, 114, 28, 0.4);
 }
 .minimap__dot {
-  fill: var(--c-accent);
+  fill: #d4721c;
   stroke: #fff;
-  stroke-width: 0.25;
+  stroke-width: 0.3;
 }
 .minimap__note {
   margin: 4px 0 0;
