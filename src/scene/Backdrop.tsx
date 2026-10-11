@@ -7,9 +7,9 @@ import { BackSide, Color, ShaderMaterial } from 'three';
  */
 // The ground colour is darker than the horizon because the ground is lit by the
 // sun while the backdrop is not; rendered, the two meet without a seam.
-export const GROUND_COLOR = '#1f1e1c';
-export const HORIZON = '#2b2a27';
-const ABOVE = '#0f0f0e';
+export const GROUND_COLOR = '#1c1c1a';
+export const HORIZON = '#41423a'; // palette olive charcoal
+const ABOVE = '#141414'; // palette black
 
 const material = new ShaderMaterial({
   side: BackSide,

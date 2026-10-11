@@ -42,7 +42,7 @@ export function Environment() {
       <fog attach="fog" args={[HORIZON, 70, 240]} />
       <RoomLighting />
       {/* Sky fill above, a dim bounce from the dark ground below. */}
-      <hemisphereLight args={['#eef0f2', '#4a4843', 0.5]} />
+      <hemisphereLight args={['#f7f7f7', '#41423a', 0.5]} />
       <directionalLight
         position={[-30, 24, 14]}
         intensity={2.7}

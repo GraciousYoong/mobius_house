@@ -1,14 +1,30 @@
 /* ---------- Tokens ---------- */
+/*
+  Palette: Orange, White & Black.
+  #D9641E deep orange · #ED7D27 orange · #ECE2D2 cream
+  #F7F7F7 white · #41423A olive charcoal · #141414 black
+
+  Orange is an accent only. On white it is used for marks, rules and large
+  text; small text that must be read stays black or charcoal (orange on white
+  is below the 4.5:1 contrast needed for body text).
+*/
 :root {
-  --c-bg: #f4f3f0;
-  --c-surface: #ffffff;
-  --c-ink: #1b1d21;
-  --c-ink-muted: #5b5f66;
-  --c-line: #d8d6d0;
-  --c-accent: #2f5d62;
-  --c-accent-ink: #ffffff;
-  --c-focus: #d4721c;
-  --c-overlay: rgba(244, 243, 240, 0.88);
+  --p-orange-deep: #d9641e;
+  --p-orange: #ed7d27;
+  --p-cream: #ece2d2;
+  --p-white: #f7f7f7;
+  --p-charcoal: #41423a;
+  --p-black: #141414;
+
+  --c-bg: var(--p-white);
+  --c-surface: #fbfaf8;
+  --c-ink: var(--p-black);
+  --c-ink-muted: var(--p-charcoal);
+  --c-line: #ddd5c7; /* cream, one step deeper so hairlines show on white */
+  --c-accent: var(--p-orange-deep);
+  --c-accent-ink: var(--p-black); /* black on orange: 5:1, white on orange would fail */
+  --c-focus: var(--p-orange);
+  --c-overlay: rgba(247, 247, 247, 0.9);
 
   --font-sans: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
   --nav-h: 60px;
@@ -60,6 +76,8 @@ h3 {
 
 a {
   color: inherit;
+  text-decoration-color: var(--c-accent);
+  text-underline-offset: 3px;
 }
 
 :focus-visible {
@@ -121,7 +139,7 @@ kbd {
   color: var(--c-accent-ink);
 }
 .button--primary:hover {
-  filter: brightness(1.1);
+  background: var(--p-orange);
 }
 .button--ghost {
   background: var(--c-overlay);
@@ -184,10 +202,10 @@ kbd {
   font-size: 0.95rem;
 }
 .navbar__nav a:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(236, 226, 210, 0.6);
 }
 .navbar__nav a[aria-current] {
-  color: var(--c-accent);
+  color: var(--c-ink);
   box-shadow: inset 0 -2px 0 var(--c-accent);
 }
 .navbar__toggle {
@@ -263,23 +281,23 @@ kbd {
   lighter interior views. The minimap stays a light "paper" drawing sheet.
 */
 .hero {
-  --hero-ink: #f1eee8;
-  --panel-bg: rgba(24, 23, 21, 0.72);
+  --hero-ink: var(--p-white);
+  --panel-bg: rgba(20, 20, 20, 0.74);
   --panel-border: rgba(255, 255, 255, 0.1);
   --panel-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 12px 32px rgba(0, 0, 0, 0.28);
   --panel-blur: blur(16px) saturate(1.1);
-  --ink-soft: #a9a59d;
+  --ink-soft: #b9b1a3; /* cream, dimmed */
   --hairline: rgba(255, 255, 255, 0.12);
-  --paper-bg: rgba(246, 245, 241, 0.9);
-  --paper-ink: #3f3d39;
-  --paper-soft: #6b6862;
-  --paper-hairline: rgba(32, 30, 27, 0.12);
+  --paper-bg: rgba(236, 226, 210, 0.94); /* cream drawing paper */
+  --paper-ink: var(--p-black);
+  --paper-soft: var(--p-charcoal);
+  --paper-hairline: rgba(65, 66, 58, 0.22);
 
   position: relative;
   height: calc(100svh - var(--nav-h));
   min-height: 460px;
   color: var(--hero-ink);
-  background: #1b1a18; /* matches the 3D backdrop while it loads */
+  background: var(--p-black); /* matches the 3D backdrop while it loads */
   overflow: hidden;
 }
 .viewer {
@@ -309,9 +327,9 @@ kbd {
   padding: 7px 14px;
   border-radius: 999px;
   border: 1px solid var(--panel-border);
-  background: rgba(24, 23, 21, 0.6);
+  background: rgba(20, 20, 20, 0.62);
   backdrop-filter: blur(8px);
-  color: #f6f4f0;
+  color: var(--p-white);
   font-size: 0.78rem;
   letter-spacing: 0.02em;
   white-space: nowrap;
@@ -324,7 +342,7 @@ kbd {
   width: 112px;
   height: 112px;
   border-radius: 50%;
-  background: rgba(250, 249, 246, 0.28);
+  background: rgba(236, 226, 210, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.75);
   box-shadow: 0 6px 20px rgba(32, 30, 27, 0.12);
   backdrop-filter: blur(6px);
@@ -339,7 +357,7 @@ kbd {
   height: 44px;
   margin: -22px 0 0 -22px;
   border-radius: 50%;
-  background: rgba(250, 249, 246, 0.92);
+  background: var(--p-orange);
   border: 1px solid var(--panel-border);
   box-shadow: 0 2px 8px rgba(32, 30, 27, 0.18);
   pointer-events: none;
@@ -371,9 +389,9 @@ kbd {
   pointer-events: none;
   background: linear-gradient(
     100deg,
-    rgba(14, 14, 13, 0.6) 0%,
-    rgba(14, 14, 13, 0.25) 30%,
-    rgba(14, 14, 13, 0) 52%
+    rgba(20, 20, 20, 0.6) 0%,
+    rgba(20, 20, 20, 0.25) 30%,
+    rgba(20, 20, 20, 0) 52%
   );
   transition: opacity 0.4s ease;
 }
@@ -381,9 +399,9 @@ kbd {
 .hero__overlay--explore::before {
   background: linear-gradient(
     180deg,
-    rgba(14, 14, 13, 0.62) 0%,
-    rgba(14, 14, 13, 0.3) 14%,
-    rgba(14, 14, 13, 0) 28%
+    rgba(20, 20, 20, 0.62) 0%,
+    rgba(20, 20, 20, 0.3) 14%,
+    rgba(20, 20, 20, 0) 28%
   );
 }
 
@@ -398,7 +416,7 @@ kbd {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.72rem;
-  color: var(--ink-soft);
+  color: var(--p-orange); /* orange on black: readable contrast */
 }
 .hero__title {
   margin: 0.2em 0 0.3em;
@@ -415,7 +433,7 @@ kbd {
   max-width: 24rem;
   font-size: clamp(0.98rem, 1.3vw, 1.08rem);
   line-height: 1.55;
-  color: #d3cfc7;
+  color: var(--p-cream);
 }
 .hero__title-block--compact .hero__title {
   font-size: clamp(1.25rem, 2vw, 1.6rem);
@@ -431,7 +449,7 @@ kbd {
   max-width: 24rem;
   margin: 0;
   padding-left: 12px;
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 2px solid var(--p-orange-deep);
   font-size: 0.76rem;
   line-height: 1.5;
   color: var(--ink-soft);
@@ -439,7 +457,7 @@ kbd {
 }
 .model-notice strong {
   font-weight: 600;
-  color: #e2ded6;
+  color: var(--p-cream);
 }
 
 /* Toolbar: mode switch plus quiet text actions, in one panel. */
@@ -470,7 +488,7 @@ kbd {
   border: none;
   border-radius: 999px;
   background: transparent;
-  color: #d3cfc7;
+  color: var(--p-cream);
   font: inherit;
   font-size: 0.82rem;
   letter-spacing: 0.02em;
@@ -501,7 +519,7 @@ kbd {
   left: 3px;
   width: calc(50% - 3px);
   border-radius: 999px;
-  background: var(--hero-ink);
+  background: var(--p-orange);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -513,7 +531,7 @@ kbd {
   border: none;
   border-radius: 999px;
   background: transparent;
-  color: #bdb9b1;
+  color: #c9c0b1;
   font: inherit;
   font-size: 0.82rem;
   letter-spacing: 0.02em;
@@ -521,7 +539,7 @@ kbd {
   transition: color 0.25s ease;
 }
 .mode-toggle__btn[aria-pressed='true'] {
-  color: #1b1a18;
+  color: var(--p-black);
 }
 
 .hero__side {
@@ -560,7 +578,7 @@ kbd {
   color: var(--hero-ink);
 }
 .keyboard-help--panel .bindings dd {
-  color: #bdb9b1;
+  color: #c9c0b1;
 }
 .keyboard-help--panel kbd {
   background: rgba(255, 255, 255, 0.1);
@@ -624,7 +642,7 @@ kbd {
   width: clamp(168px, 17vw, 220px);
   padding: 10px 12px 9px;
   background: var(--paper-bg);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(236, 226, 210, 0.5);
   border-radius: 4px;
   color: var(--paper-ink);
   box-shadow: var(--panel-shadow);
@@ -643,7 +661,7 @@ kbd {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: #3f3d39;
+  color: var(--p-black);
 }
 .minimap__north {
   display: inline-flex;
@@ -668,24 +686,24 @@ kbd {
 }
 .minimap__footprint {
   fill: none;
-  stroke: #cfcdc7;
+  stroke: #c9bfae;
 }
 .minimap__scale path {
   fill: none;
-  stroke: #6b6862;
+  stroke: var(--p-charcoal);
   stroke-width: 0.18;
 }
 .minimap__scale text {
   font-size: 1.6px;
-  fill: #6b6862;
+  fill: var(--p-charcoal);
   dominant-baseline: middle;
 }
 /* Orange "you are here" marker: stands out against the grey plan lines. */
 .minimap__cone {
-  fill: rgba(212, 114, 28, 0.4);
+  fill: rgba(217, 100, 30, 0.42);
 }
 .minimap__dot {
-  fill: #d4721c;
+  fill: var(--p-orange-deep);
   stroke: #fff;
   stroke-width: 0.3;
 }
@@ -714,7 +732,7 @@ kbd {
 .scene-loading__spinner {
   width: 26px;
   height: 26px;
-  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border: 1.5px solid rgba(236, 226, 210, 0.18);
   border-top-color: var(--hero-ink);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -734,7 +752,7 @@ kbd {
 }
 .scene-fallback__art {
   width: min(260px, 60vw);
-  color: #6f6c66;
+  color: var(--p-charcoal);
 }
 .scene-fallback__title {
   margin: 0;
@@ -755,9 +773,9 @@ kbd {
   .hero__overlay::before {
     background: linear-gradient(
       180deg,
-      rgba(14, 14, 13, 0.62) 0%,
-      rgba(14, 14, 13, 0.25) 28%,
-      rgba(14, 14, 13, 0) 42%
+      rgba(20, 20, 20, 0.62) 0%,
+      rgba(20, 20, 20, 0.25) 28%,
+      rgba(20, 20, 20, 0) 42%
     );
   }
   .hero__side {
@@ -820,11 +838,21 @@ main:focus {
   padding: 0 var(--gutter);
 }
 .section__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.78rem;
-  color: var(--c-accent);
+  color: var(--c-ink-muted);
+}
+/* Orange rule as the accent; the label itself stays charcoal for contrast. */
+.section__eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: var(--c-accent);
 }
 .section__title {
   margin: 0.2em 0 0.8em;
@@ -903,14 +931,14 @@ main:focus {
   align-items: center;
   justify-content: center;
   background:
-    repeating-linear-gradient(45deg, transparent 0 10px, rgba(0, 0, 0, 0.035) 10px 11px),
-    #eceae5;
+    repeating-linear-gradient(45deg, transparent 0 10px, rgba(65, 66, 58, 0.06) 10px 11px),
+    var(--p-cream);
   color: var(--c-ink-muted);
   font-size: 0.85rem;
 }
 .card__media--image {
   display: block;
-  background: #fff;
+  background: var(--c-surface);
   border-bottom: 1px solid var(--c-line);
 }
 .card__media--image img {
@@ -966,10 +994,11 @@ main:focus {
 }
 
 .footer {
-  border-top: 1px solid var(--c-line);
+  border-top: 3px solid var(--c-accent);
   padding: 40px 0 56px;
   font-size: 0.88rem;
-  color: var(--c-ink-muted);
+  background: var(--p-black);
+  color: var(--p-cream);
 }
 .footer__inner {
   max-width: var(--max-w);
