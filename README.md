@@ -43,24 +43,27 @@ To use a different model, replace the `.dae` and run `npm run prepare-model`. Th
 `ASSEMBLED_MAX_Z`, `MAIN_FLOOR_Y` and `LEVELS` at the top of the script are specific to this
 file and may need adjusting.
 
-## Reading depth in a plain model
+## Visual style: white architectural model
 
-The SketchUp file has no real materials, and the conversion loses its edge lines, so on its own
-every surface renders the same grey. `HouseModel` and `Environment` compensate:
+The 3D view is styled like a photographed white presentation model (card or foam board on a
+studio table) rather than a realistic render. The SketchUp file has no real materials, and the
+conversion loses its edge lines, so `HouseModel`, `Environment` and `Effects` build the look:
 
-- **Edge lines** wherever faces meet at more than 20°, as in SketchUp.
-- **Tones by orientation:** floors are darker and ceilings lighter, and walls are shaded by
-  compass direction (north-west lightest, south-east darkest), so they differ even indoors where
-  no direct light reaches.
-- **Lighting:** a shadow-casting sun, two unshadowed fill lights from other directions, and a low
-  all-round environment light. Keep `ENVIRONMENT_INTENSITY` low: at full strength it washes every
-  surface out to near-white.
-- **Post-processing** (`Effects.tsx`): N8AO ambient occlusion for contact shading in corners, SMAA
-  anti-aliasing and neutral tone mapping. Multisampling must stay off: combined with N8AO it erases
-  the edge lines. Touch devices get a half-resolution occlusion pass.
-- **Glass** reflects a soft studio environment, and its outlines keep only vertical and horizontal
-  edges, so the diagonals from SketchUp's triangulation don't show as lines across panes.
-- **Sky:** a gradient dome (`SkyDome.tsx`) fading from pale blue to a hazy horizon.
+- **White surfaces** with only a slight difference between floors, walls and ceilings. Walls
+  are tinted very gently by compass direction, so they still read apart indoors where no direct
+  light reaches.
+- **Faint warm-grey edge lines** wherever faces meet at more than 20°.
+- **Clear acrylic glazing.** Glass outlines keep only vertical and horizontal edges, so the
+  diagonals from SketchUp's triangulation don't show as lines across panes.
+- **Studio lighting:** one key light from the upper left of the opening view, low enough to throw
+  long shadows towards the viewer, plus soft fill and a low environment light. Keep
+  `ENVIRONMENT_INTENSITY` low: a material's `envMapIntensity` does not affect
+  `scene.environment`, and at full strength it washes every surface out.
+- **Backdrop** (`Backdrop.tsx`): a pale warm-grey studio gradient, with a table surface slightly
+  darker than the white site so the model stands out.
+- **Post-processing** (`Effects.tsx`): N8AO ambient occlusion for soft contact shadows in corners,
+  SMAA anti-aliasing and neutral tone mapping. Multisampling must stay off: combined with N8AO it
+  erases the edge lines. Touch devices get a half-resolution occlusion pass.
 
 ## Explore mode physics
 

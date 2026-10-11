@@ -35,13 +35,14 @@ import { getRoomEnvironment } from '../environmentMap';
 
 const EDGE_ANGLE = 20; // degrees between faces before an edge line is drawn
 
-// Tones per surface orientation. Kept close so the model still reads as one material.
-const FLOOR = new Color('#a8a298');
-const WALL = new Color('#dedad2');
-const CEILING = new Color('#f4f2ee');
+// White-model palette: near-white card with only a whisper of difference between
+// floors, walls and ceilings. Form comes mainly from light and ambient occlusion.
+const FLOOR = new Color('#ebe9e4');
+const WALL = new Color('#f7f6f3');
+const CEILING = new Color('#fbfaf8');
 /** Walls facing this horizontal direction (north-west) are lightest; the opposite darkest. */
 const WALL_LIGHT_DIR = { x: -0.8, z: -0.6 };
-const WALL_SHADE_MIN = 0.6; // brightness of walls facing away from WALL_LIGHT_DIR
+const WALL_SHADE_MIN = 0.88; // brightness of walls facing away from WALL_LIGHT_DIR
 
 const concrete = new MeshStandardMaterial({
   color: '#ffffff',
@@ -52,18 +53,20 @@ const concrete = new MeshStandardMaterial({
   polygonOffsetFactor: 2,
   polygonOffsetUnits: 2,
 });
+// Clear acrylic, as used for glazing in physical models.
 const glass = new MeshPhysicalMaterial({
-  color: '#b7ccd0',
-  roughness: 0.06,
-  metalness: 0.1,
+  color: '#eef3f3',
+  roughness: 0.03,
+  metalness: 0,
   transparent: true,
-  opacity: 0.26,
+  opacity: 0.2,
   side: DoubleSide,
   depthWrite: false,
-  envMapIntensity: 1.1, // its own reflection map, independent of the scene's
+  envMapIntensity: 0.8, // its own reflection map, independent of the scene's
 });
-const outline = new LineBasicMaterial({ color: '#4a4c50', transparent: true, opacity: 0.55 });
-const glassOutline = new LineBasicMaterial({ color: '#5f7d82', transparent: true, opacity: 0.6 });
+// Faint warm-grey edges: enough to read corners indoors without looking like a drawing.
+const outline = new LineBasicMaterial({ color: '#a9a49b', transparent: true, opacity: 0.45 });
+const glassOutline = new LineBasicMaterial({ color: '#a3b0b2', transparent: true, opacity: 0.55 });
 
 /** Keeps only vertical and horizontal edge segments (pane borders and mullions). */
 function withoutDiagonals(edges: BufferGeometry) {

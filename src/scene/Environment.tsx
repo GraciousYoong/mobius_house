@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
 import { getRoomEnvironment } from './environmentMap';
-import { HORIZON, SkyDome } from './SkyDome';
+import { Backdrop, HORIZON } from './Backdrop';
 import { GROUND_Y, MODEL_RADIUS } from './config';
 
 const SHADOW_EXTENT = MODEL_RADIUS + 6;
@@ -33,14 +33,18 @@ function RoomLighting() {
 export function Environment() {
   return (
     <>
-      <SkyDome />
-      <fog attach="fog" args={[HORIZON, 90, 320]} />
+      <Backdrop />
+      <fog attach="fog" args={[HORIZON, 120, 380]} />
       <RoomLighting />
-      <hemisphereLight args={['#ffffff', '#8f8b84', 0.6]} />
-      {/* Sun, from the south-east: the only light that casts shadows. */}
+      <hemisphereLight args={['#ffffff', '#d8d4cc', 0.4]} />
+      {/*
+        Key light, as in a model photograph: from the upper left of the opening
+        view, low enough to throw long shadows towards the viewer. The only light
+        that casts shadows.
+      */}
       <directionalLight
-        position={[30, 45, 20]}
-        intensity={2.2}
+        position={[-34, 26, 8]}
+        intensity={3.2}
         castShadow
         shadow-mapSize={[2048, 2048]}
         shadow-bias={-0.0005}
@@ -56,10 +60,10 @@ export function Environment() {
       */}
       <directionalLight position={[-30, 20, -10]} intensity={1.0} color="#f3f1ec" />
       <directionalLight position={[8, 12, -30]} intensity={0.4} color="#e8eef2" />
-      {/* Sits just below the model's lowest point; the model carries its own site. */}
+      {/* The table the model stands on: just below the model's lowest point, a shade darker than the white site. */}
       <mesh rotation-x={-Math.PI / 2} position-y={GROUND_Y - 0.05} receiveShadow>
         <planeGeometry args={[600, 600]} />
-        <meshStandardMaterial color="#c5c2b6" roughness={1} />
+        <meshStandardMaterial color="#d2cfc9" roughness={1} />
       </mesh>
     </>
   );

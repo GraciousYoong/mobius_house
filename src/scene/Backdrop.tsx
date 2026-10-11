@@ -1,16 +1,19 @@
 import { BackSide, Color, ShaderMaterial } from 'three';
 
-export const HORIZON = '#e4e3dd';
-const ZENITH = '#a9c0d0';
-const BELOW = '#cfcbc2';
+/**
+ * Studio backdrop, as used to photograph white architectural models: a pale,
+ * warm grey that brightens slightly overhead and darkens below the horizon.
+ */
+export const HORIZON = '#dddbd7';
+const ABOVE = '#e9e8e5';
+const BELOW = '#cfccc6';
 
-/** Soft vertical gradient sky: pale blue overhead fading to a hazy horizon. */
 const material = new ShaderMaterial({
   side: BackSide,
   depthWrite: false,
   fog: false,
   uniforms: {
-    zenith: { value: new Color(ZENITH) },
+    above: { value: new Color(ABOVE) },
     horizon: { value: new Color(HORIZON) },
     below: { value: new Color(BELOW) },
   },
@@ -22,22 +25,22 @@ const material = new ShaderMaterial({
     }
   `,
   fragmentShader: /* glsl */ `
-    uniform vec3 zenith;
+    uniform vec3 above;
     uniform vec3 horizon;
     uniform vec3 below;
     varying vec3 vDir;
     void main() {
       float h = vDir.y;
       vec3 c = h > 0.0
-        ? mix(horizon, zenith, pow(smoothstep(0.0, 0.6, h), 0.8))
-        : mix(horizon, below, smoothstep(0.0, 0.1, -h));
+        ? mix(horizon, above, smoothstep(0.0, 0.7, h))
+        : mix(horizon, below, smoothstep(0.0, 0.25, -h));
       gl_FragColor = vec4(c, 1.0);
       #include <colorspace_fragment>
     }
   `,
 });
 
-export function SkyDome() {
+export function Backdrop() {
   return (
     <mesh material={material} renderOrder={-1} raycast={() => {}}>
       <sphereGeometry args={[450, 32, 16]} />

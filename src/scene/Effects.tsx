@@ -20,10 +20,10 @@ export function Effects({ quality }: Props) {
   return (
     <EffectComposer multisampling={0}>
       <N8AO
-        aoRadius={1.4}
+        aoRadius={1.8}
         distanceFalloff={1}
-        intensity={2.4}
-        color="#2b2723"
+        intensity={2.8}
+        color="#3d3832"
         halfRes={!high}
         quality={high ? 'medium' : 'performance'}
       />
