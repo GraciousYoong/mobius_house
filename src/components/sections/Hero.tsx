@@ -1,0 +1,74 @@
+import { forwardRef, useCallback } from 'react';
+import { Viewer } from '../../scene/Viewer';
+import { useWebGLSupport } from '../../hooks/useWebGLSupport';
+import { project } from '../../content/project';
+import { setHelpOpen, setMode, toggleMode, viewerStore } from '../../state/viewerStore';
+import { KeyboardHelp } from '../ui/KeyboardHelp';
+import { ModeToggle } from '../ui/ModeToggle';
+import { Minimap } from '../ui/Minimap';
+import { PlaceholderNotice } from '../ui/PlaceholderNotice';
+
+/** Full-screen hero: the 3D viewer plus its DOM overlays. */
+export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
+  const mode = viewerStore.useStore((s) => s.mode);
+  const helpOpen = viewerStore.useStore((s) => s.helpOpen);
+  const webgl = useWebGLSupport();
+  const toggleHelp = useCallback(() => setHelpOpen(!viewerStore.getState().helpOpen), []);
+
+  return (
+    <section id="top" className="hero" aria-labelledby="hero-title">
+      <Viewer
+        ref={viewerRef}
+        mode={mode}
+        label={`Interactive 3D placeholder model, ${mode} mode`}
+        describedBy="viewer-instructions"
+        onToggleMode={toggleMode}
+        onToggleHelp={toggleHelp}
+      />
+
+      <div className="hero__overlay">
+        <div className="hero__title-block">
+          <p className="hero__eyebrow">{project.architect}</p>
+          <h1 id="hero-title" className="hero__title">
+            {project.name}
+          </h1>
+          <p className="hero__tagline">{project.tagline}</p>
+          <PlaceholderNotice />
+        </div>
+
+        {webgl && (
+          <div className="hero__controls">
+            <ModeToggle mode={mode} onChange={setMode} />
+            <button
+              type="button"
+              className="button button--ghost"
+              aria-expanded={helpOpen}
+              aria-controls="viewer-help"
+              onClick={toggleHelp}
+            >
+              Controls
+            </button>
+          </div>
+        )}
+
+        {webgl && helpOpen && (
+          <div className="hero__help">
+            <KeyboardHelp id="viewer-help" mode={mode} onClose={() => setHelpOpen(false)} />
+          </div>
+        )}
+
+        {webgl && mode === 'explore' && (
+          <div className="hero__minimap">
+            <Minimap />
+          </div>
+        )}
+      </div>
+
+      <p id="viewer-instructions" className="visually-hidden">
+        Focus the viewer with Tab. In orbit mode, arrow keys rotate and plus or minus zoom. In
+        explore mode, W A S D or the arrow keys move and turn. Press M to switch modes, question
+        mark for the full list of controls, and Escape to leave the viewer.
+      </p>
+    </section>
+  );
+});
