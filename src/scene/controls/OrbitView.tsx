@@ -4,11 +4,12 @@ import { OrbitControls } from '@react-three/drei';
 import { Spherical, Vector3 } from 'three';
 import type { HeldKeys } from '../types';
 import { usePoseReporter } from './usePoseReporter';
+import { MODEL_RADIUS } from '../config';
 
-const TARGET = new Vector3(0, 1.5, 0);
-const START = new Vector3(14, 9, 14);
-const MIN_DISTANCE = 6;
-const MAX_DISTANCE = 45;
+const TARGET = new Vector3(0, 0, 0);
+const START = new Vector3(1.4, 0.9, 1.4).multiplyScalar(MODEL_RADIUS);
+const MIN_DISTANCE = 8;
+const MAX_DISTANCE = MODEL_RADIUS * 5;
 const ROTATE_SPEED = 1.4; // radians per second
 const ZOOM_SPEED = 1.2; // fraction of distance per second
 

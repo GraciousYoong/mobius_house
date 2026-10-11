@@ -6,7 +6,7 @@ import { setHelpOpen, setMode, toggleMode, viewerStore } from '../../state/viewe
 import { KeyboardHelp } from '../ui/KeyboardHelp';
 import { ModeToggle } from '../ui/ModeToggle';
 import { Minimap } from '../ui/Minimap';
-import { PlaceholderNotice } from '../ui/PlaceholderNotice';
+import { ModelNotice } from '../ui/ModelNotice';
 
 /** Full-screen hero: the 3D viewer plus its DOM overlays. */
 export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
@@ -20,20 +20,22 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
       <Viewer
         ref={viewerRef}
         mode={mode}
-        label={`Interactive 3D placeholder model, ${mode} mode`}
+        label={`Interactive 3D model of the Möbius House, ${mode} mode`}
         describedBy="viewer-instructions"
         onToggleMode={toggleMode}
         onToggleHelp={toggleHelp}
       />
 
       <div className="hero__overlay">
-        <div className="hero__title-block">
+        <div
+          className={`hero__title-block ${mode === 'explore' ? 'hero__title-block--compact' : ''}`}
+        >
           <p className="hero__eyebrow">{project.architect}</p>
           <h1 id="hero-title" className="hero__title">
             {project.name}
           </h1>
           <p className="hero__tagline">{project.tagline}</p>
-          <PlaceholderNotice />
+          <ModelNotice />
         </div>
 
         {webgl && (

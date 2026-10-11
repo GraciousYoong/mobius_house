@@ -296,6 +296,14 @@ kbd {
   max-width: 34rem;
   pointer-events: none;
 }
+.hero__title-block--compact .hero__title {
+  font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+  text-shadow: 0 0 12px var(--c-overlay);
+}
+.hero__title-block--compact .hero__tagline,
+.hero__title-block--compact .hero__eyebrow {
+  display: none;
+}
 .hero__eyebrow {
   margin: 0;
   text-transform: uppercase;
@@ -313,7 +321,8 @@ kbd {
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   max-width: 28rem;
 }
-.placeholder-notice {
+.model-notice {
+  max-width: 30rem;
   display: inline-block;
   margin: 0;
   padding: 6px 10px;
@@ -416,7 +425,7 @@ kbd {
 
 .minimap {
   margin: 0;
-  width: clamp(120px, 18vw, 180px);
+  width: clamp(150px, 22vw, 240px);
   background: var(--c-overlay);
   border: 1px solid var(--c-line);
   border-radius: var(--radius);
@@ -436,12 +445,17 @@ kbd {
   stroke: #cfcdc7;
 }
 .minimap__cone {
-  fill: rgba(47, 93, 98, 0.3);
+  fill: rgba(212, 114, 28, 0.35);
 }
 .minimap__dot {
-  fill: var(--c-accent);
+  fill: #d4721c;
   stroke: #fff;
-  stroke-width: 1;
+  stroke-width: 0.2;
+}
+.minimap__north {
+  font-size: 2.2px;
+  text-anchor: end;
+  fill: var(--c-ink-muted);
 }
 .minimap__caption {
   margin-top: 4px;
@@ -476,6 +490,10 @@ kbd {
   to {
     transform: rotate(360deg);
   }
+}
+.scene-loading--overlay {
+  inset: auto 0 18% 0;
+  pointer-events: none;
 }
 .scene-fallback {
   justify-content: flex-end;

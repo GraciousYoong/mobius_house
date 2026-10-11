@@ -9,9 +9,9 @@ export function Footer() {
           endorsed by {project.architect}.
         </p>
         <p>
-          The 3D model on this site is an abstract placeholder and does not represent the real
-          building. Photographs and drawings are reproduced from UNStudio and ArchDaily; copyright
-          remains with their owners.
+          The 3D model is an unofficial SketchUp reconstruction by an unknown author and has not
+          been verified against UNStudio’s drawings. Photographs and drawings are reproduced from
+          UNStudio and ArchDaily; copyright remains with their owners.
         </p>
       </div>
     </footer>

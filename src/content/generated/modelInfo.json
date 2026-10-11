@@ -1,0 +1,22 @@
+{
+  "source": "models-src/mobius-house.dae",
+  "bounds": {
+    "min": [
+      -20.733,
+      -2.74,
+      -19.785
+    ],
+    "max": [
+      20.733,
+      5.642,
+      19.785
+    ]
+  },
+  "plan": "/plans/plan.svg",
+  "planViewBox": [
+    -22.73,
+    -21.79,
+    45.47,
+    43.57
+  ]
+}

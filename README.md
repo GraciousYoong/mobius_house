@@ -2,9 +2,9 @@
 
 A responsive website about the Möbius House by UNStudio, with an interactive 3D viewer.
 
-> **Status: milestone 1.** The 3D model is an **abstract placeholder** (a mathematical Möbius
-> band). It is *not* a model of the real building, and the site labels it that way. Remaining
-> drawing slots stay empty until the material is sourced.
+> **Status: milestone 2.** The 3D view shows an **unofficial SketchUp reconstruction** of the
+> house by an unknown author. It has not been verified against UNStudio's drawings, and the site
+> labels it that way. If the model fails to load, an abstract placeholder is shown instead.
 
 ## Run locally
 
@@ -21,7 +21,26 @@ Other scripts:
 npm run build      # type-check, then production build into dist/
 npm run preview    # serve the production build at http://localhost:4173
 npm run typecheck  # TypeScript only
+npm run prepare-model  # rebuild the model, plan and modelInfo.json from models-src/
 ```
+
+## 3D model pipeline
+
+`models-src/mobius-house.dae` is the SketchUp COLLADA export (kept out of `public/` so it is not
+published). `scripts/prepare-model.mjs` turns it into what the site loads:
+
+- **`public/models/mobius-house.glb`** (~600 KB). The source file is a presentation layout: one
+  assembled house plus exploded floors, wall strips and flat plans around it. Only the assembled
+  house is kept. Units are metres and Y is up. The main floor is at y = 0 and the building is
+  centred on the origin. −Z points north, which matches the published plan.
+- **`public/plans/plan.svg`**: the minimap plan. Every wall face of the model is projected onto
+  the ground, so it lines up exactly with the 3D scene and covers all split levels.
+- **`src/content/generated/modelInfo.json`**: bounds and plan extents used by the scene and the
+  minimap.
+
+To use a different model, replace the `.dae` and run `npm run prepare-model`. The constants
+`ASSEMBLED_MAX_Z` and `MAIN_FLOOR_Y` at the top of the script are specific to this file and may
+need adjusting.
 
 ## Stack
 
@@ -48,9 +67,10 @@ src/
     Viewer.tsx               public entry: WebGL check, error boundary, lazy load, input capture
     SceneCanvas.tsx          <Canvas> (lazy-loaded chunk containing three.js)
     Environment.tsx          lights, ground, grid
-    models/PlaceholderModel  abstract Möbius band — swap for a GLTF later
+    models/HouseModel        loads the .glb, applies concrete and glass materials
+    models/PlaceholderModel  abstract Möbius band, shown only if the model fails to load
     controls/OrbitView       orbit with mouse/touch/keyboard
-    controls/ExploreView     first-person prototype (no collision yet)
+    controls/ExploreView     first-person view; follows floors by raycast, no wall collision yet
     controls/usePoseReporter publishes camera position + heading to viewerStore
   styles/global.css          tokens, layout, responsive breakpoints (900px, 600px)
 ```
@@ -98,7 +118,6 @@ rights before publishing the site publicly.
 
 ## Next milestones
 
-1. Source a verified model (GLTF) and drawings; replace `PlaceholderModel`.
-2. Real floor-plan minimap (SVG from sourced plans, with model ↔ plan alignment).
-3. Collision and floor-level handling for Explore mode; on-screen touch movement controls.
-4. Gallery lightbox once images are available.
+1. Confirm where the SketchUp model came from, and check it against UNStudio's drawings.
+2. Wall collision in Explore mode, and on-screen movement controls for touch devices.
+3. Gallery lightbox.
