@@ -16,15 +16,17 @@
   --p-charcoal: #41423a;
   --p-black: #141414;
 
-  --c-bg: var(--p-white);
-  --c-surface: #fbfaf8;
-  --c-ink: var(--p-black);
-  --c-ink-muted: var(--p-charcoal);
-  --c-line: #ddd5c7; /* cream, one step deeper so hairlines show on white */
+  /* Dark site: black page, white and cream type, orange accents. */
+  --c-bg: var(--p-black);
+  --c-surface: #1f1f1d; /* cards and panels, one step up from the page */
+  --c-ink: var(--p-white);
+  --c-ink-muted: #c9c0b1; /* cream, dimmed: 9:1 on black */
+  --c-line: #34342f; /* hairlines between sections and rows */
   --c-accent: var(--p-orange-deep);
-  --c-accent-ink: var(--p-black); /* black on orange: 5:1, white on orange would fail */
+  /* White on orange is ~3.6:1, so button labels are semi-bold to stay legible. */
+  --c-accent-ink: var(--p-white);
   --c-focus: var(--p-orange);
-  --c-overlay: rgba(247, 247, 247, 0.9);
+  --c-overlay: rgba(20, 20, 20, 0.9);
 
   --font-sans: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
   --nav-h: 60px;
@@ -113,8 +115,9 @@ kbd {
   top: -100px;
   z-index: 100;
   padding: 8px 12px;
-  background: var(--c-ink);
-  color: #fff;
+  background: var(--c-accent);
+  color: var(--c-accent-ink);
+  font-weight: 600;
   border-radius: var(--radius);
 }
 .skip-link:focus {
@@ -137,6 +140,7 @@ kbd {
 .button--primary {
   background: var(--c-accent);
   color: var(--c-accent-ink);
+  font-weight: 600;
 }
 .button--primary:hover {
   background: var(--p-orange);
@@ -202,7 +206,7 @@ kbd {
   font-size: 0.95rem;
 }
 .navbar__nav a:hover {
-  background: rgba(236, 226, 210, 0.6);
+  background: rgba(236, 226, 210, 0.08);
 }
 .navbar__nav a[aria-current] {
   color: var(--c-ink);
@@ -931,14 +935,14 @@ main:focus {
   align-items: center;
   justify-content: center;
   background:
-    repeating-linear-gradient(45deg, transparent 0 10px, rgba(65, 66, 58, 0.06) 10px 11px),
-    var(--p-cream);
+    repeating-linear-gradient(45deg, transparent 0 10px, rgba(236, 226, 210, 0.05) 10px 11px),
+    #1a1a18;
   color: var(--c-ink-muted);
   font-size: 0.85rem;
 }
 .card__media--image {
   display: block;
-  background: var(--c-surface);
+  background: var(--p-white); /* drawings are dark lines on white paper */
   border-bottom: 1px solid var(--c-line);
 }
 .card__media--image img {
