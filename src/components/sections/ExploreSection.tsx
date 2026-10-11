@@ -17,7 +17,8 @@ export function ExploreSection({ onEnter }: Props) {
           glazing block your way, you can climb the stairs and ramps between the basement, ground
           and first floors, and the minimap switches to the plan of the floor you are on. The model
           is an unofficial SketchUp reconstruction by Brice C, so details may differ from the real
-          building.
+          building. The trees around the site are generic scenery for context and can be hidden with
+          the Trees button.
         </p>
       </div>
       <button

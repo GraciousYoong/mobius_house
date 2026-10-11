@@ -10,19 +10,20 @@ import {
   LineSegments,
   Mesh,
   MeshPhysicalMaterial,
-  MeshStandardMaterial,
   type BufferGeometry,
   type Material,
 } from 'three';
 import { setModelStatus } from '../../state/viewerStore';
 import { MODEL_NAME, MODEL_URL } from '../config';
 import { getRoomEnvironment } from '../environmentMap';
+import { createConcreteMaterial } from '../materials/concrete';
 
 /**
  * Third-party SketchUp reconstruction of the Möbius House, converted by
  * scripts/prepare-model.mjs. Its accuracy against UNStudio's drawings has not
  * been verified. The source file has no real materials, so surfaces are
- * shaded as concrete and glazing as tinted glass.
+ * shaded as concrete (with a generated, triplanar-projected mottle) and
+ * glazing as tinted glass.
  *
  * To make the space readable (the conversion loses SketchUp's edge lines):
  * - floors, walls and ceilings get distinct tones via vertex colours,
@@ -43,7 +44,7 @@ const CEILING = new Color('#f4f2ee');
 const WALL_LIGHT_DIR = { x: -0.8, z: -0.6 };
 const WALL_SHADE_MIN = 0.6; // brightness of walls facing away from WALL_LIGHT_DIR
 
-const concrete = new MeshStandardMaterial({
+const concrete = createConcreteMaterial({
   color: '#ffffff',
   vertexColors: true,
   roughness: 0.9,

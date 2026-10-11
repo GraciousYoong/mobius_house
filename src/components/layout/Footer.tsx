@@ -10,8 +10,9 @@ export function Footer() {
         </p>
         <p>
           The 3D model is an unofficial SketchUp reconstruction by Brice C, from 3D Warehouse, and
-          has not been verified against UNStudio’s drawings. Photographs and drawings are reproduced
-          from UNStudio and ArchDaily; copyright remains with their owners.
+          has not been verified against UNStudio’s drawings. The trees around it are generic
+          scenery, not a survey of the site. Photographs and drawings are reproduced from UNStudio
+          and ArchDaily; copyright remains with their owners.
         </p>
       </div>
     </footer>

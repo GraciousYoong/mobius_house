@@ -2,7 +2,13 @@ import { forwardRef, useCallback } from 'react';
 import { Viewer } from '../../scene/Viewer';
 import { useWebGLSupport } from '../../hooks/useWebGLSupport';
 import { project } from '../../content/project';
-import { setHelpOpen, setMode, toggleMode, viewerStore } from '../../state/viewerStore';
+import {
+  setHelpOpen,
+  setMode,
+  toggleMode,
+  toggleSurroundings,
+  viewerStore,
+} from '../../state/viewerStore';
 import { KeyboardHelp } from '../ui/KeyboardHelp';
 import { ModeToggle } from '../ui/ModeToggle';
 import { Minimap } from '../ui/Minimap';
@@ -12,6 +18,7 @@ import { ModelNotice } from '../ui/ModelNotice';
 export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
   const mode = viewerStore.useStore((s) => s.mode);
   const helpOpen = viewerStore.useStore((s) => s.helpOpen);
+  const showTrees = viewerStore.useStore((s) => s.showSurroundings);
   const webgl = useWebGLSupport();
   const toggleHelp = useCallback(() => setHelpOpen(!viewerStore.getState().helpOpen), []);
 
@@ -26,7 +33,7 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
         onToggleHelp={toggleHelp}
       />
 
-      <div className="hero__overlay">
+      <div className={`hero__overlay hero__overlay--${mode}`}>
         <div
           className={`hero__title-block ${mode === 'explore' ? 'hero__title-block--compact' : ''}`}
         >
@@ -49,6 +56,15 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
               onClick={toggleHelp}
             >
               Controls
+            </button>
+            <button
+              type="button"
+              className="button button--ghost"
+              aria-pressed={showTrees}
+              title="Generic trees for context; not a survey of the real site"
+              onClick={toggleSurroundings}
+            >
+              Trees
             </button>
           </div>
         )}

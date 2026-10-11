@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { setModelStatus, type ViewMode } from '../state/viewerStore';
 import type { DragDelta, HeldKeys, StickInput } from './types';
 import { Environment } from './Environment';
+import { Surroundings } from './Surroundings';
 import { HouseModel } from './models/HouseModel';
 import { PlaceholderModel } from './models/PlaceholderModel';
 import { OrbitView } from './controls/OrbitView';
@@ -63,6 +64,7 @@ export default function SceneCanvas({
         aria-hidden="true"
       >
         <Environment />
+        <Surroundings />
         {/* If the house model cannot load, show the abstract placeholder instead. */}
         <SceneErrorBoundary fallback={<PlaceholderFallback />}>
           <Suspense fallback={null}>
