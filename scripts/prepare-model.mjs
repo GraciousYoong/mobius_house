@@ -75,7 +75,7 @@ kept.setMesh(keptMesh);
 
 for (const node of root.listNodes()) {
   const mesh = node.getMesh();
-  if (!mesh) continue;
+  if (!mesh || node === kept) continue; // skip the node being built, or it is copied twice
   const m = node.getWorldMatrix();
   for (const prim of mesh.listPrimitives()) {
     const pos = prim.getAttribute('POSITION');

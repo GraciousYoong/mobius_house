@@ -43,6 +43,19 @@ To use a different model, replace the `.dae` and run `npm run prepare-model`. Th
 `ASSEMBLED_MAX_Z`, `MAIN_FLOOR_Y` and `LEVELS` at the top of the script are specific to this
 file and may need adjusting.
 
+## Reading depth in a plain model
+
+The SketchUp file has no real materials, and the conversion loses its edge lines, so on its own
+every surface renders the same grey. `HouseModel` and `Environment` compensate:
+
+- **Edge lines** wherever faces meet at more than 20°, as in SketchUp.
+- **Tones by orientation:** floors are darker and ceilings lighter, and walls are shaded by
+  compass direction (north-west lightest, south-east darkest), so they differ even indoors where
+  no direct light reaches.
+- **Lighting:** a shadow-casting sun, two unshadowed fill lights from other directions, and a low
+  all-round environment light. Keep `ENVIRONMENT_INTENSITY` low: at full strength it washes every
+  surface out to near-white.
+
 ## Explore mode physics
 
 `src/scene/controls/characterPhysics.ts` is a capsule character controller: the visitor is a
@@ -83,7 +96,7 @@ src/
     Viewer.tsx               public entry: WebGL check, error boundary, lazy load, input capture
     SceneCanvas.tsx          <Canvas> (lazy-loaded chunk containing three.js)
     Environment.tsx          lights and ground
-    models/HouseModel        loads the .glb, applies concrete and glass materials
+    models/HouseModel        loads the .glb; concrete/glass, edge lines, tones by orientation
     models/PlaceholderModel  abstract Möbius band, shown only if the model fails to load
     controls/OrbitView       orbit with mouse/touch/keyboard
     controls/ExploreView     first-person view: mouse look, joystick, physics
