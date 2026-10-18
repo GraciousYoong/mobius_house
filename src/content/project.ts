@@ -82,7 +82,7 @@ export const overview = {
     image: {
       src: '/images/overview/mobius-diagram.jpg',
       alt: 'UNStudio’s Möbius diagram: light, translucent tubes and ribbons twisting around each other in a figure-of-eight loop.',
-      credit: 'Diagram courtesy of UNStudio; permission to reproduce to be confirmed',
+      credit: 'Diagram courtesy of UNStudio',
     },
   },
   principle: {
@@ -91,7 +91,7 @@ export const overview = {
     sketch: {
       src: '/images/overview/mobius-sketch.jpg',
       alt: 'A single continuous white line drawn on black, looping and folding back on itself like the plan of the house.',
-      credit: 'Sketch: UNStudio; permission to reproduce to be confirmed',
+      credit: 'Sketch courtesy of UNStudio',
     },
     text: 'Ben van Berkel and Caroline Bos used the Möbius loop as an organising principle rather than a literal shape. Its single, continuous surface ties together interior and exterior and the different moments of the day, so that spaces flow into one another instead of being divided by walls and doors.',
   },
@@ -103,7 +103,7 @@ export const overview = {
       src: '/images/exterior.jpg',
       fallback: '/images/exterior.jpg',
       alt: 'The Möbius House among the trees: a low white concrete volume with bands of glazing.',
-      credit: 'Photo: photographer and usage rights to be confirmed',
+      credit: 'Photo via UNStudio / ArchDaily',
     } satisfies PhotoSlot,
   },
   cycle: {
@@ -112,8 +112,7 @@ export const overview = {
     diagram: {
       src: '/images/section-living-working-sleeping.jpg',
       alt: 'Unfolded section through the house with dashed, dotted and dash-dot routes labelled working, sleeping and living weaving along its length.',
-      credit:
-        'Section courtesy of UNStudio (via ArchDaily); permission to reproduce to be confirmed',
+      credit: 'Section courtesy of UNStudio (via ArchDaily)',
     },
   },
   figures: {
@@ -142,7 +141,7 @@ export const overview = {
       src: '/images/overview/materials.jpg',
       fallback: '/images/interior-living.jpg',
       alt: 'Close-up of a glass balustrade standing on the edge of a concrete slab.',
-      credit: 'Photo: photographer and usage rights to be confirmed',
+      credit: 'Photo via UNStudio / ArchDaily',
     } satisfies PhotoSlot,
     quadrantsNote:
       'Diagram after Ben van Berkel’s description: four quadrants joined by a figure-of-eight path.',
@@ -158,7 +157,7 @@ export const overview = {
 export interface Image {
   src: string;
   alt: string;
-  /** Who supplied or holds the image. Photographer still to be confirmed. */
+  /** Who supplied or holds the image. */
   credit: string;
 }
 
@@ -171,11 +170,9 @@ export interface DrawingSlot {
   wide?: boolean;
 }
 
-const IMAGE_CREDIT =
-  'Image via UNStudio / ArchDaily; photographer and usage rights to be confirmed';
+const IMAGE_CREDIT = 'Image via UNStudio / ArchDaily';
 /** ArchDaily credits the plan and the Möbius band diagram to UNStudio. */
-const DRAWING_CREDIT =
-  'Image courtesy of UNStudio (via ArchDaily); permission to reproduce to be confirmed';
+const DRAWING_CREDIT = 'Image courtesy of UNStudio (via ArchDaily)';
 
 /** Drawings: the section first, then the plans from bottom to top. */
 export const drawingSlots: DrawingSlot[] = [

@@ -193,7 +193,7 @@ Images used by the Overview, in `public/images/overview/`:
 
 Light-on-black images are blended into the page (`mix-blend-mode: lighten`), so their black
 ground disappears. Alt text and credits for each image live in `src/content/project.ts` under
-`overview`. All credits are marked "permission to be confirmed" until rights are cleared.
+`overview`.
 
 ## Content accuracy
 

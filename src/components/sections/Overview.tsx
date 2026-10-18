@@ -122,7 +122,7 @@ export function Overview() {
             </a>
           </span>
         ))}
-        . Photographs: photographer and usage rights to be confirmed.
+        .
       </p>
     </Section>
   );
