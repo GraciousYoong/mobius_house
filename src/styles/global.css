@@ -988,30 +988,32 @@ main:focus {
   margin: 0.2em 0 0.8em;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
 }
-.section__subtitle {
-  margin: 2.5em 0 0;
-  font-size: 1.2rem;
-}
-.prose {
-  max-width: 44rem;
-  font-size: 1.06rem;
-}
-.note {
-  font-size: 0.88rem;
-  color: var(--c-ink-muted);
-}
 
 .footer {
   border-top: 3px solid var(--c-accent);
-  padding: 40px 0 56px;
-  font-size: 0.88rem;
+  padding: var(--space-6) 0 var(--space-block);
   background: var(--p-black);
-  color: var(--p-cream);
+  font-family: var(--font-text);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--c-text-muted);
 }
 .footer__inner {
+  display: grid;
+  gap: var(--space-3) var(--grid-gap);
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 var(--gutter);
+}
+.footer__inner p {
+  max-width: var(--measure);
+  margin: 0;
+}
+/* Two short columns: the study's status, then the model and image rights. */
+@media (min-width: 900px) {
+  .footer__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ---------- Editorial sections (design system v2) ---------- */
@@ -1148,6 +1150,59 @@ main:focus {
   .spec__note {
     grid-column: 1;
   }
+}
+
+/* ---------- Explore section ---------- */
+.explore__intro {
+  max-width: var(--measure);
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--c-text-muted);
+}
+.explore__subtitle {
+  margin: var(--space-block) 0 var(--space-5);
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-heading);
+  color: var(--c-text);
+}
+/* Controls as two columns of ruled lists, each key beside its action. */
+.explore .keyboard-help--full {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5) var(--grid-gap);
+  margin-top: 0;
+}
+@media (min-width: 600px) {
+  .explore .keyboard-help--full {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.explore .keyboard-help--full h3 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--c-text-subtle);
+}
+.explore .bindings {
+  margin: 0;
+  border-top: 1px solid var(--c-rule-strong);
+}
+.explore .bindings__row {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: first baseline;
+  padding: var(--space-1) 0;
+  border-bottom-color: var(--c-rule);
+  font-size: 0.9375rem;
+}
+.explore .bindings dd {
+  line-height: var(--lh-caption);
+  text-align: left;
+  color: var(--c-text-muted);
 }
 
 /* ---------- Drawings: plates ---------- */
