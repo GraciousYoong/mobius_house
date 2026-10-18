@@ -988,19 +988,34 @@ main:focus {
   font-size: 0.92rem;
 }
 
+/* Masonry: columns keep each photo at its own proportions (portrait and landscape). */
 .gallery {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  display: block;
+  columns: 3 280px;
+  column-gap: 20px;
+}
+.gallery li {
+  break-inside: avoid;
+  margin-bottom: 28px;
 }
 .gallery__item {
   margin: 0;
+}
+.gallery__link {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius);
 }
 .gallery__item img,
 .gallery__empty {
   display: block;
   width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
+  height: auto;
   border-radius: var(--radius);
+  transition: transform 0.6s ease;
+}
+.gallery__link:hover img {
+  transform: scale(1.03);
 }
 .gallery__item figcaption {
   margin-top: 8px;

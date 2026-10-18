@@ -8,7 +8,10 @@ export function Gallery() {
         {galleryItems.map((item) => (
           <li key={item.id}>
             <figure className="gallery__item">
-              <img src={item.src} alt={item.alt} loading="lazy" />
+              <a href={item.src} target="_blank" rel="noreferrer" className="gallery__link">
+                <img src={item.src} alt={item.alt} loading="lazy" />
+                <span className="visually-hidden"> (opens full-size image in a new tab)</span>
+              </a>
               <figcaption>
                 {item.caption}
                 <span className="gallery__credit">{item.credit}</span>

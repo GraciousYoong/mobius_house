@@ -236,6 +236,7 @@ export interface GalleryItem extends Image {
   caption: string;
 }
 
+/** Gallery photos. Interior photographs from ArchDaily's AD Classics article, credited to Eva Bloem. */
 export const galleryItems: GalleryItem[] = [
   {
     id: 'exterior',
@@ -250,5 +251,82 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/interior-living.jpg',
     alt: 'Living area with exposed concrete walls and a built-in concrete shelf along the window, a slatted timber ceiling and glazed openings to a stair beyond. A blue rug, black leather sofa and lounge chair surround a glass coffee table while a person walks past.',
     credit: IMAGE_CREDIT,
+  },
+  {
+    id: 'living-bookshelf',
+    caption: 'Concrete bookshelf in the living area',
+    src: '/images/gallery/living-bookshelf.jpg',
+    alt: 'A long concrete block with an open shelf of books runs into the living area, under a dark slatted timber ceiling, with leather sofas and full-height glazing onto the woods beyond.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'stair-landing',
+    caption: 'Stair and suspended landing',
+    src: '/images/gallery/stair-landing.jpg',
+    alt: 'A concrete landing with a glass balustrade cantilevers over the hall; behind it a stair with pale timber panelling rises towards a skylight.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'stair-skylight',
+    caption: 'Stair beneath the skylight',
+    src: '/images/gallery/stair-skylight.jpg',
+    alt: 'Thin concrete steps climb beside a frameless glass balustrade under a skylight, between angled concrete walls, with bowls of fruit on the floor in front.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'folded-concrete',
+    caption: 'Folded concrete',
+    src: '/images/gallery/folded-concrete.jpg',
+    alt: 'An angled concrete mass folds down from the ceiling over a passage, beside a dark glass wall and a concrete column, above a polished concrete floor.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'corridor-glazing',
+    caption: 'Corridor along the glazing',
+    src: '/images/gallery/corridor-glazing.jpg',
+    alt: 'A long corridor with a polished concrete floor follows the slanting glazed wall, with tall timber doors set into concrete on one side and a skylight overhead.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'corridor-bw',
+    caption: 'Corridor (black and white)',
+    src: '/images/gallery/corridor-bw.jpg',
+    alt: 'Black-and-white view down a narrow corridor lined with reflective glass and concrete, the floor and walls catching the light from the windows at the end.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'dining-glass-wall',
+    caption: 'Dining area by the glass wall',
+    src: '/images/gallery/dining-glass-wall.jpg',
+    alt: 'A dining table with aluminium office chairs sits beside full-height glazing onto the woods, separated from a long corridor by a glass partition.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'dining-woods',
+    caption: 'Dining table facing the woods',
+    src: '/images/gallery/dining-woods.jpg',
+    alt: 'A concrete dining table with aluminium chairs and two white pendant lamps stands in front of a wall of glass looking out onto trees, between concrete walls.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'column-desk',
+    caption: 'Concrete column and desk',
+    src: '/images/gallery/column-desk.jpg',
+    alt: 'A concrete column with a built-in socket panel, from which a concrete desk and steps fold out like furniture, with the living area beyond.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'workspace-window',
+    caption: 'Workspace along the window',
+    src: '/images/gallery/workspace-window.jpg',
+    alt: 'A long concrete work desk runs along the windows between concrete columns, with a glass-balustraded stair to the right and trees outside.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
+  },
+  {
+    id: 'stair-hall-bw',
+    caption: 'Stair hall (black and white)',
+    src: '/images/gallery/stair-hall-bw.jpg',
+    alt: 'Black-and-white view of a concrete stair hall with an angular staircase, a hanging glass lantern and framed artworks, opening to a bright room beyond.',
+    credit: 'Photo © Eva Bloem, via ArchDaily',
   },
 ];
