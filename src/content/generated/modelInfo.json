@@ -35,19 +35,19 @@
       "id": "basement",
       "label": "Basement",
       "from": null,
-      "plan": "/plans/basement.svg"
+      "plan": "plans/basement.svg"
     },
     {
       "id": "ground",
       "label": "Ground floor",
       "from": -1.9,
-      "plan": "/plans/ground.svg"
+      "plan": "plans/ground.svg"
     },
     {
       "id": "first",
       "label": "First floor",
       "from": 1.8,
-      "plan": "/plans/first.svg"
+      "plan": "plans/first.svg"
     }
   ]
 }

@@ -365,7 +365,7 @@ writeFileSync(
         id,
         label,
         from: from === -Infinity ? null : from,
-        plan: `/plans/${id}.svg`,
+        plan: `plans/${id}.svg`, // relative to public/; the app adds the base path
       })),
     },
     null,

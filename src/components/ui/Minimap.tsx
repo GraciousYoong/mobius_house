@@ -2,6 +2,7 @@ import modelInfo from '../../content/generated/modelInfo.json';
 import type { ReactNode } from 'react';
 import { viewerStore } from '../../state/viewerStore';
 import { usePersistentState } from '../../hooks/usePersistentState';
+import { assetUrl } from '../../assetUrl';
 
 /**
  * Minimap: the visitor's position and heading over a plan of the floor they
@@ -112,7 +113,7 @@ export function Minimap({ grip }: Props) {
           levels.map((l) => (
             <image
               key={l.id}
-              href={l.plan}
+              href={assetUrl(l.plan)}
               x={vx}
               y={vz}
               width={vw}
