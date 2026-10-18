@@ -180,19 +180,20 @@ put the panel back. Sizes and positions are remembered in the browser (`localSto
   (Escape closes it), visible focus rings, keyboard instructions in the viewer and in the
   Explore section, `prefers-reduced-motion` disables auto-rotation and smooth scrolling.
 
-## Overview photos
+## Overview images
 
-The Overview has two photo slots. Upload the files to `public/images/overview/` with exactly these
-names:
+Images used by the Overview, in `public/images/overview/`:
 
-| File | Where it appears | Suggested image | Size |
-|---|---|---|---|
-| `quote.jpg` | Beside the Terence Riley quotation | Exterior detail where glass meets concrete, ideally with trees | ~1200 × 900 px, landscape |
-| `materials.jpg` | "02 Materials" in Facts and figures (shown in black and white) | Close-up of concrete and glass | ~900 × 1200 px, portrait |
+| File | Where it appears | Notes |
+|---|---|---|
+| `mobius-diagram.jpg` | Beside the Concept title | UNStudio's Möbius diagram, inverted to light-on-black |
+| `mobius-sketch.jpg` | Beside "The Möbius principle" | UNStudio sketch (white line on black), cropped to the drawing |
+| `materials.jpg` | "02 Materials" (shown in black and white) | Close-up of glass on the concrete slab, cropped from an interior photo |
+| `quote.jpg` *(not yet added)* | Beside the Terence Riley quotation | Exterior detail of glass and concrete, ~1200 × 900 landscape; falls back to `exterior.jpg` |
 
-Until a file is added, the page falls back to `exterior.jpg` and `interior-living.jpg`. After
-uploading, update each photo's `alt` text and `credit` in `src/content/project.ts`
-(`overview.quote.photo` and `overview.figures.materialsPhoto`).
+Light-on-black images are blended into the page (`mix-blend-mode: lighten`), so their black
+ground disappears. Alt text and credits for each image live in `src/content/project.ts` under
+`overview`. All credits are marked "permission to be confirmed" until rights are cleared.
 
 ## Content accuracy
 

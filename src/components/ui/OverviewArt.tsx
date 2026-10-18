@@ -4,62 +4,10 @@ import type { PhotoSlot } from '../../content/project';
 /**
  * Line drawings for the Overview. All are generic or exact geometry, not
  * representations of the building itself:
- * - MobiusLine: the boundary of a mathematical Möbius band (a single closed curve).
  * - QuadrantsDiagram: four quadrants joined by a figure-of-eight path, after Ben
  *   van Berkel's own description of the plan idea.
  * - AnglesDiagram: the 7°, 9° and 11° angles, drawn to size.
  */
-
-const MOBIUS_R = 100;
-const MOBIUS_W = 46;
-
-/** A point on the Möbius band, projected obliquely from slightly above. */
-function mobiusPoint(u: number, v: number) {
-  const r = MOBIUS_R + v * Math.cos(u / 2);
-  const x = r * Math.cos(u);
-  const y = r * Math.sin(u);
-  const z = v * Math.sin(u / 2);
-  return [x * 1.5, y * 0.5 - z * 1.25] as const;
-}
-
-/** The band's boundary: a single closed curve that runs round twice. */
-function mobiusEdge() {
-  const points: string[] = [];
-  for (let i = 0; i <= 900; i++) {
-    const [px, py] = mobiusPoint((i / 900) * 4 * Math.PI, MOBIUS_W);
-    points.push(`${px.toFixed(1)},${py.toFixed(1)}`);
-  }
-  return `M${points.join('L')}Z`;
-}
-
-/** Straight lines across the band that show its half twist. */
-function mobiusRulings(count: number) {
-  let d = '';
-  for (let k = 0; k < count; k++) {
-    const u = (k / count) * 2 * Math.PI;
-    const [ax, ay] = mobiusPoint(u, -MOBIUS_W);
-    const [bx, by] = mobiusPoint(u, MOBIUS_W);
-    d += `M${ax.toFixed(1)} ${ay.toFixed(1)}L${bx.toFixed(1)} ${by.toFixed(1)}`;
-  }
-  return d;
-}
-const MOBIUS_EDGE = mobiusEdge();
-const MOBIUS_RULINGS = mobiusRulings(36);
-
-export function MobiusLine({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="-235 -120 470 240" aria-hidden="true">
-      <path d={MOBIUS_RULINGS} stroke="currentColor" strokeOpacity="0.28" strokeWidth="0.8" />
-      <path
-        d={MOBIUS_EDGE}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 /** Four quadrants on a 24-hour dial, joined by a figure-of-eight path. */
 export function QuadrantsDiagram({ className }: { className?: string }) {

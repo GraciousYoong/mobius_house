@@ -88,10 +88,21 @@ export const overview = {
     eyebrow: '01 / Concept',
     title: 'A continuous surface for everyday life.',
     lead: 'The Möbius loop connects living, working and sleeping through one spatial sequence, in which inside and outside, house and landscape, seem to turn into one another.',
+    /** UNStudio's Möbius band diagram, inverted to light-on-black for the dark page. */
+    image: {
+      src: '/images/overview/mobius-diagram.jpg',
+      alt: 'UNStudio’s Möbius diagram: light, translucent tubes and ribbons twisting around each other in a figure-of-eight loop.',
+      credit: 'Diagram courtesy of UNStudio; permission to reproduce to be confirmed',
+    },
   },
   principle: {
     title: 'The Möbius principle',
     caption: 'A continuous surface with a single side and no boundary.',
+    sketch: {
+      src: '/images/overview/mobius-sketch.jpg',
+      alt: 'A single continuous white line drawn on black, looping and folding back on itself like the plan of the house.',
+      credit: 'Sketch: UNStudio; permission to reproduce to be confirmed',
+    },
     text: 'Ben van Berkel and Caroline Bos used the Möbius loop as an organising principle rather than a literal shape. Its single, continuous surface ties together interior and exterior and the different moments of the day, so that spaces flow into one another instead of being divided by walls and doors.',
   },
   quote: {
@@ -142,7 +153,7 @@ export const overview = {
     materialsPhoto: {
       src: '/images/overview/materials.jpg',
       fallback: '/images/interior-living.jpg',
-      alt: 'Interior with exposed concrete walls and glazing.',
+      alt: 'Close-up of a glass balustrade standing on the edge of a concrete slab.',
       credit: 'Photo: photographer and usage rights to be confirmed',
     } satisfies PhotoSlot,
     quadrantsNote: 'Diagram after Ben van Berkel’s description: four quadrants joined by a figure-of-eight path.',

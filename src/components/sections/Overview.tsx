@@ -1,6 +1,6 @@
 import { overview } from '../../content/project';
 import { Section } from '../layout/Section';
-import { AnglesDiagram, MobiusLine, QuadrantsDiagram, SlotPhoto } from '../ui/OverviewArt';
+import { AnglesDiagram, QuadrantsDiagram, SlotPhoto } from '../ui/OverviewArt';
 
 /**
  * Overview as an editorial sequence:
@@ -10,14 +10,28 @@ export function Overview() {
   const { intro, principle, quote, cycle, figures, background } = overview;
   return (
     <Section id="overview" eyebrow={intro.eyebrow} title={intro.title} className="ov">
-      {/* Concept: lead text. */}
-      <p className="ov-lead">{intro.lead}</p>
+      {/* Concept: lead text beside UNStudio's Möbius diagram. */}
+      <div className="ov-intro">
+        <p className="ov-lead">{intro.lead}</p>
+        <figure className="ov-intro__figure">
+          <img src={intro.image.src} alt={intro.image.alt} loading="lazy" className="ov-blend" />
+          <figcaption>{intro.image.credit}</figcaption>
+        </figure>
+      </div>
 
       {/* The Möbius principle: drawing with caption, text in a ruled column. */}
       <div className="ov-principle">
         <figure className="ov-principle__figure">
-          <MobiusLine className="ov-principle__art" />
-          <figcaption>{principle.caption}</figcaption>
+          <img
+            src={principle.sketch.src}
+            alt={principle.sketch.alt}
+            loading="lazy"
+            className="ov-principle__art ov-blend"
+          />
+          <figcaption>
+            {principle.caption}
+            <span>{principle.sketch.credit}</span>
+          </figcaption>
         </figure>
         <div className="ov-principle__text">
           <h3>{principle.title}</h3>

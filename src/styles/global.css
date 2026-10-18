@@ -1053,13 +1053,63 @@ main:focus {
   font-weight: 500;
 }
 
-/* Concept */
+/* Concept: eyebrow, title and lead on the left, the diagram beside all three. */
+.ov .section__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  column-gap: clamp(24px, 5vw, 72px);
+}
+.ov .section__inner > * {
+  grid-column: 1 / -1;
+}
+.ov .section__eyebrow,
+.ov .section__title {
+  grid-column: 1;
+}
+.ov-intro {
+  display: contents;
+}
+.ov .ov-lead {
+  grid-column: 1;
+}
+.ov .ov-intro__figure {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  align-self: center;
+}
 .ov-lead {
-  max-width: 34rem;
-  margin: -0.2em 0 0;
+  max-width: 30rem;
+  margin: 0;
   font-size: clamp(1.05rem, 1.5vw, 1.2rem);
   line-height: 1.6;
   color: var(--c-ink-muted);
+}
+.ov-intro__figure {
+  margin: 0;
+}
+.ov-intro__figure img {
+  display: block;
+  width: 100%;
+  /* Fade the edges where the diagram's ribbons run off the image. */
+  -webkit-mask-image: radial-gradient(ellipse 54% 72% at 46% 50%, #000 58%, transparent 98%);
+  mask-image: radial-gradient(ellipse 54% 72% at 46% 50%, #000 58%, transparent 98%);
+}
+.ov-intro__figure figcaption,
+.ov-principle__figure figcaption span {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-style: normal;
+  color: var(--c-ink-muted);
+  opacity: 0.8;
+}
+.ov-intro__figure figcaption {
+  text-align: right;
+}
+/* Images drawn light-on-black: "lighten" lets the page colour show through their black ground. */
+.ov-blend {
+  mix-blend-mode: lighten;
 }
 
 /* The Möbius principle */
@@ -1078,9 +1128,9 @@ main:focus {
 }
 .ov-principle__art {
   display: block;
-  width: 78%;
-  margin-left: auto;
-  color: var(--p-white);
+  width: 86%;
+  max-width: 560px;
+  margin: 8px 0 8px auto;
 }
 .ov-principle__figure figcaption {
   max-width: 11rem;
@@ -1277,6 +1327,14 @@ main:focus {
   }
 }
 @media (max-width: 799px) {
+  .ov .section__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ov .ov-intro__figure {
+    grid-column: 1;
+    grid-row: auto;
+    margin-top: 24px;
+  }
   .ov-principle,
   .ov-quote {
     grid-template-columns: 1fr;
