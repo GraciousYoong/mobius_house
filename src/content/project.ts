@@ -40,22 +40,12 @@ export const project = {
 };
 
 export const keyFacts: Fact[] = [
-  { label: 'Architect', value: ['UNStudio'], verified: true },
-  { label: 'Client', value: ['Anonymous'], verified: true },
-  { label: 'Location', value: ['Hilversum, Netherlands'], verified: true },
-  { label: 'Status', value: ['Completed'], verified: true },
-  { label: 'Sectors', value: ['Residential'], verified: true },
-  { label: 'Services', value: ['Architecture', 'Interior'], verified: true },
-  { label: 'Programmes', value: ['Single Family House'], verified: true },
-  { label: 'Building surface', value: ['520 m²'], verified: true },
   { label: 'Architects', value: ['Ben van Berkel', 'Caroline Bos'], verified: true },
   { label: 'Design & construction', value: ['1993–1998'], verified: true },
+  { label: 'Location', value: ['Hilversum, Netherlands'], verified: true },
+  { label: 'Building surface', value: ['520 m²'], verified: true },
   { label: 'Principal materials', value: ['Concrete and glass'], verified: true },
-  {
-    label: 'Exhibited',
-    value: ['“The Un-Private House”', 'MoMA, New York, 1999'],
-    verified: true,
-  },
+  { label: 'Building type', value: ['Single-family house'], verified: true },
 ];
 
 export const keyFactsSources = [sources.unstudio, sources.archdaily];
@@ -118,14 +108,12 @@ export const overview = {
   },
   cycle: {
     title: 'A 24-hour cycle',
-    text: [
-      'Two independent routes run side by side through a sequence of spaces, exchanging positions, so that working, sleeping, playing and socialising follow one another over the course of a day.',
-      'Ceiling heights, not walls, set the spaces apart: higher volumes for life together, lower ones for solitary work and rest. Few rooms have right angles, and concrete folds out of the structure to become furniture.',
-    ],
+    text: 'Two independent routes run side by side through a sequence of spaces, exchanging positions, so that working, sleeping, playing and socialising follow one another over the course of a day. Ceiling heights, not walls, set the spaces apart: higher volumes for life together, lower ones for solitary work and rest. Few rooms have right angles, and concrete folds out of the structure to become furniture.',
     diagram: {
       src: '/images/section-living-working-sleeping.jpg',
       alt: 'Unfolded section through the house with dashed, dotted and dash-dot routes labelled working, sleeping and living weaving along its length.',
-      credit: 'Section courtesy of UNStudio (via ArchDaily); permission to reproduce to be confirmed',
+      credit:
+        'Section courtesy of UNStudio (via ArchDaily); permission to reproduce to be confirmed',
     },
   },
   figures: {
@@ -156,14 +144,12 @@ export const overview = {
       alt: 'Close-up of a glass balustrade standing on the edge of a concrete slab.',
       credit: 'Photo: photographer and usage rights to be confirmed',
     } satisfies PhotoSlot,
-    quadrantsNote: 'Diagram after Ben van Berkel’s description: four quadrants joined by a figure-of-eight path.',
+    quadrantsNote:
+      'Diagram after Ben van Berkel’s description: four quadrants joined by a figure-of-eight path.',
   },
   background: {
     title: 'Background',
-    text: [
-      'In 1993 a young professional couple from Amsterdam set out to build a house that would renew the language of domestic architecture. They chose Ben van Berkel, who studied the wooded site in Het Gooi and related it to the way they lived and worked. The design went through several iterations over five years; the house was completed in 1998.',
-      'It was among the first houses designed with 3D computer modelling, introduced into the process in 1995, and in 1999 it was shown at the Museum of Modern Art in New York in “The Un-Private House”.',
-    ],
+    text: 'In 1993 a young professional couple from Amsterdam set out to build a house that would renew the language of domestic architecture. They chose Ben van Berkel, who studied the wooded site in Het Gooi and related it to the way they lived and worked. The design went through several iterations over five years; the house was completed in 1998. It was among the first houses designed with 3D computer modelling, introduced into the process in 1995, and in 1999 it was shown at the Museum of Modern Art in New York in “The Un-Private House”.',
   },
   note: 'Summarised from',
   sources: [sources.archdaily, sources.unstudio],

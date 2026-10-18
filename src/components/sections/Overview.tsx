@@ -67,9 +67,7 @@ export function Overview() {
           <figcaption>{cycle.diagram.credit}</figcaption>
         </figure>
         <div className="ov-cycle__text">
-          {cycle.text.map((t) => (
-            <p key={t.slice(0, 20)}>{t}</p>
-          ))}
+          <p>{cycle.text}</p>
         </div>
       </div>
 
@@ -110,9 +108,7 @@ export function Overview() {
           {background.title}
         </h3>
         <div className="ov-background__text">
-          {background.text.map((t) => (
-            <p key={t.slice(0, 20)}>{t}</p>
-          ))}
+          <p>{background.text}</p>
         </div>
       </div>
 

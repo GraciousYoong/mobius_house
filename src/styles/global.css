@@ -1210,12 +1210,15 @@ main:focus {
 .ov-quote figcaption span:last-child {
   color: var(--p-charcoal);
 }
+/* A shorter band: the photo is cropped from the top (sky and branches), keeping the house. */
 .ov-quote__photo {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 320px;
+  min-height: 280px;
+  max-height: 420px;
   object-fit: cover;
+  object-position: 50% 82%;
 }
 
 /* 24-hour cycle */
@@ -1237,8 +1240,7 @@ main:focus {
   color: var(--c-ink-muted);
 }
 .ov-cycle__text {
-  columns: 2 20rem;
-  column-gap: clamp(24px, 4vw, 56px);
+  max-width: 48rem;
   margin-top: 24px;
   color: var(--c-ink-muted);
 }
@@ -1309,8 +1311,7 @@ main:focus {
   border-top: 1px solid var(--c-line);
 }
 .ov-background__text {
-  columns: 2 22rem;
-  column-gap: clamp(24px, 4vw, 56px);
+  max-width: 48rem;
   color: var(--c-ink-muted);
 }
 .ov-background__text p {
