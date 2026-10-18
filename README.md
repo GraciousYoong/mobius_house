@@ -93,6 +93,24 @@ Only active on the dev server (`npm run dev`). Production builds strip them out:
 - `?at=x,eyeY,z,yaw`: start Explore at a given position, e.g. `?at=4,1.2,3,1.9` inside the living
   area.
 
+## Design system (v2, in progress)
+
+Tokens live at the top of `src/styles/global.css` under "Design system (v2)". Sections move over one
+at a time by adding `section--editorial` (and `section--split` for a heading column on the left).
+Converted so far: **Key Information**.
+
+- **Type:** Inter Tight for text and headings, Newsreader for quotes. Both are self-hosted Latin
+  subsets in `public/fonts/` (SIL Open Font License, licence files alongside), with system fonts
+  as fallback. Six-step fluid scale: `--fs-display`, `--fs-title`, `--fs-heading`, `--fs-lead`,
+  `--fs-body`, `--fs-caption`, plus `--fs-label` for uppercase labels.
+- **Layout:** `--page-max` (1180 px) with `--gutter`, a 12-column grid (`--grid-gap`),
+  `--measure` for paragraphs, and `--page-inset` for aligning full-width areas with the column.
+- **Spacing:** `--space-1`…`--space-6`, `--space-block`, `--space-section`.
+- **Colour roles:** `--c-text`, `--c-text-muted`, `--c-text-subtle`, `--c-rule`,
+  `--c-rule-strong`, `--c-bg-raised`. All text colours meet WCAG AA on the black background.
+- **Patterns:** `.label` (uppercase field names) and `.meta` (captions, credits, sources).
+- **Breakpoints for new code:** 600, 900 and 1200 px.
+
 ## Explore mode physics
 
 `src/scene/controls/characterPhysics.ts` is a capsule character controller: the visitor is a

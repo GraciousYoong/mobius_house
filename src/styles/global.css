@@ -35,6 +35,115 @@
   --radius: 6px;
 }
 
+/* ---------- Design system (v2) ---------- */
+/*
+  Editorial design system, applied section by section. New and converted
+  sections opt in with `.section--editorial`. Existing tokens above stay in
+  place until every section has moved over.
+
+  Fonts are self-hosted (SIL Open Font License, see public/fonts/OFL-*.txt),
+  Latin subset only. A browser downloads a font only when text on screen uses
+  it, and falls back to the system fonts below if it cannot load.
+*/
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('/fonts/inter-tight-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader-latin-wght-normal.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* Type families */
+  --font-text: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+
+  /* Type scale: six steps, fluid between 390 px and 1440 px wide viewports. */
+  --fs-display: clamp(2.75rem, 1.9rem + 3.6vw, 5rem); /* hero */
+  --fs-title: clamp(2.125rem, 1.6rem + 2.2vw, 3.5rem); /* section titles */
+  --fs-heading: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem); /* block headings, key values */
+  --fs-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); /* introductions */
+  --fs-body: 1rem;
+  --fs-caption: 0.8125rem; /* captions, credits, sources */
+  --fs-label: 0.75rem; /* uppercase labels */
+  --lh-display: 1.02;
+  --lh-heading: 1.25;
+  --lh-body: 1.65;
+  --lh-caption: 1.5;
+  --tracking-display: -0.025em;
+  --tracking-label: 0.14em;
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+
+  /* Layout: one content column, 12-column grid inside it. */
+  --page-max: var(--max-w); /* 1180 px including gutters */
+  --page-inset: calc(
+    max(0px, (100vw - var(--page-max)) / 2) + var(--gutter)
+  ); /* content's left edge */
+  --grid-gap: clamp(16px, 2.5vw, 32px);
+  --measure: 38rem; /* comfortable paragraph width */
+
+  /* Spacing: 4/8 px rhythm, plus two fluid steps for sections and blocks. */
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 2.5rem;
+  --space-block: clamp(3rem, 2rem + 4vw, 5.5rem);
+  --space-section: clamp(4.5rem, 3rem + 6vw, 9rem);
+
+  /* Colour roles (contrast on #141414: text 15.7, muted 10.2, subtle 6.8, orange 6.6) */
+  --c-text: #f2ece4; /* warm off-white: halfway between palette white and cream */
+  --c-text-muted: #c9c0b1; /* body copy */
+  --c-text-subtle: #a49c8f; /* labels, captions, metadata */
+  --c-rule: rgba(236, 226, 210, 0.14); /* hairlines */
+  --c-rule-strong: rgba(236, 226, 210, 0.3); /* section-opening rules */
+  --c-bg-raised: #1b1b19; /* neutral charcoal band, for alternating sections */
+
+  /* Breakpoints for new code (min-width, mobile first): 600, 900, 1200 px. */
+}
+
+/* Uppercase label: section eyebrows, field names. */
+.label {
+  font-family: var(--font-text);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tracking-label);
+  line-height: var(--lh-caption);
+  text-transform: uppercase;
+  color: var(--c-text-subtle);
+}
+/* Captions, credits and source lines. */
+.meta {
+  font-family: var(--font-text);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--c-text-subtle);
+}
+.meta a {
+  color: var(--c-text-muted);
+  text-decoration-color: var(--c-accent);
+  text-underline-offset: 3px;
+}
+.meta a:hover {
+  color: var(--c-text);
+}
+
 *,
 *::before,
 *::after {
@@ -511,7 +620,9 @@ kbd {
   font-size: 0.82rem;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 .tool-button:hover {
   background: rgba(255, 255, 255, 0.08);
@@ -895,35 +1006,6 @@ main:focus {
   color: var(--c-ink-muted);
 }
 
-.facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 0 32px;
-  margin: 0;
-}
-.facts__item {
-  padding: 16px 0;
-  border-bottom: 1px solid var(--c-line);
-}
-.facts dt {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--c-ink-muted);
-}
-.facts dd {
-  margin: 4px 0 0;
-  font-size: 1.1rem;
-}
-.facts__missing {
-  color: var(--c-ink-muted);
-  font-style: italic;
-}
-.facts__flag {
-  color: var(--c-focus);
-  margin-left: 2px;
-}
-
 .card-grid,
 .gallery {
   display: grid;
@@ -971,9 +1053,6 @@ main:focus {
   margin: 8px 0 0;
   font-size: 0.78rem;
   color: var(--c-ink-muted);
-}
-.facts__line {
-  display: block;
 }
 .card__body {
   padding: 14px 16px 18px;
@@ -1038,6 +1117,130 @@ main:focus {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 var(--gutter);
+}
+
+/* ---------- Editorial sections (design system v2) ---------- */
+/* Shared section pattern: label eyebrow with orange rule, light display title. */
+.section--editorial {
+  padding: var(--space-section) 0;
+  border-top: 1px solid var(--c-rule);
+  font-family: var(--font-text);
+  color: var(--c-text);
+}
+.section--editorial .section__eyebrow {
+  font-family: var(--font-text);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--c-text-subtle);
+}
+.section--editorial .section__title {
+  margin: var(--space-3) 0 var(--space-block);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-display);
+  color: var(--c-text);
+}
+/*
+  Split layout (900 px and up): the heading takes the first four of twelve
+  columns and the content the remaining eight, aligned to the eyebrow.
+*/
+@media (min-width: 900px) {
+  .section--split .section__inner {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto 1fr;
+    column-gap: var(--grid-gap);
+  }
+  .section--split .section__eyebrow,
+  .section--split .section__title {
+    grid-column: 1 / span 4;
+    align-self: start;
+  }
+  .section--split .section__title {
+    margin-bottom: 0;
+    padding-right: var(--space-4);
+  }
+  .section--split .section__body {
+    grid-column: 5 / -1;
+    grid-row: 1 / span 2;
+  }
+}
+
+/* Specification sheet: one fact per ruled row, field name beside its value. */
+.spec {
+  margin: 0;
+  border-bottom: 1px solid var(--c-rule);
+}
+.spec__row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 13rem) minmax(0, 1fr);
+  column-gap: var(--grid-gap);
+  align-items: first baseline;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--c-rule);
+}
+.spec__row:first-child {
+  border-top-color: var(--c-rule-strong);
+}
+.spec__row dt {
+  margin: 0;
+}
+.spec__value {
+  margin: 0;
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-heading);
+  letter-spacing: -0.01em;
+  color: var(--c-text);
+}
+.spec__line {
+  display: block;
+}
+.spec__value--missing {
+  color: var(--c-text-subtle);
+  font-style: italic;
+}
+.spec__flag {
+  margin-left: 2px;
+  color: var(--p-orange);
+}
+/* Sources: set as metadata in the same two columns as the facts. */
+.spec__sources {
+  display: grid;
+  grid-template-columns: minmax(8rem, 13rem) minmax(0, 1fr);
+  column-gap: var(--grid-gap);
+  align-items: first baseline;
+  padding-top: var(--space-4);
+}
+.spec__sources > p {
+  margin: 0;
+}
+.spec__sources ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.spec__sources li + li {
+  margin-top: var(--space-1);
+}
+.spec__note {
+  grid-column: 2;
+  margin: var(--space-2) 0 0;
+}
+/* Phones: field name above its value; sources follow the same pattern. */
+@media (max-width: 599px) {
+  .spec__row,
+  .spec__sources {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-1);
+  }
+  .spec__row {
+    padding: var(--space-3) 0 calc(var(--space-3) + 2px);
+  }
+  .spec__note {
+    grid-column: 1;
+  }
 }
 
 /* ---------- Overview: editorial sequence ---------- */
@@ -1439,7 +1642,9 @@ main:focus {
   opacity: 0.55;
   cursor: grab;
   touch-action: none; /* let touch drags move the panel, not scroll the page */
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
 }
 .drag-grip:hover,
 .drag-grip:focus-visible {
