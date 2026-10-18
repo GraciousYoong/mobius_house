@@ -992,11 +992,6 @@ main:focus {
   margin: 2.5em 0 0;
   font-size: 1.2rem;
 }
-.section__lead {
-  max-width: 44rem;
-  color: var(--c-ink-muted);
-  margin: 0 0 2em;
-}
 .prose {
   max-width: 44rem;
   font-size: 1.06rem;
@@ -1006,7 +1001,6 @@ main:focus {
   color: var(--c-ink-muted);
 }
 
-.card-grid,
 .gallery {
   display: grid;
   gap: 20px;
@@ -1014,19 +1008,6 @@ main:focus {
   padding: 0;
   list-style: none;
 }
-.card-grid {
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-}
-.card {
-  background: var(--c-surface);
-  border: 1px solid var(--c-line);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-.card__media {
-  aspect-ratio: 4 / 3;
-}
-.card__media--empty,
 .gallery__empty {
   display: flex;
   align-items: center;
@@ -1036,35 +1017,6 @@ main:focus {
     #1a1a18;
   color: var(--c-ink-muted);
   font-size: 0.85rem;
-}
-.card__media--image {
-  display: block;
-  background: var(--p-white); /* drawings are dark lines on white paper */
-  border-bottom: 1px solid var(--c-line);
-}
-.card__media--image img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 8px;
-}
-.card__credit {
-  margin: 8px 0 0;
-  font-size: 0.78rem;
-  color: var(--c-ink-muted);
-}
-.card__body {
-  padding: 14px 16px 18px;
-}
-.card__title {
-  margin: 0 0 4px;
-  font-size: 1.05rem;
-}
-.card__text {
-  margin: 0;
-  color: var(--c-ink-muted);
-  font-size: 0.92rem;
 }
 
 /* Masonry: columns keep each photo at its own proportions (portrait and landscape). */
@@ -1134,12 +1086,21 @@ main:focus {
   color: var(--c-text-subtle);
 }
 .section--editorial .section__title {
-  margin: var(--space-3) 0 var(--space-block);
+  margin: var(--space-3) 0 var(--space-4);
   font-size: var(--fs-title);
   font-weight: var(--fw-light);
   line-height: var(--lh-display);
   letter-spacing: var(--tracking-display);
   color: var(--c-text);
+}
+/* The title sits close to an optional intro line; other content starts a block below
+   (the margins collapse, so this sets the full gap). */
+.section--editorial .section__title + :not(.section__intro) {
+  margin-top: var(--space-block);
+}
+.section--editorial .section__intro {
+  max-width: var(--measure);
+  margin: 0 0 var(--space-block);
 }
 /*
   Split layout (900 px and up): the heading takes the first four of twelve
@@ -1164,6 +1125,9 @@ main:focus {
   .section--split .section__body {
     grid-column: 5 / -1;
     grid-row: 1 / span 2;
+  }
+  .section--split .section__title + .section__body {
+    margin-top: 0;
   }
 }
 
@@ -1240,6 +1204,96 @@ main:focus {
   }
   .spec__note {
     grid-column: 1;
+  }
+}
+
+/* ---------- Drawings: plates ---------- */
+/* Each drawing sits on its own white sheet, with a caption below it. */
+.plates {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-block) var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 600px) {
+  .plates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .plate--wide {
+    grid-column: 1 / -1;
+  }
+}
+.plate__figure {
+  margin: 0;
+}
+.plate__paper {
+  display: block;
+  aspect-ratio: 3 / 2; /* plans share one frame so their captions line up */
+  padding: clamp(12px, 2vw, 28px);
+  background: #fff; /* matches the drawings' own white paper, so no seam shows */
+  cursor: zoom-in;
+  transition: box-shadow 0.2s ease;
+}
+.plate__paper:hover {
+  box-shadow: 0 0 0 1px var(--c-accent);
+}
+.plate__paper img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.plate--wide .plate__paper {
+  aspect-ratio: auto;
+}
+.plate--wide .plate__paper img {
+  height: auto;
+}
+.plate__paper--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-bg-raised);
+  color: var(--c-text-subtle);
+  font-size: var(--fs-caption);
+  cursor: default;
+}
+.plate__caption {
+  margin-top: var(--space-3);
+}
+.plate__title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-heading);
+  color: var(--c-text);
+}
+.plate__text {
+  max-width: var(--measure);
+  margin: 0;
+  line-height: var(--lh-body);
+  color: var(--c-text-muted);
+}
+.plate__credit {
+  margin: var(--space-1) 0 0;
+}
+/* The full-width section: title and text side by side, like the split sections. */
+@media (min-width: 900px) {
+  .plate--wide .plate__caption {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+    align-items: first baseline;
+  }
+  .plate--wide .plate__title {
+    grid-column: 1 / span 4;
+    margin: 0;
+  }
+  .plate--wide .plate__text,
+  .plate--wide .plate__credit {
+    grid-column: 5 / -1;
   }
 }
 

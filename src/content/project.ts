@@ -168,6 +168,9 @@ export interface Image {
   alt: string;
   /** Who supplied or holds the image. */
   credit: string;
+  /** Intrinsic size in pixels, so the layout can reserve space before it loads. */
+  width?: number;
+  height?: number;
 }
 
 export interface DrawingSlot {
@@ -181,7 +184,7 @@ export interface DrawingSlot {
 
 const IMAGE_CREDIT = 'Image via UNStudio / ArchDaily';
 /** ArchDaily credits the plan and the Möbius band diagram to UNStudio. */
-const DRAWING_CREDIT = 'Image courtesy of UNStudio (via ArchDaily)';
+export const DRAWING_CREDIT = 'Image courtesy of UNStudio (via ArchDaily)';
 
 /** Drawings: the section first, then the plans from bottom to top. */
 export const drawingSlots: DrawingSlot[] = [
@@ -195,6 +198,8 @@ export const drawingSlots: DrawingSlot[] = [
       src: '/images/section-living-working-sleeping.jpg',
       alt: 'Long unfolded section through the house. Dashed, dotted and dash-dot lines weave above and below it, labelled working, sleeping and living in alternating order, showing how the activities of the day follow one another along the building.',
       credit: DRAWING_CREDIT,
+      width: 1582,
+      height: 317,
     },
   },
   {
@@ -205,6 +210,8 @@ export const drawingSlots: DrawingSlot[] = [
       src: '/images/plan-basement.jpg',
       alt: 'Basement floor plan with a north arrow. Labelled rooms: storage, guest room, bathroom and circulation, set in an angular outline, with the outline of the floor above shown dashed and a long wall running off to the upper left.',
       credit: DRAWING_CREDIT,
+      width: 1270,
+      height: 1000,
     },
   },
   {
@@ -216,6 +223,8 @@ export const drawingSlots: DrawingSlot[] = [
       src: '/images/plan-ground.jpg',
       alt: 'Ground floor plan with a north arrow. Labelled rooms from left to right: bedroom, studio 01, circulation, bathroom, toilet, ramp, garage, storage, meeting room, circulation, kitchen, verandah, living room and fire place. Dashed lines show the overlapping routes through the plan, and a long wall extends from the bottom left.',
       credit: DRAWING_CREDIT,
+      width: 1582,
+      height: 950,
     },
   },
   {
@@ -226,6 +235,8 @@ export const drawingSlots: DrawingSlot[] = [
       src: '/images/plan-first.jpg',
       alt: 'First floor plan with a north arrow. Labelled spaces from left to right: open space, storage, bedroom, circulation, bedroom, bathroom and studio 02. Hatched bands mark glazing and stairs, and the outline of the floor below is shown.',
       credit: DRAWING_CREDIT,
+      width: 1582,
+      height: 839,
     },
   },
   {
@@ -236,6 +247,8 @@ export const drawingSlots: DrawingSlot[] = [
       src: '/images/plan-roof.jpg',
       alt: 'Roof plan with a north arrow, showing angular roof planes with slope and drainage markings, a hatched glazed strip, and a labelled roof garden.',
       credit: DRAWING_CREDIT,
+      width: 1582,
+      height: 846,
     },
   },
 ];
