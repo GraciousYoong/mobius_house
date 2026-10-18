@@ -166,6 +166,11 @@ Everywhere: **M** switch mode · **X** show/hide controls · **Esc** leave the v
 
 Keys are only captured while the viewer has focus, so they never hijack page scrolling.
 
+**Adjusting the interface.** The minimap's **−** and **+** buttons step through four sizes. The
+toolbar and the minimap each have a grip (⠿) to drag them anywhere in the 3D view. A focused grip
+also moves with the arrow keys (Shift for bigger steps). Double-click the grip or press **Home** to
+put the panel back. Sizes and positions are remembered in the browser (`localStorage`).
+
 ## Loading, fallback and accessibility
 
 - Loading spinner while the 3D chunk downloads (`SceneLoading`).

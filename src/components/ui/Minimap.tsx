@@ -1,5 +1,7 @@
 import modelInfo from '../../content/generated/modelInfo.json';
+import type { ReactNode } from 'react';
 import { viewerStore } from '../../state/viewerStore';
+import { usePersistentState } from '../../hooks/usePersistentState';
 
 /**
  * Minimap: the visitor's position and heading over a plan of the floor they
@@ -22,6 +24,10 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
 
 const levels = modelInfo.levels;
 
+/** Minimap widths the visitor can step through with − and +. */
+const SIZES = [200, 240, 320, 420];
+const DEFAULT_SIZE = 1;
+
 /** The highest floor whose starting height is at or below the visitor's feet. */
 function levelAt(feetY: number) {
   let current = levels[0];
@@ -29,7 +35,14 @@ function levelAt(feetY: number) {
   return current;
 }
 
-export function Minimap() {
+interface Props {
+  /** Optional drag handle, rendered at the start of the header. */
+  grip?: ReactNode;
+}
+
+export function Minimap({ grip }: Props) {
+  const [size, setSize] = usePersistentState('mobius.minimap.size', DEFAULT_SIZE);
+  const sizeIndex = Math.min(Math.max(size, 0), SIZES.length - 1);
   const pose = viewerStore.useStore((s) => s.pose);
   const status = viewerStore.useStore((s) => s.modelStatus);
   const x = clamp(pose.x, vx, vx + vw);
@@ -43,8 +56,13 @@ export function Minimap() {
   const barY = vz + vh - 2.2;
 
   return (
-    <figure className="minimap" aria-labelledby="minimap-caption">
+    <figure
+      className="minimap"
+      aria-labelledby="minimap-caption"
+      style={{ width: `min(${SIZES[sizeIndex]}px, calc(100vw - 2 * var(--gutter)))` }}
+    >
       <figcaption id="minimap-caption" className="minimap__header">
+        {grip}
         {fallback ? (
           <span className="minimap__level">Schematic</span>
         ) : (
@@ -58,6 +76,24 @@ export function Minimap() {
             <path d="M5 1 L8.5 12 L5 9.5 L1.5 12 Z" />
           </svg>
           N
+        </span>
+        <span className="minimap__size" role="group" aria-label="Minimap size">
+          <button
+            type="button"
+            aria-label="Smaller minimap"
+            disabled={sizeIndex === 0}
+            onClick={() => setSize(sizeIndex - 1)}
+          >
+            −
+          </button>
+          <button
+            type="button"
+            aria-label="Larger minimap"
+            disabled={sizeIndex === SIZES.length - 1}
+            onClick={() => setSize(sizeIndex + 1)}
+          >
+            +
+          </button>
         </span>
       </figcaption>
       <svg

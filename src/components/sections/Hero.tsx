@@ -7,12 +7,17 @@ import { KeyboardHelp } from '../ui/KeyboardHelp';
 import { ModeToggle } from '../ui/ModeToggle';
 import { Minimap } from '../ui/Minimap';
 import { ModelNotice } from '../ui/ModelNotice';
+import { DragGrip } from '../ui/DragGrip';
+import { useDraggable } from '../../hooks/useDraggable';
 
 /** Full-screen hero: the 3D viewer plus its DOM overlays. */
 export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
   const mode = viewerStore.useStore((s) => s.mode);
   const helpOpen = viewerStore.useStore((s) => s.helpOpen);
   const webgl = useWebGLSupport();
+  // The toolbar and minimap can be dragged anywhere inside the hero.
+  const toolbarDrag = useDraggable('mobius.toolbar.offset', '.hero');
+  const minimapDrag = useDraggable('mobius.minimap.offset', '.hero');
   const toggleHelp = useCallback(() => setHelpOpen(!viewerStore.getState().helpOpen), []);
 
   return (
@@ -44,7 +49,14 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
         </div>
 
         {webgl && (
-          <div className="hero__toolbar" role="toolbar" aria-label="3D view">
+          <div
+            ref={toolbarDrag.panelRef}
+            className="hero__toolbar"
+            role="toolbar"
+            aria-label="3D view"
+            style={toolbarDrag.style}
+          >
+            <DragGrip label="controls" {...toolbarDrag.gripProps} />
             <ModeToggle mode={mode} onChange={setMode} />
             <span className="hero__toolbar-rule" aria-hidden="true" />
             {mode === 'orbit' ? (
@@ -77,8 +89,8 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
               </div>
             )}
             {mode === 'explore' && (
-              <div className="hero__minimap">
-                <Minimap />
+              <div ref={minimapDrag.panelRef} className="hero__minimap" style={minimapDrag.style}>
+                <Minimap grip={<DragGrip label="minimap" {...minimapDrag.gripProps} />} />
               </div>
             )}
           </div>
