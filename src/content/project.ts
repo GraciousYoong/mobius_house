@@ -266,6 +266,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/exterior.jpg',
     alt: 'The Möbius House seen through bare trees: a long, low white concrete volume with bands of horizontal glazing, its upper part projecting over a recessed, darker base, set on a sandy slope.',
     credit: IMAGE_CREDIT,
+    width: 750,
+    height: 598,
   },
   {
     id: 'interior',
@@ -273,6 +275,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/interior-living.jpg',
     alt: 'Living area with exposed concrete walls and a built-in concrete shelf along the window, a slatted timber ceiling and glazed openings to a stair beyond. A blue rug, black leather sofa and lounge chair surround a glass coffee table while a person walks past.',
     credit: IMAGE_CREDIT,
+    width: 750,
+    height: 500,
   },
   {
     id: 'living-bookshelf',
@@ -280,6 +284,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/living-bookshelf.jpg',
     alt: 'A long concrete block with an open shelf of books runs into the living area, under a dark slatted timber ceiling, with leather sofas and full-height glazing onto the woods beyond.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 667,
+    height: 1000,
   },
   {
     id: 'stair-landing',
@@ -287,6 +293,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/stair-landing.jpg',
     alt: 'A concrete landing with a glass balustrade cantilevers over the hall; behind it a stair with pale timber panelling rises towards a skylight.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 667,
+    height: 1000,
   },
   {
     id: 'stair-skylight',
@@ -294,6 +302,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/stair-skylight.jpg',
     alt: 'Thin concrete steps climb beside a frameless glass balustrade under a skylight, between angled concrete walls, with bowls of fruit on the floor in front.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 667,
+    height: 1000,
   },
   {
     id: 'folded-concrete',
@@ -301,6 +311,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/folded-concrete.jpg',
     alt: 'An angled concrete mass folds down from the ceiling over a passage, beside a dark glass wall and a concrete column, above a polished concrete floor.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 1500,
+    height: 1000,
   },
   {
     id: 'corridor-glazing',
@@ -308,6 +320,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/corridor-glazing.jpg',
     alt: 'A long corridor with a polished concrete floor follows the slanting glazed wall, with tall timber doors set into concrete on one side and a skylight overhead.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 667,
+    height: 1000,
   },
   {
     id: 'corridor-bw',
@@ -315,6 +329,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/corridor-bw.jpg',
     alt: 'Black-and-white view down a narrow corridor lined with reflective glass and concrete, the floor and walls catching the light from the windows at the end.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 667,
+    height: 1000,
   },
   {
     id: 'dining-glass-wall',
@@ -322,6 +338,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/dining-glass-wall.jpg',
     alt: 'A dining table with aluminium office chairs sits beside full-height glazing onto the woods, separated from a long corridor by a glass partition.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 1500,
+    height: 1000,
   },
   {
     id: 'dining-woods',
@@ -329,6 +347,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/dining-woods.jpg',
     alt: 'A concrete dining table with aluminium chairs and two white pendant lamps stands in front of a wall of glass looking out onto trees, between concrete walls.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 1500,
+    height: 1000,
   },
   {
     id: 'column-desk',
@@ -336,6 +356,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/column-desk.jpg',
     alt: 'A concrete column with a built-in socket panel, from which a concrete desk and steps fold out like furniture, with the living area beyond.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 667,
+    height: 1000,
   },
   {
     id: 'workspace-window',
@@ -343,6 +365,8 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/workspace-window.jpg',
     alt: 'A long concrete work desk runs along the windows between concrete columns, with a glass-balustraded stair to the right and trees outside.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 1500,
+    height: 1000,
   },
   {
     id: 'stair-hall-bw',
@@ -350,5 +374,7 @@ export const galleryItems: GalleryItem[] = [
     src: '/images/gallery/stair-hall-bw.jpg',
     alt: 'Black-and-white view of a concrete stair hall with an angular staircase, a hanging glass lantern and framed artworks, opening to a bright room beyond.',
     credit: 'Photo © Eva Bloem, via ArchDaily',
+    width: 1500,
+    height: 1000,
   },
 ];
