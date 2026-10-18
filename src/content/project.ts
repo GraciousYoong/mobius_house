@@ -108,6 +108,8 @@ export interface DrawingSlot {
   title: string;
   description: string;
   image: Image | null;
+  /** Very wide drawings (sections) span the full row. */
+  wide?: boolean;
 }
 
 const IMAGE_CREDIT =
@@ -116,19 +118,8 @@ const IMAGE_CREDIT =
 const DRAWING_CREDIT =
   'Image courtesy of UNStudio (via ArchDaily); permission to reproduce to be confirmed';
 
-/** Drawing types we intend to show. `image` stays null until one is sourced. */
+/** Drawings in the order of a drawing set: diagram, plans bottom to top, section. */
 export const drawingSlots: DrawingSlot[] = [
-  {
-    id: 'plan',
-    title: 'Floor plan',
-    description:
-      'Labelled rooms run from the bedroom and studio on the left of the plan, past the garage and meeting room, to the kitchen, verandah and living room on the right.',
-    image: {
-      src: '/images/plan.jpg',
-      alt: 'Floor plan of the Möbius House with a north arrow. Labelled rooms from left to right: bedroom, studio 01, circulation, bathroom, toilet, ramp, garage, storage, meeting room, circulation, kitchen, verandah, living room and fire place. Dashed lines show the overlapping routes through the plan.',
-      credit: DRAWING_CREDIT,
-    },
-  },
   {
     id: 'diagram',
     title: 'Möbius diagram',
@@ -140,22 +131,57 @@ export const drawingSlots: DrawingSlot[] = [
     },
   },
   {
-    id: 'site',
-    title: 'Site plan',
-    description: 'Placement of the house in its landscape.',
-    image: null,
+    id: 'basement',
+    title: 'Basement plan',
+    description: 'Storage, guest room, bathroom and circulation below the house.',
+    image: {
+      src: '/images/plan-basement.jpg',
+      alt: 'Basement floor plan with a north arrow. Labelled rooms: storage, guest room, bathroom and circulation, set in an angular outline, with the outline of the floor above shown dashed and a long wall running off to the upper left.',
+      credit: DRAWING_CREDIT,
+    },
   },
   {
-    id: 'sections',
-    title: 'Sections',
-    description: 'Cuts showing how the loop changes level.',
-    image: null,
+    id: 'ground',
+    title: 'Ground floor plan',
+    description:
+      'From the bedroom and studio at the west end, past the garage and meeting room, to the kitchen, verandah and living room at the east end.',
+    image: {
+      src: '/images/plan-ground.jpg',
+      alt: 'Ground floor plan with a north arrow. Labelled rooms from left to right: bedroom, studio 01, circulation, bathroom, toilet, ramp, garage, storage, meeting room, circulation, kitchen, verandah, living room and fire place. Dashed lines show the overlapping routes through the plan, and a long wall extends from the bottom left.',
+      credit: DRAWING_CREDIT,
+    },
   },
   {
-    id: 'elevations',
-    title: 'Elevations',
-    description: 'Exterior faces of concrete and glass.',
-    image: null,
+    id: 'first',
+    title: 'First floor plan',
+    description: 'Open space, bedrooms, bathroom and studio 02 on the upper level.',
+    image: {
+      src: '/images/plan-first.jpg',
+      alt: 'First floor plan with a north arrow. Labelled spaces from left to right: open space, storage, bedroom, circulation, bedroom, bathroom and studio 02. Hatched bands mark glazing and stairs, and the outline of the floor below is shown.',
+      credit: DRAWING_CREDIT,
+    },
+  },
+  {
+    id: 'roof',
+    title: 'Roof plan',
+    description: 'The folded roof planes, with a roof garden.',
+    image: {
+      src: '/images/plan-roof.jpg',
+      alt: 'Roof plan with a north arrow, showing angular roof planes with slope and drainage markings, a hatched glazed strip, and a labelled roof garden.',
+      credit: DRAWING_CREDIT,
+    },
+  },
+  {
+    id: 'section',
+    wide: true,
+    title: 'Section: working, living, sleeping',
+    description:
+      'An unfolded section through the house with the routes of the daily cycle: working, living and sleeping intertwine along its length.',
+    image: {
+      src: '/images/section-living-working-sleeping.jpg',
+      alt: 'Long unfolded section through the house. Dashed, dotted and dash-dot lines weave above and below it, labelled working, sleeping and living in alternating order, showing how the activities of the day follow one another along the building.',
+      credit: DRAWING_CREDIT,
+    },
   },
 ];
 

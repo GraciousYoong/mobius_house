@@ -5,12 +5,12 @@ export function Drawings() {
   return (
     <Section id="drawings" eyebrow="Documentation" title="Drawings">
       <p className="section__lead">
-        Drawings as published by UNStudio and ArchDaily. Select a drawing to open it at full size.
-        Empty slots are drawings that have not been sourced yet.
+        Drawings courtesy of UNStudio, as published by ArchDaily. Select a drawing to open it at
+        full size.
       </p>
       <ul className="card-grid">
         {drawingSlots.map((d) => (
-          <li key={d.id} className="card">
+          <li key={d.id} className={`card ${d.wide ? 'card--wide' : ''}`}>
             {d.image ? (
               <a
                 className="card__media card__media--image"

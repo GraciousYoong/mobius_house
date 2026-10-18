@@ -186,7 +186,8 @@ own words, with one short, attributed quotation (Terence Riley). The "Facts and 
 
 Images in `public/images/`:
 
-- **Floor plan and Möbius diagram:** credited by ArchDaily as courtesy of UNStudio.
+- **Drawings** (Möbius diagram; basement, ground, first-floor and roof plans; the working,
+  living, sleeping section): credited by ArchDaily as courtesy of UNStudio.
 - **Exterior and living-area photographs:** photographer still to be confirmed. ArchDaily credits
   its interior photography to Eva Bloem.
 
