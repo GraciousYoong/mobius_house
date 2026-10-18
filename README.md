@@ -80,7 +80,7 @@ gallery-like space where the pale building is the only lit subject.
 |---|---|---|
 | Purpose | Present the whole building | Walk through it |
 | Lens | 30° vertical field of view (long lens, little distortion) | 64° (natural eye) |
-| Composition | Three-quarter view from the south-east, ~18° up, framed on the building's own bounds (not the site) and offset away from the title | Starts on the approach ~10 m south-west of the house, building at a three-quarter angle |
+| Composition | Three-quarter view from the south-east, ~18° up, framed on the building's own bounds (not the site) and offset away from the title | Starts at the entrance on the north forecourt, facing the recessed opening |
 | Limits | Distance 1.3–5 × the building radius, 15° above the horizon at least: never inside the model or below ground | Capsule collision keeps the eye 0.3 m from walls and glass; 0.12 m near plane |
 | Controls | Damped orbit, slow drift until first interaction, **Reset view** (or **R**) glides back | Unchanged movement; **Exit** returns to Orbit |
 

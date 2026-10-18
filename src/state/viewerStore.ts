@@ -26,7 +26,7 @@ interface ViewerState {
 
 export const viewerStore = createStore<ViewerState>({
   mode: 'orbit',
-  pose: { x: 0, z: 12, feetY: 0, heading: 0 },
+  pose: { x: 2.3, z: -9.4, feetY: -0.6, heading: 2.6 },
   helpOpen: false,
   modelStatus: 'loading',
   viewResets: 0,

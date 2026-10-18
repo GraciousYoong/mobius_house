@@ -30,7 +30,7 @@ console.log('bvh ms', (performance.now() - t0).toFixed(0), 'glass', includeGlass
 
 const p = new CharacterPhysics(bvh);
 const still = { wish: new Vector3(), running: false };
-p.reset(new Vector3(0, 4, 12));
+p.reset(new Vector3(2.3, 1.0, -9.4)); // Explore's default start, at the entrance
 for (let i = 0; i < 120; i++) p.update(1 / 60, still);
 console.log('start feet', p.feetY.toFixed(2), 'grounded', p.grounded);
 

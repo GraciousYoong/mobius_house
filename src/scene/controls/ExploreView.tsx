@@ -16,11 +16,11 @@ import { debugExploreStart } from '../debug';
  */
 
 /**
- * Start on the approach south-west of the house, about 10 m out, turned so the
- * building is seen at a three-quarter angle (glazed living wing and the upper
- * volume) rather than straight at a window wall.
+ * Start at the entrance on the north side: standing on the forecourt, facing
+ * south-south-west towards the recessed opening, with the glazed wing on the
+ * left. Eye height sits 1.6 m above the forecourt (about −0.6 m).
  */
-const DEFAULT_START = { position: new Vector3(-6, 1.4, 15), yaw: -0.45 };
+const DEFAULT_START = { position: new Vector3(2.3, 1.0, -9.4), yaw: 2.6 };
 const START = debugExploreStart
   ? new Vector3(debugExploreStart[0], debugExploreStart[1], debugExploreStart[2])
   : DEFAULT_START.position;
