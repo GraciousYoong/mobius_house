@@ -108,6 +108,8 @@ export const overview = {
   },
   cycle: {
     title: 'A 24-hour cycle',
+    /** The three activities labelled on UNStudio's section. */
+    activities: ['Working', 'Living', 'Sleeping'],
     text: 'Two independent routes run side by side through a sequence of spaces, exchanging positions, so that working, sleeping, playing and socialising follow one another over the course of a day. Ceiling heights, not walls, set the spaces apart: higher volumes for life together, lower ones for solitary work and rest. Few rooms have right angles, and concrete folds out of the structure to become furniture.',
     diagram: {
       src: '/images/section-living-working-sleeping.jpg',
@@ -148,6 +150,13 @@ export const overview = {
   },
   background: {
     title: 'Background',
+    /** Dates from the text below, as a short timeline. */
+    timeline: [
+      { year: '1993', event: 'Commission' },
+      { year: '1995', event: '3D computer modelling' },
+      { year: '1998', event: 'Completed' },
+      { year: '1999', event: 'MoMA, “The Un-Private House”' },
+    ],
     text: 'In 1993 a young professional couple from Amsterdam set out to build a house that would renew the language of domestic architecture. They chose Ben van Berkel, who studied the wooded site in Het Gooi and related it to the way they lived and worked. The design went through several iterations over five years; the house was completed in 1998. It was among the first houses designed with 3D computer modelling, introduced into the process in 1995, and in 1999 it was shown at the Museum of Modern Art in New York in “The Un-Private House”.',
   },
   note: 'Summarised from',

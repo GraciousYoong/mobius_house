@@ -66,7 +66,12 @@ export function Overview() {
           <img src={cycle.diagram.src} alt={cycle.diagram.alt} loading="lazy" />
           <figcaption>{cycle.diagram.credit}</figcaption>
         </figure>
-        <div className="ov-cycle__text">
+        <div className="ov-cycle__text ov-split">
+          <ul className="ov-split__aside ov-activities">
+            {cycle.activities.map((a) => (
+              <li key={a}>{a}</li>
+            ))}
+          </ul>
           <p>{cycle.text}</p>
         </div>
       </div>
@@ -107,7 +112,15 @@ export function Overview() {
           <span className="ov-rule" aria-hidden="true" />
           {background.title}
         </h3>
-        <div className="ov-background__text">
+        <div className="ov-background__text ov-split">
+          <dl className="ov-split__aside ov-timeline">
+            {background.timeline.map((t) => (
+              <div key={t.year}>
+                <dt>{t.year}</dt>
+                <dd>{t.event}</dd>
+              </div>
+            ))}
+          </dl>
           <p>{background.text}</p>
         </div>
       </div>
