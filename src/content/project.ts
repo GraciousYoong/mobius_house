@@ -118,8 +118,20 @@ const IMAGE_CREDIT =
 const DRAWING_CREDIT =
   'Image courtesy of UNStudio (via ArchDaily); permission to reproduce to be confirmed';
 
-/** Drawings in the order of a drawing set: plans bottom to top, then the section. */
+/** Drawings: the section first, then the plans from bottom to top. */
 export const drawingSlots: DrawingSlot[] = [
+  {
+    id: 'section',
+    wide: true,
+    title: 'Section: working, living, sleeping',
+    description:
+      'An unfolded section through the house with the routes of the daily cycle: working, living and sleeping intertwine along its length.',
+    image: {
+      src: '/images/section-living-working-sleeping.jpg',
+      alt: 'Long unfolded section through the house. Dashed, dotted and dash-dot lines weave above and below it, labelled working, sleeping and living in alternating order, showing how the activities of the day follow one another along the building.',
+      credit: DRAWING_CREDIT,
+    },
+  },
   {
     id: 'basement',
     title: 'Basement plan',
@@ -158,18 +170,6 @@ export const drawingSlots: DrawingSlot[] = [
     image: {
       src: '/images/plan-roof.jpg',
       alt: 'Roof plan with a north arrow, showing angular roof planes with slope and drainage markings, a hatched glazed strip, and a labelled roof garden.',
-      credit: DRAWING_CREDIT,
-    },
-  },
-  {
-    id: 'section',
-    wide: true,
-    title: 'Section: working, living, sleeping',
-    description:
-      'An unfolded section through the house with the routes of the daily cycle: working, living and sleeping intertwine along its length.',
-    image: {
-      src: '/images/section-living-working-sleeping.jpg',
-      alt: 'Long unfolded section through the house. Dashed, dotted and dash-dot lines weave above and below it, labelled working, sleeping and living in alternating order, showing how the activities of the day follow one another along the building.',
       credit: DRAWING_CREDIT,
     },
   },
