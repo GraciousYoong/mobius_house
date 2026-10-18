@@ -1,12 +1,13 @@
 import { Vector3 } from 'three';
 import modelInfo from '../content/generated/modelInfo.json';
+import { assetUrl } from '../assetUrl';
 
 /**
  * Scene dimensions derived from the processed model (see
  * scripts/prepare-model.mjs). Units are metres; y = 0 is the main floor and
  * −Z points north, matching the published plan.
  */
-export const MODEL_URL = '/models/mobius-house.glb';
+export const MODEL_URL = assetUrl('models/mobius-house.glb');
 export const MODEL_NAME = 'mobius-house';
 
 const [minX, minY, minZ] = modelInfo.bounds.min;

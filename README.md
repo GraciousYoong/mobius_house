@@ -24,6 +24,15 @@ npm run typecheck  # TypeScript only
 npm run prepare-model  # rebuild the model, plan and modelInfo.json from models-src/
 ```
 
+## Publishing (GitHub Pages)
+
+`.github/workflows/deploy.yml` builds the site and publishes it on every push
+to `main`, at `https://<user>.github.io/<repository>/`. It builds with
+`vite build --base=/<repository>/`, and files in `public/` are linked through
+`assetUrl()` (`src/assetUrl.ts`) so they follow that folder; use it for any new
+image or model path. One-time setup on GitHub: **Settings → Pages → Build and
+deployment → Source: GitHub Actions**.
+
 ## 3D model pipeline
 
 `models-src/mobius-house.dae` is the SketchUp COLLADA export (kept out of `public/` so it is not
@@ -93,7 +102,7 @@ Only active on the dev server (`npm run dev`). Production builds strip them out:
 - `?at=x,eyeY,z,yaw`: start Explore at a given position, e.g. `?at=4,1.2,3,1.9` inside the living
   area.
 
-## Design system (v2, in progress)
+## Design system (v2)
 
 Tokens live at the top of `src/styles/global.css` under "Design system (v2)". Sections move over one
 at a time by adding `section--editorial` (and `section--split` for a heading column on the left).
