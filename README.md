@@ -97,7 +97,7 @@ Only active on the dev server (`npm run dev`). Production builds strip them out:
 
 Tokens live at the top of `src/styles/global.css` under "Design system (v2)". Sections move over one
 at a time by adding `section--editorial` (and `section--split` for a heading column on the left).
-Converted so far: **Key Information**, **Drawings**, **Gallery**.
+Converted so far: **Overview**, **Key Information**, **Drawings**, **Gallery**.
 
 - **Type:** Inter Tight for text and headings, Newsreader for quotes. Both are self-hosted Latin
   subsets in `public/fonts/` (SIL Open Font License, licence files alongside), with system fonts

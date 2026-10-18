@@ -9,7 +9,12 @@ import { AnglesDiagram, QuadrantsDiagram, SlotPhoto } from '../ui/OverviewArt';
 export function Overview() {
   const { intro, principle, quote, cycle, figures, background } = overview;
   return (
-    <Section id="overview" eyebrow={intro.eyebrow} title={intro.title} className="ov">
+    <Section
+      id="overview"
+      eyebrow={intro.eyebrow}
+      title={intro.title}
+      className="ov section--editorial"
+    >
       {/* Concept: lead text beside UNStudio's Möbius diagram. */}
       <div className="ov-intro">
         <p className="ov-lead">{intro.lead}</p>
@@ -104,7 +109,7 @@ export function Overview() {
           </li>
         ))}
       </ul>
-      <p className="note">{figures.quadrantsNote}</p>
+      <p className="meta ov-note">{figures.quadrantsNote}</p>
 
       {/* Background: the commission and the design process. */}
       <div className="ov-background">
@@ -125,7 +130,7 @@ export function Overview() {
         </div>
       </div>
 
-      <p className="note">
+      <p className="meta ov-note">
         {overview.note}{' '}
         {overview.sources.map((s, i) => (
           <span key={s.url}>
