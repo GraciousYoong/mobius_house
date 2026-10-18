@@ -49,7 +49,7 @@ const PALETTE: Record<SurfaceGroup, MeshStandardMaterial> = {
   wall: standard('#ebeae6', 0.92), // interior walls: warm white
   ceiling: standard('#f1f0ed', 0.95),
   floor: standard('#bab7b1', 0.6), // interior floors: grey, faint sheen
-  ground: standard('#cbc8c1', 1), // site, terraces and paths: close to the ground plane
+  ground: standard('#7a7873', 1), // site, terraces and paths: mid grey, so the house leads
 };
 
 /** Vivid colours for `?debug=surfaces` (development only), to check the grouping. */
