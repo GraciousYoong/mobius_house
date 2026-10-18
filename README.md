@@ -189,7 +189,7 @@ Images used by the Overview, in `public/images/overview/`:
 | `mobius-diagram.jpg` | Beside the Concept title | UNStudio's Möbius diagram, inverted to light-on-black |
 | `mobius-sketch.jpg` | Beside "The Möbius principle" | UNStudio sketch (white line on black), cropped to the drawing |
 | `materials.jpg` | "02 Materials" (shown in black and white) | Close-up of glass on the concrete slab, cropped from an interior photo |
-| `quote.jpg` *(not yet added)* | Beside the Terence Riley quotation | Exterior detail of glass and concrete, ~1200 × 900 landscape; falls back to `exterior.jpg` |
+| `../exterior.jpg` | Beside the Terence Riley quotation (full-bleed band) | The exterior photo, also used in the gallery |
 
 Light-on-black images are blended into the page (`mix-blend-mode: lighten`), so their black
 ground disappears. Alt text and credits for each image live in `src/content/project.ts` under

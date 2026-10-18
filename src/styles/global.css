@@ -1156,16 +1156,23 @@ main:focus {
 }
 
 /* Quotation band */
+/* Full-bleed band: cream runs to the left edge of the window, the photo to the right. */
+.ov {
+  overflow-x: clip; /* the band is as wide as the viewport, including under a scrollbar */
+}
 .ov-quote {
+  --bleed: max(0px, (100vw - var(--max-w)) / 2);
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  margin: 0 0 clamp(56px, 8vw, 104px);
+  margin: 0 calc(50% - 50vw) clamp(56px, 8vw, 104px);
   background: var(--p-cream);
   color: var(--p-black);
   overflow: hidden;
 }
 .ov-quote__body {
-  padding: clamp(28px, 4vw, 56px);
+  /* Keep the quotation aligned with the page content above and below. */
+  padding: clamp(28px, 4vw, 56px) clamp(28px, 4vw, 56px) clamp(28px, 4vw, 56px)
+    calc(var(--bleed) + var(--gutter));
   align-self: center;
 }
 .ov-quote blockquote {
@@ -1207,7 +1214,7 @@ main:focus {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 220px;
+  min-height: 320px;
   object-fit: cover;
 }
 

@@ -110,7 +110,7 @@ export const overview = {
     author: 'Terence Riley',
     role: 'Curator of “The Un-Private House”, MoMA',
     photo: {
-      src: '/images/overview/quote.jpg',
+      src: '/images/exterior.jpg',
       fallback: '/images/exterior.jpg',
       alt: 'The Möbius House among the trees: a low white concrete volume with bands of glazing.',
       credit: 'Photo: photographer and usage rights to be confirmed',
