@@ -1100,7 +1100,7 @@ main:focus {
 }
 
 /* ---------- Movable panels ---------- */
-/* Grip for dragging the toolbar and the minimap; also keyboard-movable. */
+/* Grip for dragging the controls panel and the minimap; also keyboard-movable. */
 .drag-grip {
   display: inline-grid;
   place-items: center;
@@ -1130,9 +1130,27 @@ main:focus {
   height: 14px;
   fill: currentColor;
 }
-.hero__toolbar .drag-grip {
+.keyboard-help__header .drag-grip {
+  margin: 0 4px 0 -8px;
   color: var(--hero-ink);
-  margin-left: 2px;
+}
+.keyboard-help__header h3 {
+  flex: 1;
+}
+/* A quiet scrollbar that matches the dark panel instead of the default white one. */
+.keyboard-help--panel {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+.keyboard-help--panel::-webkit-scrollbar {
+  width: 6px;
+}
+.keyboard-help--panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.keyboard-help--panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 3px;
 }
 .minimap__header .drag-grip {
   width: 18px;

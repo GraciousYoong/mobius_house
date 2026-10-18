@@ -15,8 +15,8 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
   const mode = viewerStore.useStore((s) => s.mode);
   const helpOpen = viewerStore.useStore((s) => s.helpOpen);
   const webgl = useWebGLSupport();
-  // The toolbar and minimap can be dragged anywhere inside the hero.
-  const toolbarDrag = useDraggable('mobius.toolbar.offset', '.hero');
+  // The controls panel and the minimap can be dragged anywhere inside the hero.
+  const helpDrag = useDraggable('mobius.help.offset', '.hero');
   const minimapDrag = useDraggable('mobius.minimap.offset', '.hero');
   const toggleHelp = useCallback(() => setHelpOpen(!viewerStore.getState().helpOpen), []);
 
@@ -49,14 +49,7 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
         </div>
 
         {webgl && (
-          <div
-            ref={toolbarDrag.panelRef}
-            className="hero__toolbar"
-            role="toolbar"
-            aria-label="3D view"
-            style={toolbarDrag.style}
-          >
-            <DragGrip label="controls" {...toolbarDrag.gripProps} />
+          <div className="hero__toolbar" role="toolbar" aria-label="3D view">
             <ModeToggle mode={mode} onChange={setMode} />
             <span className="hero__toolbar-rule" aria-hidden="true" />
             {mode === 'orbit' ? (
@@ -84,8 +77,13 @@ export const Hero = forwardRef<HTMLDivElement>(function Hero(_, viewerRef) {
         {webgl && (helpOpen || mode === 'explore') && (
           <div className="hero__side">
             {helpOpen && (
-              <div className="hero__help">
-                <KeyboardHelp id="viewer-help" mode={mode} onClose={() => setHelpOpen(false)} />
+              <div ref={helpDrag.panelRef} className="hero__help" style={helpDrag.style}>
+                <KeyboardHelp
+                  id="viewer-help"
+                  mode={mode}
+                  onClose={() => setHelpOpen(false)}
+                  grip={<DragGrip label="controls panel" {...helpDrag.gripProps} />}
+                />
               </div>
             )}
             {mode === 'explore' && (

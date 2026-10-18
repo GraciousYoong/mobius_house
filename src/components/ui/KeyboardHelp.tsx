@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import {
   commonBindings,
   exploreBindings,
@@ -35,9 +36,11 @@ interface Props {
   /** Compact panel for the viewer overlay; full lists for the Explore section. */
   variant?: 'panel' | 'full';
   onClose?: () => void;
+  /** Optional drag handle, shown at the start of the panel header. */
+  grip?: ReactNode;
 }
 
-export function KeyboardHelp({ mode, id, variant = 'panel', onClose }: Props) {
+export function KeyboardHelp({ mode, id, variant = 'panel', onClose, grip }: Props) {
   const touch = useCoarsePointer();
 
   if (variant === 'full') {
@@ -75,6 +78,7 @@ export function KeyboardHelp({ mode, id, variant = 'panel', onClose }: Props) {
   return (
     <div className="keyboard-help keyboard-help--panel" id={id} role="region" aria-label="Controls">
       <div className="keyboard-help__header">
+        {grip}
         <h3>{mode === 'orbit' ? 'Orbit controls' : 'Explore controls'}</h3>
         {onClose && (
           <button
