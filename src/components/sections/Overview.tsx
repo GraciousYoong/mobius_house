@@ -1,54 +1,118 @@
-import { concept, figures, figuresSource } from '../../content/project';
+import { overview } from '../../content/project';
 import { Section } from '../layout/Section';
+import { AnglesDiagram, MobiusLine, QuadrantsDiagram, SlotPhoto } from '../ui/OverviewArt';
 
+/**
+ * Overview as an editorial sequence:
+ * concept → principle → quotation → 24-hour cycle → facts and figures → background.
+ */
 export function Overview() {
+  const { intro, principle, quote, cycle, figures, background } = overview;
   return (
-    <Section id="overview" eyebrow="Overview" title={concept.heading}>
-      <div className="overview">
-        <div className="prose">
-          {concept.paragraphs.map((p) => (
-            <p key={p.slice(0, 24)}>{p}</p>
-          ))}
-        </div>
-        <figure className="pull-quote">
-          <blockquote>
-            <p>{concept.quote.text}</p>
-          </blockquote>
-          <figcaption>
-            {concept.quote.author}
-            <span>{concept.quote.role}</span>
-          </figcaption>
+    <Section id="overview" eyebrow={intro.eyebrow} title={intro.title} className="ov">
+      {/* Concept: lead text. */}
+      <p className="ov-lead">{intro.lead}</p>
+
+      {/* The Möbius principle: drawing with caption, text in a ruled column. */}
+      <div className="ov-principle">
+        <figure className="ov-principle__figure">
+          <MobiusLine className="ov-principle__art" />
+          <figcaption>{principle.caption}</figcaption>
         </figure>
+        <div className="ov-principle__text">
+          <h3>{principle.title}</h3>
+          <p>{principle.text}</p>
+        </div>
       </div>
 
-      <h3 className="section__subtitle">Facts and figures</h3>
-      <ul className="figures">
-        {figures.map((f) => (
-          <li key={f.value} className="figures__item">
-            <span className="figures__value" aria-hidden="true">
-              {f.value}
+      {/* Quotation on a light band, with a photograph. */}
+      <figure className="ov-quote">
+        <div className="ov-quote__body">
+          <blockquote>
+            <p>{quote.text}</p>
+          </blockquote>
+          <figcaption>
+            <span className="ov-rule" aria-hidden="true" />
+            <span>
+              <strong>{quote.author}</strong>
+              {quote.role}
             </span>
-            <p>
-              <span className="visually-hidden">{f.value} </span>
-              {f.text}
-            </p>
+          </figcaption>
+        </div>
+        <SlotPhoto slot={quote.photo} className="ov-quote__photo" />
+      </figure>
+
+      {/* 24-hour cycle: UNStudio's section across the full width, text below. */}
+      <div className="ov-cycle">
+        <h3 className="ov-heading">
+          <span className="ov-rule" aria-hidden="true" />
+          {cycle.title}
+        </h3>
+        <figure className="ov-cycle__figure">
+          <img src={cycle.diagram.src} alt={cycle.diagram.alt} loading="lazy" />
+          <figcaption>{cycle.diagram.credit}</figcaption>
+        </figure>
+        <div className="ov-cycle__text">
+          {cycle.text.map((t) => (
+            <p key={t.slice(0, 20)}>{t}</p>
+          ))}
+        </div>
+      </div>
+
+      {/* Facts and figures: number, label, text and a visual each. */}
+      <h3 className="ov-heading">
+        <span className="ov-rule" aria-hidden="true" />
+        {figures.title}
+      </h3>
+      <ul className="ov-figures">
+        {figures.items.map((f) => (
+          <li key={f.id} className="ov-figure">
+            <div className="ov-figure__copy">
+              <span className="ov-figure__value" aria-hidden="true">
+                {f.value}
+              </span>
+              <h4>
+                <span className="visually-hidden">{Number(f.value)} </span>
+                {f.label}
+              </h4>
+              <p>{f.text}</p>
+            </div>
+            <div className="ov-figure__visual">
+              {f.id === 'materials' && (
+                <SlotPhoto slot={figures.materialsPhoto} className="ov-figure__photo" />
+              )}
+              {f.id === 'quadrants' && <QuadrantsDiagram className="ov-figure__art" />}
+              {f.id === 'angles' && <AnglesDiagram className="ov-figure__art" />}
+            </div>
           </li>
         ))}
       </ul>
+      <p className="note">{figures.quadrantsNote}</p>
+
+      {/* Background: the commission and the design process. */}
+      <div className="ov-background">
+        <h3 className="ov-heading">
+          <span className="ov-rule" aria-hidden="true" />
+          {background.title}
+        </h3>
+        <div className="ov-background__text">
+          {background.text.map((t) => (
+            <p key={t.slice(0, 20)}>{t}</p>
+          ))}
+        </div>
+      </div>
 
       <p className="note">
-        {concept.note}{' '}
-        {[...concept.sources, figuresSource]
-          .filter((s, i, all) => all.findIndex((x) => x.url === s.url) === i)
-          .map((s, i) => (
-            <span key={s.url}>
-              {i > 0 && ' · '}
-              <a href={s.url} target="_blank" rel="noreferrer">
-                {s.label}
-              </a>
-            </span>
-          ))}
-        .
+        {overview.note}{' '}
+        {overview.sources.map((s, i) => (
+          <span key={s.url}>
+            {i > 0 && ' · '}
+            <a href={s.url} target="_blank" rel="noreferrer">
+              {s.label}
+            </a>
+          </span>
+        ))}
+        . Photographs: photographer and usage rights to be confirmed.
       </p>
     </Section>
   );

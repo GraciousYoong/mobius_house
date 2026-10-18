@@ -60,17 +60,6 @@ export const keyFacts: Fact[] = [
 
 export const keyFactsSources = [sources.unstudio, sources.archdaily];
 
-/** UNStudio's "Facts and figures" for the house. */
-export const figures = [
-  { value: '2', text: 'Materials, concrete and glass, intertwining material and function.' },
-  { value: '4', text: 'Quadrants that set out a seamless, continuous spatial flow.' },
-  {
-    value: '3',
-    text: 'Angles, of 7, 9 and 11 degrees, used along the whole path through the house to give it a rhythm, like a piece of music.',
-  },
-];
-export const figuresSource = sources.unstudio;
-
 /** What the 3D view shows, and who made it. */
 export const model = {
   label: 'Unofficial 3D reconstruction',
@@ -79,18 +68,91 @@ export const model = {
   source: '3D Warehouse (SketchUp)',
 };
 
-export const concept = {
-  heading: 'Concept',
-  paragraphs: [
-    'In 1993 a young professional couple from Amsterdam set out to build a house that would renew the language of domestic architecture. After approaching several architects, they chose Ben van Berkel, who studied the wooded site in Het Gooi and related it to the way the couple lived and worked. The design went through several iterations over five years, and the house was completed in 1998.',
-    'The organising idea is the Möbius loop, a surface with a single side and no boundary. Van Berkel and Caroline Bos used it to tie the house to a 24-hour cycle of working, sleeping, playing and socialising: two independent routes run side by side through a sequence of spaces, exchanging positions, so that inside and outside, house and landscape, seem to turn into one another.',
-    'Instead of walls and doors, spaces are set apart by changing ceiling heights: higher volumes for life together, lower ones for solitary work and rest. Few rooms have right angles, and concrete elements fold out of the structure to become furniture.',
-    'The palette is almost only concrete and glass, with heaviness and transparency playing off one another along the loop. The project was among the first houses designed with 3D computer modelling, introduced into the process in 1995, and in 1999 it was shown at the Museum of Modern Art in New York in “The Un-Private House”.',
-  ],
+/**
+ * Photo slots in the Overview. Each tries the visitor-supplied file in
+ * public/images/overview/ first and falls back to an existing photo, so the
+ * page looks finished before the dedicated photos are uploaded.
+ */
+export interface PhotoSlot {
+  /** Preferred file, uploaded to public/images/overview/. */
+  src: string;
+  /** Used until `src` exists. */
+  fallback: string;
+  alt: string;
+  credit: string;
+}
+
+/** Overview: an editorial sequence from idea to numbers. Text is our own summary of the sources. */
+export const overview = {
+  intro: {
+    eyebrow: '01 / Concept',
+    title: 'A continuous surface for everyday life.',
+    lead: 'The Möbius loop connects living, working and sleeping through one spatial sequence, in which inside and outside, house and landscape, seem to turn into one another.',
+  },
+  principle: {
+    title: 'The Möbius principle',
+    caption: 'A continuous surface with a single side and no boundary.',
+    text: 'Ben van Berkel and Caroline Bos used the Möbius loop as an organising principle rather than a literal shape. Its single, continuous surface ties together interior and exterior and the different moments of the day, so that spaces flow into one another instead of being divided by walls and doors.',
+  },
   quote: {
     text: 'From one perspective the glass is a skin slipped over a concrete house; from another, the building is a glass house framed by concrete.',
     author: 'Terence Riley',
     role: 'Curator of “The Un-Private House”, MoMA',
+    photo: {
+      src: '/images/overview/quote.jpg',
+      fallback: '/images/exterior.jpg',
+      alt: 'The Möbius House among the trees: a low white concrete volume with bands of glazing.',
+      credit: 'Photo: photographer and usage rights to be confirmed',
+    } satisfies PhotoSlot,
+  },
+  cycle: {
+    title: 'A 24-hour cycle',
+    text: [
+      'Two independent routes run side by side through a sequence of spaces, exchanging positions, so that working, sleeping, playing and socialising follow one another over the course of a day.',
+      'Ceiling heights, not walls, set the spaces apart: higher volumes for life together, lower ones for solitary work and rest. Few rooms have right angles, and concrete folds out of the structure to become furniture.',
+    ],
+    diagram: {
+      src: '/images/section-living-working-sleeping.jpg',
+      alt: 'Unfolded section through the house with dashed, dotted and dash-dot routes labelled working, sleeping and living weaving along its length.',
+      credit: 'Section courtesy of UNStudio (via ArchDaily); permission to reproduce to be confirmed',
+    },
+  },
+  figures: {
+    title: 'Facts and figures',
+    items: [
+      {
+        id: 'materials',
+        value: '02',
+        label: 'Materials',
+        text: 'Concrete and glass, intertwining material and function.',
+      },
+      {
+        id: 'quadrants',
+        value: '04',
+        label: 'Quadrants',
+        text: 'A seamless, continuous spatial flow.',
+      },
+      {
+        id: 'angles',
+        value: '03',
+        label: 'Angles',
+        text: 'Angles of 7°, 9° and 11° along the whole path give the house a rhythm, like a piece of music.',
+      },
+    ],
+    materialsPhoto: {
+      src: '/images/overview/materials.jpg',
+      fallback: '/images/interior-living.jpg',
+      alt: 'Interior with exposed concrete walls and glazing.',
+      credit: 'Photo: photographer and usage rights to be confirmed',
+    } satisfies PhotoSlot,
+    quadrantsNote: 'Diagram after Ben van Berkel’s description: four quadrants joined by a figure-of-eight path.',
+  },
+  background: {
+    title: 'Background',
+    text: [
+      'In 1993 a young professional couple from Amsterdam set out to build a house that would renew the language of domestic architecture. They chose Ben van Berkel, who studied the wooded site in Het Gooi and related it to the way they lived and worked. The design went through several iterations over five years; the house was completed in 1998.',
+      'It was among the first houses designed with 3D computer modelling, introduced into the process in 1995, and in 1999 it was shown at the Museum of Modern Art in New York in “The Un-Private House”.',
+    ],
   },
   note: 'Summarised from',
   sources: [sources.archdaily, sources.unstudio],

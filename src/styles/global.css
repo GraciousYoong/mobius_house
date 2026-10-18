@@ -1025,78 +1025,279 @@ main:focus {
   padding: 0 var(--gutter);
 }
 
-/* ---------- Overview: concept, pull quote, facts and figures ---------- */
-.overview {
-  display: grid;
-  grid-template-columns: minmax(0, 44rem) minmax(0, 1fr);
-  gap: clamp(32px, 6vw, 96px);
-  align-items: start;
-}
-.pull-quote {
-  margin: 0.4em 0 0;
-  padding-left: 20px;
-  border-left: 2px solid var(--c-accent);
-}
-.pull-quote blockquote {
-  margin: 0;
-}
-.pull-quote p {
-  margin: 0;
-  font-size: clamp(1.2rem, 1.9vw, 1.5rem);
+/* ---------- Overview: editorial sequence ---------- */
+/*
+  Concept → principle → quotation band → 24-hour cycle → facts and figures →
+  background. Hairline rules and short orange rules organise the page; the
+  quotation band is the one light surface, for rhythm.
+*/
+.ov .section__title {
+  max-width: 14ch;
+  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
   font-weight: 300;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
-.pull-quote figcaption {
-  margin-top: 16px;
-  font-size: 0.85rem;
-  color: var(--c-ink);
+.ov-rule {
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: var(--c-accent);
+  vertical-align: middle;
 }
-.pull-quote figcaption span {
-  display: block;
-  color: var(--c-ink-muted);
-}
-.figures {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1px;
-  margin: 20px 0 24px;
-  padding: 0;
-  list-style: none;
-  background: var(--c-line); /* shows as hairlines between the cells */
-  border: 1px solid var(--c-line);
-}
-.figures__item {
-  padding: 28px 24px 26px;
-  background: var(--c-bg);
-}
-.figures__value {
-  display: block;
-  font-size: clamp(3.4rem, 6vw, 5rem);
-  font-weight: 300;
-  line-height: 1;
-  color: var(--p-orange);
-}
-.figures__item p {
-  margin: 18px 0 0;
-  max-width: 22rem;
-  color: var(--c-ink-muted);
-}
-@media (max-width: 899px) {
-  .overview {
-    grid-template-columns: 1fr;
-  }
+.ov-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 24px;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-/* Wide drawings (sections) take the full row at their natural proportions. */
-.card--wide {
-  grid-column: 1 / -1;
+/* Concept */
+.ov-lead {
+  max-width: 34rem;
+  margin: -0.2em 0 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--c-ink-muted);
 }
-.card--wide .card__media {
-  aspect-ratio: auto;
+
+/* The Möbius principle */
+.ov-principle {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  margin: clamp(56px, 8vw, 104px) 0;
+  border-top: 1px solid var(--c-line);
+  border-bottom: 1px solid var(--c-line);
 }
-.card--wide .card__media--image img {
-  height: auto;
+.ov-principle__figure {
+  position: relative;
+  margin: 0;
+  padding: 28px 32px 24px 0;
+  border-right: 1px solid var(--c-line);
+}
+.ov-principle__art {
+  display: block;
+  width: 78%;
+  margin-left: auto;
+  color: var(--p-white);
+}
+.ov-principle__figure figcaption {
+  max-width: 11rem;
+  margin-top: -8px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.86rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--c-ink-muted);
+}
+.ov-principle__text {
+  padding: 28px 0 28px clamp(24px, 4vw, 48px);
+}
+.ov-principle__text h3 {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+.ov-principle__text p {
+  margin: 0;
+  max-width: 28rem;
+  color: var(--c-ink-muted);
+}
+
+/* Quotation band */
+.ov-quote {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  margin: 0 0 clamp(56px, 8vw, 104px);
+  background: var(--p-cream);
+  color: var(--p-black);
+  overflow: hidden;
+}
+.ov-quote__body {
+  padding: clamp(28px, 4vw, 56px);
+  align-self: center;
+}
+.ov-quote blockquote {
+  margin: 0;
+}
+.ov-quote blockquote p {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  line-height: 1.35;
+  text-indent: -0.45em; /* hang the opening quote mark */
+}
+.ov-quote blockquote p::before {
+  content: '“';
+  color: var(--c-accent);
+}
+.ov-quote blockquote p::after {
+  content: '”';
+  color: var(--c-accent);
+}
+.ov-quote figcaption {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 24px;
+  font-size: 0.82rem;
+}
+.ov-quote figcaption .ov-rule {
+  margin-top: 0.6em;
+}
+.ov-quote figcaption strong {
+  display: block;
+  font-weight: 600;
+}
+.ov-quote figcaption span:last-child {
+  color: var(--p-charcoal);
+}
+.ov-quote__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+}
+
+/* 24-hour cycle */
+.ov-cycle {
+  margin-bottom: clamp(56px, 8vw, 104px);
+}
+.ov-cycle__figure {
+  margin: 0;
+}
+.ov-cycle__figure img {
+  display: block;
+  width: 100%;
+  background: var(--p-white); /* the drawing is black lines on white */
+  padding: clamp(8px, 1.4vw, 18px);
+}
+.ov-cycle__figure figcaption {
+  margin-top: 8px;
+  font-size: 0.74rem;
+  color: var(--c-ink-muted);
+}
+.ov-cycle__text {
+  columns: 2 20rem;
+  column-gap: clamp(24px, 4vw, 56px);
+  margin-top: 24px;
+  color: var(--c-ink-muted);
+}
+.ov-cycle__text p {
+  margin: 0 0 1em;
+  break-inside: avoid;
+}
+
+/* Facts and figures */
+.ov-figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ov-figure {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 18px;
+  align-items: start;
+  padding: 4px 28px 4px 0;
+}
+.ov-figure + .ov-figure {
+  padding-left: 28px;
+  border-left: 1px solid var(--c-line);
+}
+.ov-figure__value {
+  display: block;
+  font-size: clamp(2.8rem, 4.6vw, 4rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--p-orange);
+}
+.ov-figure h4 {
+  margin: 16px 0 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.ov-figure p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--c-ink-muted);
+}
+.ov-figure__visual {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+.ov-figure__photo {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+.ov-figure__art {
+  width: 100%;
+  max-width: 300px;
+  color: var(--p-cream);
+}
+
+/* Background */
+.ov-background {
+  margin-top: clamp(48px, 7vw, 88px);
+  padding-top: 28px;
+  border-top: 1px solid var(--c-line);
+}
+.ov-background__text {
+  columns: 2 22rem;
+  column-gap: clamp(24px, 4vw, 56px);
+  color: var(--c-ink-muted);
+}
+.ov-background__text p {
+  margin: 0 0 1em;
+  break-inside: avoid;
+}
+
+@media (max-width: 1099px) {
+  .ov-figures {
+    grid-template-columns: 1fr;
+  }
+  .ov-figure,
+  .ov-figure + .ov-figure {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    padding: 24px 0;
+    border-left: none;
+    border-top: 1px solid var(--c-line);
+  }
+  .ov-figure__photo {
+    aspect-ratio: 4 / 3;
+  }
+}
+@media (max-width: 799px) {
+  .ov-principle,
+  .ov-quote {
+    grid-template-columns: 1fr;
+  }
+  .ov-principle__figure {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .ov-principle__text {
+    padding-left: 0;
+  }
+  .ov-quote__photo {
+    max-height: 260px;
+  }
+}
+@media (max-width: 519px) {
+  .ov-figure,
+  .ov-figure + .ov-figure {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- Movable panels ---------- */

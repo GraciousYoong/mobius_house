@@ -180,6 +180,20 @@ put the panel back. Sizes and positions are remembered in the browser (`localSto
   (Escape closes it), visible focus rings, keyboard instructions in the viewer and in the
   Explore section, `prefers-reduced-motion` disables auto-rotation and smooth scrolling.
 
+## Overview photos
+
+The Overview has two photo slots. Upload the files to `public/images/overview/` with exactly these
+names:
+
+| File | Where it appears | Suggested image | Size |
+|---|---|---|---|
+| `quote.jpg` | Beside the Terence Riley quotation | Exterior detail where glass meets concrete, ideally with trees | ~1200 × 900 px, landscape |
+| `materials.jpg` | "02 Materials" in Facts and figures (shown in black and white) | Close-up of concrete and glass | ~900 × 1200 px, portrait |
+
+Until a file is added, the page falls back to `exterior.jpg` and `interior-living.jpg`. After
+uploading, update each photo's `alt` text and `credit` in `src/content/project.ts`
+(`overview.quote.photo` and `overview.figures.materialsPhoto`).
+
 ## Content accuracy
 
 `src/content/project.ts` holds all text and facts. Each fact is `verified: true` only when
