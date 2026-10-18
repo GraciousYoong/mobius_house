@@ -118,18 +118,8 @@ const IMAGE_CREDIT =
 const DRAWING_CREDIT =
   'Image courtesy of UNStudio (via ArchDaily); permission to reproduce to be confirmed';
 
-/** Drawings in the order of a drawing set: diagram, plans bottom to top, section. */
+/** Drawings in the order of a drawing set: plans bottom to top, then the section. */
 export const drawingSlots: DrawingSlot[] = [
-  {
-    id: 'diagram',
-    title: 'Möbius diagram',
-    description: 'The organising diagram of intertwining loops.',
-    image: {
-      src: '/images/mobius-diagram.jpg',
-      alt: 'Grey rendered diagram of looping tubes and translucent ribbon surfaces twisting around each other in a figure-of-eight, Möbius-like form.',
-      credit: DRAWING_CREDIT,
-    },
-  },
   {
     id: 'basement',
     title: 'Basement plan',
