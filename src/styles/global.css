@@ -438,6 +438,13 @@ kbd {
   z-index: 0; /* contains the joystick's stacking below the overlay */
   touch-action: none;
 }
+/* Orbit mode on touch screens: a sideways drag turns the model, an up or down swipe
+   scrolls the page (the hero fills the screen, so it would otherwise trap the visitor).
+   OrbitControls sets touch-action: none on the canvas itself, hence !important. */
+.viewer--orbit,
+.viewer--orbit canvas {
+  touch-action: pan-y !important;
+}
 .viewer:focus-visible {
   outline-offset: -4px;
 }
@@ -983,6 +990,75 @@ kbd {
     padding: 0 12px;
   }
 }
+/* Phones held sideways: very little height, so the title shrinks to a line,
+   the panels move to the right as on wide screens, and the hero fits the screen. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero {
+    min-height: 0;
+  }
+  .hero__overlay {
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .hero__overlay::before {
+    background: linear-gradient(
+      90deg,
+      rgba(20, 20, 20, 0.6) 0%,
+      rgba(20, 20, 20, 0.2) 35%,
+      rgba(20, 20, 20, 0) 50%
+    );
+  }
+  .hero__eyebrow,
+  .hero__tagline {
+    display: none;
+  }
+  .hero__title {
+    margin: 0 0 8px;
+    font-size: 1.6rem;
+  }
+  .hero__title-block {
+    max-width: 18rem;
+  }
+  .model-notice {
+    padding: 5px 9px;
+    font-size: 0.7rem;
+  }
+  .hero__side {
+    grid-column: 2;
+    grid-row: 1 / -1;
+  }
+  .hero__help {
+    position: static;
+    max-height: 100%;
+  }
+  .keyboard-help--panel {
+    width: min(280px, 45vw);
+  }
+  .tool-button,
+  .mode-toggle__btn {
+    min-height: 30px;
+  }
+  /* Walking needs the room: the notice is already shown in Orbit mode. */
+  .hero__title-block--compact .model-notice {
+    display: none;
+  }
+  /* No taller than the hero. */
+  .minimap {
+    width: min(
+      calc(var(--minimap-w, 240px) * 0.75),
+      calc(100svh - var(--nav-h) - 60px)
+    );
+  }
+  /* Just above the toolbar, clear of the title. */
+  .joystick {
+    bottom: calc(12px + 50px);
+    width: 96px;
+    height: 96px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mode-toggle__thumb {
     transition: none;

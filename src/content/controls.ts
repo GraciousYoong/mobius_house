@@ -22,7 +22,8 @@ export const exploreBindings: KeyBinding[] = [
 ];
 
 export const orbitTouch: KeyBinding[] = [
-  { keys: ['Drag'], action: 'Rotate around the model' },
+  { keys: ['Drag sideways'], action: 'Rotate around the model' },
+  { keys: ['Swipe up / down'], action: 'Scroll the page' },
   { keys: ['Pinch'], action: 'Zoom' },
 ];
 
