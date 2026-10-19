@@ -120,6 +120,15 @@ Converted: all sections, the navigation bar and the hero.
 - **Patterns:** `.label` (uppercase field names) and `.meta` (captions, credits, sources).
 - **Breakpoints for new code:** 600, 900 and 1200 px.
 
+## Endless page
+
+The page loops: after the footer comes a replica of the hero
+(`src/components/sections/HeroMirror.tsx`), and when it reaches the hero's
+position under the navigation bar the page jumps back to the top. The hero's
+overlay is rendered into the replica through a portal, and `MirrorFeed` copies
+every rendered 3D frame into the replica's canvas while it is on screen, so
+the two are identical at the jump. The replica is `inert` and `aria-hidden`.
+
 ## Explore mode physics
 
 `src/scene/controls/characterPhysics.ts` is a capsule character controller: the visitor is a

@@ -3,7 +3,9 @@ import { navItems } from '../../content/navigation';
 import { project } from '../../content/project';
 import { useActiveSection } from '../../hooks/useActiveSection';
 
-const sectionIds = navItems.map((n) => n.id);
+// The hero and the looping replica after the footer are tracked too, so no
+// link is marked current while either fills the view (the two look the same).
+const sectionIds = ['top', ...navItems.map((n) => n.id), 'page-loop'];
 
 export function NavBar() {
   const [open, setOpen] = useState(false);

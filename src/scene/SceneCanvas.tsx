@@ -12,6 +12,7 @@ import { ModelProgress } from './ModelProgress';
 import { GROUND_Y } from './config';
 import { Effects, type RenderQuality } from './Effects';
 import { DebugHelpers } from './DebugHelpers';
+import { MirrorFeed } from './MirrorFeed';
 import { debugFlags } from './debug';
 
 interface Props {
@@ -78,6 +79,7 @@ export default function SceneCanvas({
           <ExploreView keys={keys} drag={drag} stick={stick} />
         )}
         <Effects quality={quality} />
+        <MirrorFeed />
       </Canvas>
       <ModelProgress />
     </>

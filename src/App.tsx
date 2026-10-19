@@ -29,6 +29,8 @@ export default function App() {
         <ExploreSection onEnter={enterViewer} />
       </main>
       <Footer />
+      {/* The hero's replica goes here, so the page loops back to the top. */}
+      <div id="page-loop" />
     </>
   );
 }
