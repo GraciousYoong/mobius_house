@@ -9,7 +9,7 @@ export const orbitBindings: KeyBinding[] = [
   { keys: ['+', '−'], action: 'Zoom in / out' },
   { keys: ['R'], action: 'Reset the view' },
   { keys: ['Drag'], action: 'Rotate with the mouse' },
-  { keys: ['Scroll'], action: 'Zoom' },
+  { keys: ['Ctrl + Scroll'], action: 'Zoom (scroll alone moves the page)' },
 ];
 
 export const exploreBindings: KeyBinding[] = [

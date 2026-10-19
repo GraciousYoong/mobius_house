@@ -70,6 +70,7 @@ interface Props {
 export function OrbitView({ keys, autoRotate }: Props) {
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
   const size = useThree((s) => s.size);
+  const gl = useThree((s) => s.gl);
   const controls = useRef<ElementRef<typeof OrbitControls>>(null);
   // Stops the slow opening drift once the visitor takes over.
   const [interacted, setInteracted] = useState(false);
@@ -103,6 +104,19 @@ export function OrbitView({ keys, autoRotate }: Props) {
     controls.current?.update();
     // Framing is set once on entry; resizing keeps the visitor's own view.
   }, [camera]);
+
+  // A plain wheel scrolls the page, so the hero never traps the visitor.
+  // Ctrl/⌘ + wheel (and a trackpad pinch, which arrives as one) still zooms.
+  // Caught on the canvas's parent before it reaches OrbitControls.
+  useEffect(() => {
+    const host = gl.domElement.parentElement;
+    if (!host) return;
+    const onWheel = (e: WheelEvent) => {
+      if (!e.ctrlKey && !e.metaKey) e.stopPropagation();
+    };
+    host.addEventListener('wheel', onWheel, { capture: true });
+    return () => host.removeEventListener('wheel', onWheel, { capture: true });
+  }, [gl]);
 
   // Reset view: glide back to the opening composition.
   useEffect(() => {
