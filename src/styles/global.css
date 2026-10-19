@@ -779,7 +779,7 @@ kbd {
 /* Minimap: a small architectural drawing sheet rather than a game HUD. */
 .minimap {
   margin: 0;
-  width: clamp(168px, 17vw, 220px);
+  width: min(var(--minimap-w, 240px), calc(100vw - 2 * var(--gutter)));
   padding: 10px 12px 9px;
   background: var(--paper-bg);
   border: 1px solid rgba(236, 226, 210, 0.5);
@@ -936,9 +936,33 @@ kbd {
   .keyboard-help--panel {
     width: 100%;
   }
+  /* Smaller on phones so the model and joystick stay visible; − and + still step through sizes. */
   .minimap {
-    width: 156px;
+    width: min(calc(var(--minimap-w, 240px) * 0.75), calc(100vw - 2 * var(--gutter)));
     padding: 8px 9px 7px;
+  }
+  .minimap__header {
+    gap: 3px;
+  }
+  .minimap__level {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.6rem;
+    letter-spacing: 0.04em;
+  }
+  .minimap__size {
+    margin-left: 2px;
+  }
+  .minimap__size button {
+    width: 18px;
+    height: 18px;
+  }
+  /* The arrow alone marks north here. */
+  .minimap__north {
+    font-size: 0;
+    gap: 0;
   }
   .minimap__note {
     display: none;

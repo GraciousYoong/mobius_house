@@ -1,5 +1,5 @@
 import modelInfo from '../../content/generated/modelInfo.json';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { viewerStore } from '../../state/viewerStore';
 import { usePersistentState } from '../../hooks/usePersistentState';
 import { assetUrl } from '../../assetUrl';
@@ -60,7 +60,8 @@ export function Minimap({ grip }: Props) {
     <figure
       className="minimap"
       aria-labelledby="minimap-caption"
-      style={{ width: `min(${SIZES[sizeIndex]}px, calc(100vw - 2 * var(--gutter)))` }}
+      // The width is set in CSS from this, so phones can scale it down.
+      style={{ '--minimap-w': `${SIZES[sizeIndex]}px` } as CSSProperties}
     >
       <figcaption id="minimap-caption" className="minimap__header">
         {grip}
