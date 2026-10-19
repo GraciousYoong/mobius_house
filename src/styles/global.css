@@ -153,6 +153,13 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-h);
+  /* The page loops endlessly, so a native scrollbar's thumb jumps when the page wraps.
+     Hide it; the Möbius loop indicator shows the position instead. Wheel, touch and keys still scroll. */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
