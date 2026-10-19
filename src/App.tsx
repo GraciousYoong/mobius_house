@@ -7,6 +7,7 @@ import { KeyInformation } from './components/sections/KeyInformation';
 import { Drawings } from './components/sections/Drawings';
 import { Gallery } from './components/sections/Gallery';
 import { ExploreSection } from './components/sections/ExploreSection';
+import { LoopIndicator } from './components/ui/LoopIndicator';
 
 export default function App() {
   const viewerRef = useRef<HTMLDivElement>(null);
@@ -31,6 +32,7 @@ export default function App() {
       <Footer />
       {/* The hero's replica goes here, so the page loops back to the top. */}
       <div id="page-loop" />
+      <LoopIndicator />
     </>
   );
 }

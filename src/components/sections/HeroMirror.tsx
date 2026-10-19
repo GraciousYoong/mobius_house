@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { setMirrorTarget } from '../../scene/mirror';
 import { SceneFallback } from '../../scene/SceneFallback';
 import type { ViewMode } from '../../state/viewerStore';
+import { PAGE_LOOP_EVENT } from '../ui/LoopIndicator';
 
 interface Props {
   mode: ViewMode;
@@ -40,6 +41,7 @@ export function HeroMirror({ mode, webgl, coarse, children }: Props) {
       // Distance between the hero and its replica in the document.
       const gap = el.getBoundingClientRect().top - hero.getBoundingClientRect().top;
       if (gap > 0 && window.scrollY >= gap - 1) {
+        window.dispatchEvent(new Event(PAGE_LOOP_EVENT));
         window.scrollTo({ top: Math.max(0, window.scrollY - gap), behavior: 'instant' });
       }
     };

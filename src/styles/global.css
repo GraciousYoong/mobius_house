@@ -1044,6 +1044,66 @@ main:focus {
   height: 100%;
 }
 
+/* Where you are on the loop: a marker on a Möbius strip, bottom right. */
+.loop-indicator {
+  position: fixed;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 40; /* below the navigation bar and its menu */
+  width: 168px;
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  background: rgba(20, 20, 20, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 12px 32px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(16px) saturate(1.1);
+  font-family: var(--font-text);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+.loop-indicator.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.loop-indicator__strip {
+  display: block;
+  width: 100%;
+  height: 96px;
+}
+.loop-indicator__section {
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--c-text);
+}
+.loop-indicator__meta {
+  margin: 0;
+  font-size: var(--fs-label);
+  line-height: var(--lh-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-subtle);
+}
+@media (max-width: 599px) {
+  .loop-indicator {
+    width: 120px;
+    padding: var(--space-1) var(--space-2) var(--space-2);
+  }
+  .loop-indicator__strip {
+    height: 68px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loop-indicator {
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ---------- Editorial sections (design system v2) ---------- */
 /* Shared section pattern: label eyebrow with orange rule, light display title. */
 .section--editorial {
